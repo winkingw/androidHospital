@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Serene Health - 首页</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', 'Microsoft YaHei', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .hero-gradient-primary {
+            background: linear-gradient(135deg, #00478d 0%, #005eb8 100%);
+        }
+        .hero-gradient-secondary {
+            background: linear-gradient(135deg, #505f76 0%, #d3e4fe 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#d0e1fb",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "inverse-primary": "#a9c7ff",
+                        "background": "#faf8ff",
+                        "primary": "#00478d",
+                        "surface-container-low": "#f2f3ff",
+                        "on-tertiary-container": "#d4dae2",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#161c22",
+                        "outline": "#727783",
+                        "surface-container": "#eaedff",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#505f76",
+                        "surface-bright": "#faf8ff",
+                        "on-primary-fixed-variant": "#00468c",
+                        "surface-dim": "#d2d9f4",
+                        "primary-container": "#005eb8",
+                        "surface-variant": "#dae2fd",
+                        "on-tertiary-fixed-variant": "#41474e",
+                        "surface-tint": "#005db6",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c2c6d4",
+                        "tertiary": "#42484f",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#d3e4fe",
+                        "primary-fixed": "#d6e3ff",
+                        "surface": "#faf8ff",
+                        "on-primary-fixed": "#001b3d",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#dde3eb",
+                        "surface-container-highest": "#dae2fd",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#a9c7ff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "surface-container-high": "#e2e7ff",
+                        "on-surface": "#131b2e",
+                        "inverse-on-surface": "#eef0ff",
+                        "tertiary-container": "#596067",
+                        "inverse-surface": "#283044",
+                        "on-surface-variant": "#424752",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-background": "#131b2e",
+                        "tertiary-fixed-dim": "#c1c7cf",
+                        "on-secondary-container": "#54647a",
+                        "on-primary-container": "#c8daff",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "outline-variant-low": "rgba(194, 198, 212, 0.3)"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "card-padding": "16px",
+                        "section-gap": "24px",
+                        "base": "4px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "label-lg": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "headline-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-lg": ["13px", {"lineHeight": "18px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["22px", {"lineHeight": "30px", "fontWeight": "700"}],
+                        "label-sm": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim shadow-sm flex justify-between items-center px-margin-mobile h-16 w-full z-50 top-0 sticky">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="clinical_notes">clinical_notes</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Serene Health</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="transition-all duration-200 active:scale-95 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="px-margin-mobile pt-6 space-y-section-gap">
+<!-- Identity Card / QR Header Section -->
+<section class="relative overflow-hidden rounded-xl h-48 flex items-center justify-between p-6 shadow-md" data-alt="A cinematic, wide-angle photograph of a modern medical facility." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD07tJC7okyhfys50KPeKjBz-4ZUjsrshGcNwlid44t1AYLFFe4kmOTRJKeIEgI7CkXqVfwlJEWviWRQoHLipIYFbzuSp4tvsg3PlxUxiXI3_6Fp0NWIwsMstxtwEPdEza4hAJpH7a8l_fSQxdEfdK3xVIvOO9Ue7U2le9PmLkDrTJWfncDGpzV_IvC08i6UjOiZwohYzNbsDPptdggqzrjxIFVRdbuGtzmaVYB2Voe7CVbs8rUT01Bq_6MpzD5yzmktJ2WqyMWekQ')">
+<div class="z-10 text-white">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile mb-1">健康码</h2>
+<p class="font-label-lg text-label-lg opacity-90">电子医疗卡 · 已实名</p>
+<div class="mt-4 flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full w-fit">
+<span class="material-symbols-outlined text-sm" data-icon="qr_code_2">qr_code_2</span>
+<span class="font-label-sm text-label-sm">出示二维码</span>
+</div>
+</div>
+<div class="z-10 p-3 bg-white rounded-xl shadow-lg">
+<span class="material-symbols-outlined text-primary text-6xl" data-icon="qr_code_2">qr_code_2</span>
+</div>
+<div class="absolute inset-0 bg-primary/20 mix-blend-multiply"></div>
+</section>
+<!-- Main Feature Modules - Bento Grid Style -->
+<section class="grid grid-cols-2 gap-4">
+<!-- 来院就诊 - Large Card -->
+<div class="hero-gradient-primary p-5 rounded-2xl flex flex-col justify-between h-44 shadow-lg transition-all active:scale-[0.98]">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="hospital">festival</span>
+<span class="bg-white/20 text-white text-[10px] px-2 py-0.5 rounded-full">快速预约</span>
+</div>
+<div>
+<h3 class="text-white font-headline-md text-headline-md">来院就诊</h3>
+<p class="text-white/80 font-label-sm text-label-sm">在线挂号/诊间导航</p>
+</div>
+</div>
+<!-- 自主缴费 - Large Card -->
+<div class="hero-gradient-secondary p-5 rounded-2xl flex flex-col justify-between h-44 shadow-lg transition-all active:scale-[0.98]">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="payments">payments</span>
+<span class="bg-white/20 text-white text-[10px] px-2 py-0.5 rounded-full">无需排队</span>
+</div>
+<div>
+<h3 class="text-white font-headline-md text-headline-md">自主缴费</h3>
+<p class="text-white/80 font-label-sm text-label-sm">医保统筹/门诊结算</p>
+</div>
+</div>
+</section>
+<!-- Secondary Modules Grid -->
+<section class="grid grid-cols-2 gap-4">
+<!-- 预约记录 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl flex items-center gap-3 border border-outline-variant/30 shadow-sm transition-all active:bg-surface-container">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg">预约记录</h4>
+<p class="text-[10px] text-on-surface-variant">查看我的行程</p>
+</div>
+</div>
+<!-- 智能导航 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl flex items-center gap-3 border border-outline-variant/30 shadow-sm transition-all active:bg-surface-container">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg">智能导航</h4>
+<p class="text-[10px] text-on-surface-variant">室内精准路径</p>
+</div>
+</div>
+<!-- 消息中心 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl flex items-center gap-3 border border-outline-variant/30 shadow-sm transition-all active:bg-surface-container">
+<div class="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg">消息中心</h4>
+<p class="text-[10px] text-on-surface-variant">通知消息汇总</p>
+</div>
+</div>
+<!-- 满意度调查 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl flex items-center gap-3 border border-outline-variant/30 shadow-sm transition-all active:bg-surface-container">
+<div class="w-10 h-10 rounded-lg bg-error/10 flex items-center justify-center text-error">
+<span class="material-symbols-outlined" data-icon="thumbs_up_down">thumbs_up_down</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg">满意度调查</h4>
+<p class="text-[10px] text-on-surface-variant">意见建议反馈</p>
+</div>
+</div>
+</section>
+<!-- Health Lecture Banner -->
+<section class="bg-primary-container/10 rounded-2xl p-5 border border-primary-container/20 flex items-center justify-between">
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">健康讲堂</span>
+</div>
+<h3 class="font-headline-md text-headline-md leading-tight">掌握科学防疫<br/>保护家人健康</h3>
+<button class="bg-primary text-white px-4 py-1.5 rounded-full font-label-lg text-label-lg mt-2 transition-all active:scale-95 shadow-md">点击学习</button>
+</div>
+<div class="w-24 h-24 relative">
+<div class="absolute inset-0 bg-primary/5 rounded-full scale-125 blur-xl"></div>
+<span class="material-symbols-outlined text-7xl text-primary relative z-10" data-icon="medical_services">medical_services</span>
+</div>
+</section>
+<!-- Quick Access Icon Grid -->
+<section class="bg-surface-container-low rounded-2xl p-6 shadow-inner">
+<div class="flex justify-between mb-4">
+<h3 class="font-label-lg text-label-lg border-b-2 border-primary pb-1">常用服务</h3>
+<span class="text-on-surface-variant font-label-sm text-label-sm">全部服务</span>
+</div>
+<div class="grid grid-cols-4 gap-y-6">
+<div class="flex flex-col items-center gap-2 transition-transform active:scale-90">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="lab_research">lab_research</span>
+</div>
+<span class="font-label-sm text-label-sm">检查预约</span>
+</div>
+<div class="flex flex-col items-center gap-2 transition-transform active:scale-90">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="assignment_turned_in">assignment_turned_in</span>
+</div>
+<span class="font-label-sm text-label-sm">报告查询</span>
+</div>
+<div class="flex flex-col items-center gap-2 transition-transform active:scale-90">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="vaccines">vaccines</span>
+</div>
+<span class="font-label-sm text-label-sm">疫苗接种</span>
+</div>
+<div class="flex flex-col items-center gap-2 transition-transform active:scale-90">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="stethoscope">stethoscope</span>
+</div>
+<span class="font-label-sm text-label-sm">消化内镜</span>
+</div>
+<div class="flex flex-col items-center gap-2 transition-transform active:scale-90">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="monitor_heart">monitor_heart</span>
+</div>
+<span class="font-label-sm text-label-sm">慢病管理</span>
+</div>
+<div class="flex flex-col items-center gap-2 transition-transform active:scale-90">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="baby_changing_station">baby_changing_station</span>
+</div>
+<span class="font-label-sm text-label-sm">儿科直达</span>
+</div>
+<div class="flex flex-col items-center gap-2 transition-transform active:scale-90">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="medication">medication</span>
+</div>
+<span class="font-label-sm text-label-sm">药房自取</span>
+</div>
+<div class="flex flex-col items-center gap-2 transition-transform active:scale-90">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="more_horiz">more_horiz</span>
+</div>
+<span class="font-label-sm text-label-sm">更多</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center bg-surface dark:bg-surface-dim px-2 pb-2 pt-1 border-t border-outline-variant dark:border-outline shadow-lg rounded-t-xl">
+<button class="flex flex-col items-center justify-center bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-full px-6 py-1 transition-transform duration-300 ease-out active:scale-90">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-lg text-label-lg">首页</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 transition-transform duration-300 ease-out active:scale-90 hover:bg-surface-container-highest dark:hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined" data-icon="folder_shared">folder_shared</span>
+<span class="font-label-lg text-label-lg">我的问诊</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 transition-transform duration-300 ease-out active:scale-90 hover:bg-surface-container-highest dark:hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-lg text-label-lg">个人中心</span>
+</button>
+</nav>
+<script>
+        // Simple micro-interaction for cards
+        document.querySelectorAll('.hero-gradient-primary, .hero-gradient-secondary, .bg-surface-container-lowest').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.97)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+
+        // Sticky header opacity effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('bg-white/95', 'backdrop-blur-md');
+            } else {
+                header.classList.remove('bg-white/95', 'backdrop-blur-md');
+            }
+        });
+    </script>
+</body></html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>个人中心 - Serene Health</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#d0e1fb",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "inverse-primary": "#a9c7ff",
+                        "background": "#faf8ff",
+                        "primary": "#00478d",
+                        "surface-container-low": "#f2f3ff",
+                        "on-tertiary-container": "#d4dae2",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#161c22",
+                        "outline": "#727783",
+                        "surface-container": "#eaedff",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#505f76",
+                        "surface-bright": "#faf8ff",
+                        "on-primary-fixed-variant": "#00468c",
+                        "surface-dim": "#d2d9f4",
+                        "primary-container": "#005eb8",
+                        "surface-variant": "#dae2fd",
+                        "on-tertiary-fixed-variant": "#41474e",
+                        "surface-tint": "#005db6",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c2c6d4",
+                        "tertiary": "#42484f",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#d3e4fe",
+                        "primary-fixed": "#d6e3ff",
+                        "surface": "#faf8ff",
+                        "on-primary-fixed": "#001b3d",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#dde3eb",
+                        "surface-container-highest": "#dae2fd",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#a9c7ff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "surface-container-high": "#e2e7ff",
+                        "on-surface": "#131b2e",
+                        "inverse-on-surface": "#eef0ff",
+                        "tertiary-container": "#596067",
+                        "inverse-surface": "#283044",
+                        "on-surface-variant": "#424752",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-background": "#131b2e",
+                        "tertiary-fixed-dim": "#c1c7cf",
+                        "on-secondary-container": "#54647a",
+                        "on-primary-container": "#c8daff",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "card-padding": "16px",
+                        "section-gap": "24px",
+                        "base": "4px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "48px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-xl-mobile": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "headline-xl": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "label-lg": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "headline-xl-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-lg": ["13px", {"lineHeight": "18px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["22px", {"lineHeight": "30px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .custom-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-surface shadow-sm docked w-full top-0 sticky z-50 flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="clinical_notes">clinical_notes</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Serene Health</h1>
+</div>
+<button class="transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="px-margin-mobile pt-6 space-y-6">
+<!-- User Profile Header Section -->
+<section class="relative overflow-hidden rounded-xl p-6 text-on-primary shadow-lg" style="background: linear-gradient(135deg, #00478d 0%, #002b56 100%);">
+<!-- Decorative circle -->
+<div class="absolute -right-12 -top-12 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+<div class="flex items-center space-x-4 relative z-10">
+<div class="w-20 h-20 rounded-full border-2 border-white/30 overflow-hidden bg-primary-container">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a friendly Chinese male doctor or medical user, wearing clean casual attire, soft natural lighting against a minimalist warm grey background, high resolution photography with shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhR7ZjepVtGU87pTGgJgR0xZho05ak0c5Nanf-T0M8Qq7Xqd-uB2a3wcl6lrHDOFAC4dtIlkvcN0VpoIhfJXsBJB40C12WIWgdpw1OD69ehPG6r68_ZDoxwoqSwtJpH_Gp5iH4OHFbHa5G9_4eycWGN9GiOrb1Sb-JM3gAQYU2n3tskTtj7pjNUPmjVVBCCApxQ588_hle53pdv78P4UlLE_ea2VZVLaWjEh9jMTSVJeTk_Jr7VUCXcJiYmHS4tB8L1nKgkQjCu1I"/>
+</div>
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile">张医生</h2>
+<div class="flex items-center mt-1 space-x-2">
+<span class="bg-white/20 px-2 py-0.5 rounded-full font-label-sm text-label-sm">黄金会员</span>
+<span class="font-label-lg text-label-lg opacity-90">ID: 88294012</span>
+</div>
+</div>
+<div class="ml-auto">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+<!-- Profile Quick Stats -->
+<div class="grid grid-cols-3 gap-4 mt-6">
+<div class="bg-white/10 rounded-lg p-3 text-center transition-all active:bg-white/20">
+<p class="font-label-sm text-label-sm opacity-80">健康指数</p>
+<p class="font-headline-md text-headline-md">98</p>
+</div>
+<div class="bg-white/10 rounded-lg p-3 text-center transition-all active:bg-white/20">
+<p class="font-label-sm text-label-sm opacity-80">就诊记录</p>
+<p class="font-headline-md text-headline-md">12</p>
+</div>
+<div class="bg-white/10 rounded-lg p-3 text-center transition-all active:bg-white/20">
+<p class="font-label-sm text-label-sm opacity-80">报告待看</p>
+<p class="font-headline-md text-headline-md">2</p>
+</div>
+</div>
+</section>
+<!-- Service Menu - Bento Grid -->
+<section class="grid grid-cols-2 gap-4">
+<div class="col-span-2 glass-card rounded-xl p-card-padding custom-shadow flex items-center justify-between transition-all active:scale-[0.98]">
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 bg-primary-container/20 rounded-xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-on-surface">我的预约</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">查看待处理与历史预约</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="glass-card rounded-xl p-card-padding custom-shadow space-y-3 transition-all active:scale-[0.98]">
+<div class="w-10 h-10 bg-secondary-container/30 rounded-lg flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">家庭成员</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">共3人</p>
+</div>
+</div>
+<div class="glass-card rounded-xl p-card-padding custom-shadow space-y-3 transition-all active:scale-[0.98]">
+<div class="w-10 h-10 bg-surface-container-highest rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">实名认证</p>
+<p class="font-label-sm text-label-sm text-primary">已认证</p>
+</div>
+</div>
+</section>
+<!-- Tool List -->
+<section class="space-y-3">
+<h3 class="font-label-lg text-label-lg text-outline-variant px-1">常用工具</h3>
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden custom-shadow">
+<div class="flex items-center p-4 border-b border-outline-variant/30 active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-primary mr-3" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-body-lg text-body-lg flex-1">电子医保卡</span>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="flex items-center p-4 border-b border-outline-variant/30 active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-primary mr-3" data-icon="description">description</span>
+<span class="font-body-lg text-body-lg flex-1">我的处方单</span>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="flex items-center p-4 border-b border-outline-variant/30 active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-primary mr-3" data-icon="star">star</span>
+<span class="font-body-lg text-body-lg flex-1">收藏与关注</span>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="flex items-center p-4 active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-primary mr-3" data-icon="settings">settings</span>
+<span class="font-body-lg text-body-lg flex-1">设置</span>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Help Banner -->
+<section class="rounded-xl overflow-hidden relative h-32 flex items-center p-6 custom-shadow">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-20" data-alt="A clean, medical-themed abstract background with soft blue and white waves, creating a sense of calm and professionalism. Subtle geometric patterns represent health and care in a modern corporate healthcare aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF6i5OkUmIeBkQOmm48F-RaP7S34LdE795oQvQmKn-GFPBZRJI0zBhHlGzEKpaSsewhQbEnVrXq5hPL1vlcv3sUgfwIUwZgcg8xLa2JgTGpaLNNoMLrINp4_Kjq2PGe0Zyoz9y6YEmXLU4kJjBVI7233dn1RCvYyL4D1Rqx3xj7QgFpez06plxc1Z4WkMcHOPhEjXwqG4IeGi_1KWgoxPDse0sgmT0MDBcWtFEJeN0nVHVfAyDJSmYlY1KdxJW-7duJgOewxLV4OI"/>
+<div class="absolute inset-0 bg-gradient-to-r from-secondary-container/50 to-transparent"></div>
+</div>
+<div class="relative z-10 flex-1">
+<p class="font-headline-md text-headline-md text-primary">遇到问题了？</p>
+<p class="font-label-lg text-label-lg text-on-surface-variant">联系 24h 智能客服助手</p>
+</div>
+<button class="relative z-10 bg-primary text-on-primary px-4 py-2 rounded-full font-label-lg text-label-lg shadow-md active:scale-95 transition-transform">
+                立即咨询
+            </button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center bg-surface px-2 pb-4 pt-2 shadow-lg border-t border-outline-variant rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform duration-300 ease-out active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-0.5">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform duration-300 ease-out active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="folder_shared">folder_shared</span>
+<span class="font-label-sm text-label-sm mt-0.5">健康档案</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-6 py-1 transition-transform duration-300 ease-out active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm mt-0.5">个人中心</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('.glass-card, .custom-shadow').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>
