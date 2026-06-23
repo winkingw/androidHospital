@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary -->
+    <color name="primary">#FF00478D</color>
+    <color name="primary_container">#FF005EB8</color>
+    <color name="on_primary">#FFFFFFFF</color>
+    <color name="on_primary_container">#FFC8DAFF</color>
+
+    <!-- Secondary -->
+    <color name="secondary">#FF505F76</color>
+    <color name="secondary_container">#FFD0E1FB</color>
+    <color name="on_secondary">#FFFFFFFF</color>
+    <color name="on_secondary_container">#FF54647A</color>
+
+    <!-- Tertiary -->
+    <color name="tertiary">#FF42484F</color>
+    <color name="tertiary_container">#FF596067</color>
+    <color name="on_tertiary">#FFFFFFFF</color>
+    <color name="on_tertiary_container">#FFD4DAE2</color>
+
+    <!-- Error -->
+    <color name="error">#FFBA1A1A</color>
+    <color name="error_container">#FFFFDAD6</color>
+    <color name="on_error">#FFFFFFFF</color>
+    <color name="on_error_container">#FF93000A</color>
+
+    <!-- Surface & Background -->
+    <color name="surface">#FFFAF8FF</color>
+    <color name="on_surface">#FF131B2E</color>
+    <color name="surface_variant">#FFDAE2FD</color>
+    <color name="on_surface_variant">#FF424752</color>
+
+    <!-- Outline -->
+    <color name="outline">#FF727783</color>
+    <color name="outline_variant">#FFC2C6D4</color>
+
+    <!-- White & Black -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+</resources>
