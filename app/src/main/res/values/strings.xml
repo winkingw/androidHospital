@@ -4,4 +4,34 @@
     <string name="nav_home">首页</string>
     <string name="nav_health">健康档案</string>
     <string name="nav_profile">个人中心</string>
+
+    <!-- 健康档案 -->
+    <string name="tab_reports">报告</string>
+    <string name="tab_prescriptions">处方</string>
+    <string name="tab_medical_records">病历</string>
+    <string name="health_archive_title">健康档案</string>
+    <string name="label_chief_complaint">主诉</string>
+    <string name="label_diagnosis">诊断</string>
+    <string name="label_treatment_advice">治疗建议</string>
+    <string name="label_visit_time">就诊时间</string>
+    <string name="label_department">科室</string>
+    <string name="label_doctor">医生</string>
+    <string name="label_report_type">类型</string>
+    <string name="label_report_result">结果</string>
+    <string name="label_report_date">日期</string>
+    <string name="label_drug_name">药品名称</string>
+    <string name="label_dosage">用法用量</string>
+    <string name="label_take_method">服用方式</string>
+    <string name="label_course">疗程</string>
+    <string name="no_records">暂无记录</string>
+
+    <!-- 身份证核验 -->
+    <string name="id_verification_title">身份证核验</string>
+    <string name="id_front_side">身份证正面</string>
+    <string name="id_back_side">身份证反面</string>
+    <string name="upload_id_photo">上传身份证照片</string>
+    <string name="id_status_pending">待审核</string>
+    <string name="id_status_reviewing">审核中…</string>
+    <string name="id_status_approved">审核通过</string>
+    <string name="id_tap_to_upload">点击上传</string>
 </resources>
