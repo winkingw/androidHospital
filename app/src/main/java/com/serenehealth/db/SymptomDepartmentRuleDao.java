@@ -20,16 +20,42 @@ public class SymptomDepartmentRuleDao {
     }
 
     /**
-     * 根据症状关键词模糊匹配科室列表，按sort_no升序，只返回status=1的有效规则
+     * 根据症状关键词模糊匹配科室列表，支持多关键词（按空格/逗号/中文逗号拆分），
+     * 多关键词之间为 OR 关系。按sort_no升序，只返回status=1的有效规则
      */
     public List<SymptomDepartmentRule> queryBySymptom(String keyword) {
         List<SymptomDepartmentRule> list = new ArrayList<>();
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return list;
+        }
+
+        // 按空格、逗号、中文逗号拆分关键词
+        String[] keywords = keyword.split("[\\s,，]+");
+
+        // 构建 OR 查询条件
+        StringBuilder whereClause = new StringBuilder();
+        List<String> argsList = new ArrayList<>();
+        for (String kw : keywords) {
+            String trimmed = kw.trim();
+            if (trimmed.isEmpty()) continue;
+            if (whereClause.length() > 0) {
+                whereClause.append(" OR ");
+            }
+            whereClause.append("symptom_keyword LIKE ?");
+            argsList.add("%" + trimmed + "%");
+        }
+
+        if (whereClause.length() == 0) {
+            return list;
+        }
+
+        String sql = "SELECT * FROM t_symptom_department_rule "
+                + "WHERE (" + whereClause + ") AND status = 1 "
+                + "ORDER BY sort_no ASC";
+
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT * FROM t_symptom_department_rule "
-                            + "WHERE symptom_keyword LIKE ? AND status = 1 "
-                            + "ORDER BY sort_no ASC",
-                    new String[]{"%" + keyword + "%"});
+            cursor = db.rawQuery(sql, argsList.toArray(new String[0]));
             while (cursor.moveToNext()) {
                 list.add(cursorToRule(cursor));
             }

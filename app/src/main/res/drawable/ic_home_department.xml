@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Hospital building with cross -->
+    <path
+        android:fillColor="@color/primary"
+        android:pathData="M12,2L2,7v15h20V7L12,2zM12,4.2L19,7.3V20H5V7.3L12,4.2zM11,12v-3h2v3h3v2h-3v3h-2v-3H8v-2H11z" />
+</vector>

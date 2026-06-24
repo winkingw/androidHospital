@@ -15,7 +15,7 @@ import com.serenehealth.fragment.ProfileFragment;
 import com.serenehealth.util.MockDataUtil;
 import com.serenehealth.util.SPUtil;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnHomeActionListener {
 
     private ActivityMainBinding binding;
 
@@ -56,5 +56,10 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    @Override
+    public void switchToProfile() {
+        binding.bottomNav.setSelectedItemId(R.id.nav_profile);
     }
 }
