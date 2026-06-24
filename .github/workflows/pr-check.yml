@@ -69,9 +69,9 @@ jobs:
           warning_count=0
           while IFS= read -r file; do
             case "$file" in
-              app/src/main/java/com/serenehealth/bean/* | \
-              app/src/main/java/com/serenehealth/db/* | \
-              app/src/main/java/com/serenehealth/util/*)
+              app/src/main/java/com/serenehealth/bean/** | \
+              app/src/main/java/com/serenehealth/db/** | \
+              app/src/main/java/com/serenehealth/util/**)
                 echo "::warning::非组长分支修改了公共模块: $file"
                 echo "公共模块（bean/、db/、util/）通常由组长维护，请确认本次修改是否必要"
                 warning_count=$((warning_count + 1)) ;;

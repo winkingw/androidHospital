@@ -31,6 +31,7 @@ jobs:
               - 'build.gradle.kts'
               - 'gradle/**'
               - 'settings.gradle.kts'
+              - 'gradle.properties'
 
   # 第二步：只有检测到代码变更时才编译
   build:
