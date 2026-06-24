@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.serenehealth.R;
 import com.serenehealth.databinding.ActivityMainBinding;
+import com.serenehealth.db.DBHelper;
 import com.serenehealth.fragment.HealthArchiveFragment;
 import com.serenehealth.fragment.HomeFragment;
 import com.serenehealth.fragment.ProfileFragment;
+import com.serenehealth.util.MockDataUtil;
+import com.serenehealth.util.SPUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +24,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        if (SPUtil.isFirstLaunch()) {
+            DBHelper dbHelper = DBHelper.getInstance(this);
+            dbHelper.getWritableDatabase();
+            MockDataUtil.initAll(dbHelper);
+            SPUtil.setFirstLaunchDone();
+        }
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

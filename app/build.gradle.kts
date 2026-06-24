@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "com.serenehealth"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.serenehealth"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
     }
@@ -34,4 +34,5 @@ dependencies {
     implementation(libs.material)
     implementation(libs.glide)
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
 }

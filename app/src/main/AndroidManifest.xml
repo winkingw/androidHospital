@@ -19,5 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.IDVerificationActivity"
+            android:label="@string/id_verification_title"
+            android:exported="true"
+            android:parentActivityName=".activity.MainActivity" />
     </application>
 </manifest>
