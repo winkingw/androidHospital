@@ -21,6 +21,7 @@
         </activity>
 
         <activity
+
             android:name=".activity.MessageCenterActivity"
             android:exported="false" />
 
@@ -31,5 +32,11 @@
         <activity
             android:name=".activity.DepartmentListActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.IDVerificationActivity"
+            android:label="@string/id_verification_title"
+            android:exported="true"
+            android:parentActivityName=".activity.MainActivity" />
+
     </application>
 </manifest>
