@@ -28,6 +28,7 @@
     <color name="surface">#FFFAF8FF</color>
     <color name="on_surface">#FF131B2E</color>
     <color name="surface_variant">#FFDAE2FD</color>
+    <color name="surface_container_high">#FFE2E7FF</color>
     <color name="on_surface_variant">#FF424752</color>
 
     <!-- Outline -->
@@ -37,4 +38,14 @@
     <!-- White & Black -->
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+
+    <!-- Banner blue variants -->
+    <color name="banner_blue_1">#FF005EB8</color>
+    <color name="banner_blue_2">#FF00478D</color>
+    <color name="banner_blue_3">#FF003B7A</color>
+    <color name="banner_blue_4">#FF0066CC</color>
+    <color name="banner_blue_5">#FF0077DD</color>
+
+    <!-- Badge -->
+    <color name="badge_red">#FFE53935</color>
 </resources>

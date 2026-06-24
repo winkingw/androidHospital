@@ -1,13 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/surface"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/nav_home"
-        android:textAppearance="@style/TextAppearance.SereneHealth.Headline" />
+        android:orientation="vertical">
 
-</FrameLayout>
+        <!-- ============ A. 顶部搜索栏区域 ============ -->
+        <!-- 标题栏：应用名称 + 消息图标 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:paddingHorizontal="@dimen/margin_mobile">
+
+            <TextView
+                android:id="@+id/tv_app_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/home_title"
+                android:textColor="@color/primary_container"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                android:id="@+id/message_icon_container"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:id="@+id/iv_message_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_home_message"
+                    app:tint="@color/on_surface_variant" />
+
+                <!-- 未读消息红点角标 -->
+                <TextView
+                    android:id="@+id/badge_unread"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="top|end"
+                    android:background="@drawable/bg_badge"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:visibility="gone"
+                    android:text="0" />
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <!-- 搜索框 -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/search_card"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginHorizontal="@dimen/margin_mobile"
+            android:layout_marginTop="@dimen/spacing_small"
+            app:cardBackgroundColor="@color/surface_container_high"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/outline_variant"
+            app:strokeWidth="1dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:id="@+id/iv_search_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_home_ai_guide"
+                    app:tint="@color/on_surface_variant" />
+
+                <TextView
+                    android:id="@+id/tv_search_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/home_search_hint"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ============ B. 轮播图区域 ============ -->
+        <FrameLayout
+            android:id="@+id/banner_container"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginTop="@dimen/spacing_xlarge">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/banner_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingHorizontal="0dp" />
+
+            <!-- 轮播图指示器 -->
+            <LinearLayout
+                android:id="@+id/banner_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="12dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                android:gravity="center" />
+
+        </FrameLayout>
+
+        <!-- 分隔间距 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:background="@color/outline_variant" />
+
+        <!-- ============ C. 功能宫格区域 ============ -->
+        <TextView
+            android:id="@+id/tv_section_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_mobile"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/home_service"
+            android:textColor="@color/on_surface"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/grid_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- 分隔间距 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:layout_marginHorizontal="@dimen/margin_mobile"
+            android:background="@color/outline_variant" />
+
+        <!-- ============ D. 快捷入口区域 ============ -->
+        <TextView
+            android:id="@+id/tv_section_quick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_mobile"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/home_quick_entry"
+            android:textColor="@color/on_surface"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/quick_entry_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:paddingHorizontal="@dimen/margin_mobile" />
+
+        <!-- ============ E. 底部留白 ============ -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
+
+    </LinearLayout>
+
+</ScrollView>

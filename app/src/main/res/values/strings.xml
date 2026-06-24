@@ -4,4 +4,53 @@
     <string name="nav_home">首页</string>
     <string name="nav_health">健康档案</string>
     <string name="nav_profile">个人中心</string>
+
+    <!-- 智能导诊 -->
+    <string name="smart_diagnosis">智能导诊</string>
+    <string name="smart_search_hint">请输入您的症状，如头痛、咳嗽…</string>
+    <string name="smart_search">搜索</string>
+    <string name="smart_empty_tip">未找到匹配科室，请尝试其他关键词</string>
+    <string name="smart_common_symptoms">常用症状</string>
+    <string name="smart_back_desc">返回</string>
+    <string name="smart_jump_department">即将跳转到科室详情</string>
+    <string name="smart_no_department">未找到科室信息</string>
+
+    <!-- 常用症状标签 -->
+    <string name="symptom_headache">头痛</string>
+    <string name="symptom_fever">发热</string>
+    <string name="symptom_cough">咳嗽</string>
+    <string name="symptom_abdominal_pain">腹痛</string>
+    <string name="symptom_rash">皮疹</string>
+    <string name="symptom_joint_pain">关节痛</string>
+
+    <!-- 消息中心 -->
+    <string name="message_center_title">消息中心</string>
+    <string name="message_center_mark_all_read">全部已读</string>
+    <string name="message_center_empty">暂无消息</string>
+    <string name="message_center_tab_all">全部</string>
+    <string name="message_center_tab_system">系统通知</string>
+    <string name="message_center_tab_appointment">预约提醒</string>
+    <string name="message_center_tab_other">其他</string>
+    <string name="message_center_dialog_confirm">确定</string>
+    <string name="action_back">返回</string>
+
+    <!-- 首页 -->
+    <string name="home_title">Serene Health</string>
+    <string name="home_search_hint">搜索科室或症状…</string>
+    <string name="home_service">快速服务</string>
+    <string name="home_quick_entry">快捷入口</string>
+    <string name="home_department">科室挂号</string>
+    <string name="home_ai_guide">智能导诊</string>
+    <string name="home_message">消息中心</string>
+    <string name="home_navigation">智能导航</string>
+    <string name="home_lecture">健康讲堂</string>
+    <string name="home_payment">自助缴费</string>
+    <string name="home_appointment">预约记录</string>
+    <string name="home_profile">个人中心</string>
+    <string name="home_fever_clinic">发热门诊</string>
+    <string name="home_nucleic_acid">核酸检测</string>
+    <string name="home_physical_exam">体检预约</string>
+    <string name="home_developing">功能开发中</string>
+    <string name="home_no_map_app">未安装地图应用</string>
+    <string name="home_no_browser">无法打开浏览器</string>
 </resources>

@@ -19,5 +19,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.MessageCenterActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.SmartDiagnosisActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.DepartmentListActivity"
+            android:exported="false" />
     </application>
 </manifest>

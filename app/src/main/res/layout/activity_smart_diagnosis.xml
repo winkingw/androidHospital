@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/surface"
+    android:orientation="vertical">
+
+    <!-- ==================== 顶部标题栏 ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_container"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/spacing_large"
+        android:paddingEnd="@dimen/spacing_large">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/smart_back_desc"
+            android:tint="@color/on_primary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/smart_diagnosis"
+            android:textAppearance="@style/TextAppearance.SereneHealth.Headline"
+            android:textColor="@color/on_primary" />
+
+        <!-- 占位，保持标题居中 -->
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <!-- ==================== 搜索区域 ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/margin_mobile"
+        android:paddingEnd="@dimen/margin_mobile"
+        android:paddingTop="@dimen/spacing_medium"
+        android:paddingBottom="@dimen/spacing_medium">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_input_layout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/smart_search_hint"
+            app:boxStrokeColor="@color/primary_container"
+            app:hintTextColor="@color/primary_container">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_search"
+            style="@style/Widget.SereneHealth.Button.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:text="@string/smart_search" />
+
+    </LinearLayout>
+
+    <!-- ==================== 常用症状快捷标签 ==================== -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_mobile"
+        android:paddingEnd="@dimen/margin_mobile"
+        android:paddingTop="@dimen/spacing_small"
+        android:paddingBottom="@dimen/spacing_small"
+        android:text="@string/smart_common_symptoms"
+        android:textAppearance="@style/TextAppearance.SereneHealth.Body"
+        android:textColor="@color/on_surface_variant" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_symptoms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_mobile"
+        android:paddingEnd="@dimen/margin_mobile"
+        android:paddingBottom="@dimen/spacing_small"
+        app:chipSpacingHorizontal="@dimen/spacing_small"
+        app:chipSpacingVertical="@dimen/spacing_tiny">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_headache"
+            style="@style/Widget.Material3.Chip.Assist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/symptom_headache"
+            app:chipBackgroundColor="@color/surface_variant"
+            app:chipStrokeColor="@color/outline_variant" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_fever"
+            style="@style/Widget.Material3.Chip.Assist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/symptom_fever"
+            app:chipBackgroundColor="@color/surface_variant"
+            app:chipStrokeColor="@color/outline_variant" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_cough"
+            style="@style/Widget.Material3.Chip.Assist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/symptom_cough"
+            app:chipBackgroundColor="@color/surface_variant"
+            app:chipStrokeColor="@color/outline_variant" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_abdominal_pain"
+            style="@style/Widget.Material3.Chip.Assist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/symptom_abdominal_pain"
+            app:chipBackgroundColor="@color/surface_variant"
+            app:chipStrokeColor="@color/outline_variant" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_rash"
+            style="@style/Widget.Material3.Chip.Assist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/symptom_rash"
+            app:chipBackgroundColor="@color/surface_variant"
+            app:chipStrokeColor="@color/outline_variant" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_joint_pain"
+            style="@style/Widget.Material3.Chip.Assist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/symptom_joint_pain"
+            app:chipBackgroundColor="@color/surface_variant"
+            app:chipStrokeColor="@color/outline_variant" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/outline_variant" />
+
+    <!-- ==================== 搜索结果区域 ==================== -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/margin_mobile"
+            android:paddingEnd="@dimen/margin_mobile"
+            android:paddingTop="@dimen/spacing_small"
+            android:paddingBottom="@dimen/spacing_large"
+            android:visibility="gone" />
+
+        <!-- 空状态提示 -->
+        <LinearLayout
+            android:id="@+id/layout_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_xlarge"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/smart_empty_tip"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.SereneHealth.Body"
+                android:textColor="@color/on_surface_variant" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

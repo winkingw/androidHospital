@@ -12,7 +12,7 @@ import com.serenehealth.fragment.HealthArchiveFragment;
 import com.serenehealth.fragment.HomeFragment;
 import com.serenehealth.fragment.ProfileFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnHomeActionListener {
 
     private ActivityMainBinding binding;
 
@@ -46,5 +46,10 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    @Override
+    public void switchToProfile() {
+        binding.bottomNav.setSelectedItemId(R.id.nav_profile);
     }
 }
