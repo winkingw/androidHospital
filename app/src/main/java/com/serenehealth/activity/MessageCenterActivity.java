@@ -1,6 +1,7 @@
 package com.serenehealth.activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -35,6 +36,13 @@ public class MessageCenterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!SPUtil.isLoggedIn()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
         binding = ActivityMessageCenterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

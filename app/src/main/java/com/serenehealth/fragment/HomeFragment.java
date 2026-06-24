@@ -16,7 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.serenehealth.R;
+import com.serenehealth.activity.AppointmentRecordActivity;
 import com.serenehealth.activity.DepartmentListActivity;
+import com.serenehealth.activity.LoginActivity;
 import com.serenehealth.activity.MessageCenterActivity;
 import com.serenehealth.activity.SmartDiagnosisActivity;
 import com.serenehealth.adapter.CommonServiceAdapter;
@@ -44,6 +46,8 @@ public class HomeFragment extends Fragment {
     public interface OnHomeActionListener {
         /** 切换到个人中心 Fragment */
         void switchToProfile();
+        /** 切换到健康档案 Fragment */
+        void switchToHealthArchive();
     }
 
     @Override
@@ -150,42 +154,73 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(requireActivity(), DepartmentListActivity.class)));
 
         // C2. 自助缴费 → 队员C 负责
-        binding.cardPayment.setOnClickListener(v ->
-                Toast.makeText(context, R.string.home_developing, Toast.LENGTH_SHORT).show());
+        binding.cardPayment.setOnClickListener(v -> {
+            if (!checkLogin()) return;
+            Toast.makeText(context, R.string.home_developing, Toast.LENGTH_SHORT).show();
+        });
 
-        // D1. 预约记录 → AppointmentRecordActivity（不存在则 Toast）
+        // D1. 预约记录
         binding.cardAppointment.setOnClickListener(v -> {
-            try {
-                Class<?> cls = Class.forName("com.serenehealth.activity.AppointmentRecordActivity");
-                startActivity(new Intent(requireActivity(), cls));
-            } catch (ClassNotFoundException e) {
-                Toast.makeText(context, R.string.home_developing, Toast.LENGTH_SHORT).show();
-            }
+            if (!checkLogin()) return;
+            startActivity(new Intent(requireActivity(), AppointmentRecordActivity.class));
         });
 
         // D2. 智能导航
         binding.cardNavigation.setOnClickListener(v -> openNavigation(context));
 
         // D3. 消息中心
-        binding.cardMessage.setOnClickListener(v ->
-                startActivity(new Intent(requireActivity(), MessageCenterActivity.class)));
+        binding.cardMessage.setOnClickListener(v -> {
+            if (!checkLogin()) return;
+            startActivity(new Intent(requireActivity(), MessageCenterActivity.class));
+        });
 
         // D4. 智能导诊
-        binding.cardDiagnosis.setOnClickListener(v ->
-                startActivity(new Intent(requireActivity(), SmartDiagnosisActivity.class)));
+        binding.cardDiagnosis.setOnClickListener(v -> {
+            if (!checkLogin()) return;
+            startActivity(new Intent(requireActivity(), SmartDiagnosisActivity.class));
+        });
 
         // E. 健康讲堂
         binding.lectureBanner.setOnClickListener(v -> openLecture(context));
 
         // 消息图标
-        binding.messageIconContainer.setOnClickListener(v ->
-                startActivity(new Intent(requireActivity(), MessageCenterActivity.class)));
+        binding.messageIconContainer.setOnClickListener(v -> {
+            if (!checkLogin()) return;
+            startActivity(new Intent(requireActivity(), MessageCenterActivity.class));
+        });
 
         // 常用服务点击
         commonServiceAdapter.setOnItemClickListener((position, item) -> {
-            Toast.makeText(context, item.title + " - " + getString(R.string.home_developing),
-                    Toast.LENGTH_SHORT).show();
+            String title = item.title;
+            if (title.equals(getString(R.string.home_check_appointment))) {
+                startActivity(new Intent(requireActivity(), DepartmentListActivity.class));
+            } else if (title.equals(getString(R.string.home_report_query))) {
+                if (actionListener != null) {
+                    actionListener.switchToHealthArchive();
+                }
+            } else if (title.equals(getString(R.string.home_dept_navigation))) {
+                openNavigation(context);
+            } else if (title.equals(getString(R.string.home_health_assessment))) {
+                if (actionListener != null) {
+                    actionListener.switchToHealthArchive();
+                }
+            } else {
+                Toast.makeText(context, title + " - " + getString(R.string.home_developing),
+                        Toast.LENGTH_SHORT).show();
+            }
         });
+    }
+
+    /**
+     * 检查登录状态，未登录则跳转到登录页
+     */
+    private boolean checkLogin() {
+        if (!SPUtil.isLoggedIn()) {
+            startActivity(new Intent(requireActivity(), LoginActivity.class));
+            requireActivity().finish();
+            return false;
+        }
+        return true;
     }
 
     // ==================== 导航逻辑 ====================

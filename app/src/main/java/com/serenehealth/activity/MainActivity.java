@@ -1,5 +1,6 @@
 package com.serenehealth.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnHo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Redirect to login if not authenticated
+        if (!SPUtil.isLoggedIn()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -61,5 +70,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnHo
     @Override
     public void switchToProfile() {
         binding.bottomNav.setSelectedItemId(R.id.nav_profile);
+    }
+
+    @Override
+    public void switchToHealthArchive() {
+        binding.bottomNav.setSelectedItemId(R.id.nav_health);
     }
 }

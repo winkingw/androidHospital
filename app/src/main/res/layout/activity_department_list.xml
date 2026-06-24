@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/surface"
+    android:orientation="vertical">
+
+    <!-- Toolbar / Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/primary_container"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/spacing_small"
+        android:paddingEnd="@dimen/spacing_large">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/spacing_small"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/action_back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.SereneHealth.Headline"
+            android:textColor="@color/on_primary"
+            android:textSize="@dimen/text_size_title" />
+
+        <!-- 占位使标题居中 -->
+        <View
+            android:layout_width="@dimen/icon_size_medium"
+            android:layout_height="0dp" />
+    </LinearLayout>
+
+    <!-- 医生列表 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_doctor_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="@dimen/margin_mobile"
+        android:visibility="visible" />
+
+    <!-- 空状态提示 -->
+    <LinearLayout
+        android:id="@+id/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_doctors_in_department"
+            android:textAppearance="@style/TextAppearance.SereneHealth.Body"
+            android:textColor="@color/on_surface_variant" />
+    </LinearLayout>
+
+</LinearLayout>

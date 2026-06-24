@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_large"
+        android:text="编辑号源"
+        android:textAppearance="@style/TextAppearance.SereneHealth.Headline" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/remain_layout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        android:hint="剩余号数"
+        app:boxStrokeColor="@color/primary_container"
+        app:hintTextColor="@color/primary_container">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_remain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/total_layout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        android:hint="总号数"
+        app:boxStrokeColor="@color/primary_container"
+        app:hintTextColor="@color/primary_container">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fee_layout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        android:hint="挂号费(元)"
+        app:boxStrokeColor="@color/primary_container"
+        app:hintTextColor="@color/primary_container">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_fee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="可预约"
+        android:textColor="@color/on_surface"
+        android:textSize="@dimen/text_size_body" />
+
+</LinearLayout>

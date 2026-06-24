@@ -101,6 +101,33 @@ public class SPUtil {
         putLong("current_user_id", userId);
     }
 
+    // ==================== Admin Session ====================
+
+    public static void setAdminRole(String role) {
+        putString("admin_role", role);
+    }
+
+    public static String getAdminRole() {
+        return getString("admin_role", "");
+    }
+
+    public static void setAdminDoctorId(long doctorId) {
+        putLong("admin_doctor_id", doctorId);
+    }
+
+    public static long getAdminDoctorId() {
+        return getLong("admin_doctor_id", -1);
+    }
+
+    public static void clearAdmin() {
+        putString("admin_role", "");
+        putLong("admin_doctor_id", -1);
+    }
+
+    public static boolean isAdminLoggedIn() {
+        return !getAdminRole().isEmpty();
+    }
+
     public static void clear() {
         SharedPreferences prefs = getSp();
         if (prefs != null) {
