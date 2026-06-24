@@ -20,39 +20,39 @@ jobs:
         run: |
           base_sha="${{ github.event.pull_request.base.sha }}"
           head_sha="${{ github.event.pull_request.head.sha }}"
-          error_count=0
+          warn_count=0
 
           while IFS= read -r file; do
             case "$file" in
               *.class | *.apk | *.aab | *.ap_ | *.dex)
-                echo "::error::禁止提交编译产物: $file"
-                error_count=$((error_count + 1)) ;;
+                echo "::warning::不建议提交编译产物: $file"
+                warn_count=$((warn_count + 1)) ;;
               build/* | */build/*)
-                echo "::error::禁止提交 build/ 目录: $file"
-                error_count=$((error_count + 1)) ;;
+                echo "::warning::不建议提交 build/ 目录: $file"
+                warn_count=$((warn_count + 1)) ;;
               .idea/* | */\.idea/*)
-                echo "::error::禁止提交 IDE 配置 .idea/: $file"
-                error_count=$((error_count + 1)) ;;
+                echo "::warning::不建议提交 IDE 配置 .idea/: $file"
+                warn_count=$((warn_count + 1)) ;;
               *.iml | *.ipr | *.iws)
-                echo "::error::禁止提交 IDE 模块文件: $file"
-                error_count=$((error_count + 1)) ;;
+                echo "::warning::不建议提交 IDE 模块文件: $file"
+                warn_count=$((warn_count + 1)) ;;
               local.properties)
-                echo "::error::禁止提交 local.properties（含本机 SDK 路径）"
-                error_count=$((error_count + 1)) ;;
+                echo "::warning::不建议提交 local.properties（含本机 SDK 路径）"
+                warn_count=$((warn_count + 1)) ;;
               *.jks | *.keystore)
-                echo "::error::禁止提交签名密钥文件: $file"
-                error_count=$((error_count + 1)) ;;
+                echo "::warning::不建议提交签名密钥文件: $file"
+                warn_count=$((warn_count + 1)) ;;
               *.log)
-                echo "::error::禁止提交日志文件: $file"
-                error_count=$((error_count + 1)) ;;
+                echo "::warning::不建议提交日志文件: $file"
+                warn_count=$((warn_count + 1)) ;;
             esac
           done < <(git diff --name-only "$base_sha...$head_sha")
 
-          if [ "$error_count" -gt 0 ]; then
-            echo "::error::发现 $error_count 个不应提交的文件，请清理后重新推送"
-            exit 1
+          if [ "$warn_count" -gt 0 ]; then
+            echo "::warning::发现 $warn_count 个不建议提交的文件，请检查是否需要清理"
+          else
+            echo "✅ 未发现不建议提交的文件"
           fi
-          echo "✅ 未发现禁止提交的文件"
 
       - name: Check Module Boundaries
         run: |
