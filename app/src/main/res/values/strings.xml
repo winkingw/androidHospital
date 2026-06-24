@@ -86,6 +86,7 @@
     <string name="home_common_service">常用服务</string>
     <string name="home_check_appointment">检查预约</string>
     <string name="home_report_query">报告查询</string>
+    <string name="home_report_query_tip">请在「健康档案」中查看报告</string>
     <string name="home_online_consult">在线咨询</string>
     <string name="home_dept_navigation">科室导航</string>
     <string name="home_medicine_query">药品查询</string>
@@ -117,6 +118,14 @@
     <string name="label_course">疗程</string>
     <string name="no_records">暂无记录</string>
 
+    <!-- 预约记录 -->
+    <string name="appointment_record_title">预约记录</string>
+
+    <!-- 科室医生列表 -->
+    <string name="department_doctor_list_title">科室医生</string>
+    <string name="no_doctors_in_department">暂无医生信息</string>
+    <string name="doctor_detail_developing">医生详情功能开发中</string>
+
     <!-- 身份证核验 -->
     <string name="id_verification_title">身份证核验</string>
     <string name="id_front_side">身份证正面</string>
@@ -126,5 +135,67 @@
     <string name="id_status_reviewing">审核中…</string>
     <string name="id_status_approved">审核通过</string>
     <string name="id_tap_to_upload">点击上传</string>
+
+    <!-- 个人中心 -->
+    <string name="profile_title">个人中心</string>
+    <string name="profile_appointment_record">预约记录</string>
+    <string name="profile_medical_card">医保卡</string>
+    <string name="profile_id_verification">身份证核验</string>
+    <string name="profile_feedback">满意度评价</string>
+    <string name="profile_suggestion">意见反馈</string>
+    <string name="profile_help">使用帮助</string>
+    <string name="profile_privacy">隐私政策</string>
+    <string name="profile_logout">退出登录</string>
+    <string name="profile_logout_confirm">确定退出登录？</string>
+    <string name="profile_logout_success">已退出登录</string>
+    <string name="profile_developing">功能开发中</string>
+    <string name="profile_member_normal">普通会员</string>
+    <string name="profile_admin">后台管理</string>
+
+    <!-- 后台管理 -->
+    <string name="admin_login_title">后台管理登录</string>
+    <string name="admin_login_username">用户名</string>
+    <string name="admin_login_password">密码</string>
+    <string name="admin_login_btn">登录</string>
+    <string name="admin_login_error">用户名或密码错误</string>
+    <string name="admin_main_title">后台管理</string>
+    <string name="admin_menu_department">科室管理</string>
+    <string name="admin_menu_department_sub">管理医院科室信息</string>
+    <string name="admin_menu_doctor">医生管理</string>
+    <string name="admin_menu_doctor_sub">管理医生账号和信息</string>
+    <string name="admin_menu_schedule">排班管理</string>
+    <string name="admin_menu_schedule_sub">管理医生排班信息</string>
+    <string name="admin_menu_banner">轮播图管理</string>
+    <string name="admin_menu_banner_sub">管理首页轮播图</string>
+    <string name="admin_menu_appointments">预约管理</string>
+    <string name="admin_menu_appointments_sub">查看和管理患者预约</string>
+    <string name="admin_logout">退出</string>
+    <string name="admin_dept_title">科室管理</string>
+    <string name="admin_dept_add">新增科室</string>
+    <string name="admin_dept_edit">编辑科室</string>
+    <string name="admin_dept_name">科室名称</string>
+    <string name="admin_dept_code">科室编码</string>
+    <string name="admin_dept_desc">科室描述</string>
+    <string name="admin_dept_delete_confirm">确定删除该科室？</string>
+    <string name="admin_dept_empty">暂无科室数据</string>
+    <string name="admin_doctor_title">医生管理</string>
+    <string name="admin_doctor_add">新增医生</string>
+    <string name="admin_doctor_edit">编辑医生</string>
+    <string name="admin_doctor_name">医生姓名</string>
+    <string name="admin_doctor_title_label">职称</string>
+    <string name="admin_doctor_intro">简介</string>
+    <string name="admin_doctor_gender">性别</string>
+    <string name="admin_doctor_gender_male">男</string>
+    <string name="admin_doctor_gender_female">女</string>
+    <string name="admin_doctor_empty">暂无医生信息</string>
+    <string name="admin_schedule_title">排班管理</string>
+    <string name="admin_schedule_generate">生成未来7天排班</string>
+    <string name="admin_schedule_empty">请选择科室和医生</string>
+    <string name="admin_banner_title">轮播图管理</string>
+    <string name="admin_banner_add">新增轮播图</string>
+    <string name="admin_banner_edit">编辑轮播图</string>
+    <string name="admin_banner_empty">暂无轮播图</string>
+    <string name="admin_appointment_title">我的预约</string>
+    <string name="admin_appointment_empty">暂无预约记录</string>
 
 </resources>

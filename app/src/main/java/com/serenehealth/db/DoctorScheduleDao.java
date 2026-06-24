@@ -127,6 +127,14 @@ public class DoctorScheduleDao {
                 new String[]{String.valueOf(scheduleId)});
     }
 
+    /**
+     * 物理删除排班行（用于重新生成前清理旧数据，避免 UNIQUE 约束冲突）
+     */
+    public int deleteSchedule(long scheduleId) {
+        return db.delete("t_doctor_schedule", "id = ?",
+                new String[]{String.valueOf(scheduleId)});
+    }
+
     private DoctorSchedule cursorToDoctorSchedule(Cursor cursor) {
         DoctorSchedule schedule = new DoctorSchedule();
         schedule.setId(cursor.getLong(cursor.getColumnIndexOrThrow("id")));

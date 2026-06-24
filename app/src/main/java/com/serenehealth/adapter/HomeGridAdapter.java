@@ -15,8 +15,9 @@ import com.serenehealth.R;
 import java.util.List;
 
 /**
- * 首页功能宫格适配器（4列）
- * 每个宫格显示图标（顶部）+ 文字（底部）
+ * 首页功能宫格适配器（4列网格布局）。
+ * 当前首页采用 Bento Grid 静态卡片布局，此适配器保留供后续动态宫格方案使用。
+ * TODO 2026-06-24 待 UI 方案定稿后决定是否启用
  */
 public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridViewHolder> {
 

@@ -14,7 +14,9 @@ import com.serenehealth.R;
 import java.util.List;
 
 /**
- * 首页快捷入口横滚适配器
+ * 首页快捷入口横向滚动适配器。
+ * 当前首页未使用此组件，保留供后续版本在顶部区域添加横向滚动快捷入口。
+ * TODO 2026-06-24 待需求明确后集成到 fragment_home.xml
  */
 public class QuickEntryAdapter extends RecyclerView.Adapter<QuickEntryAdapter.ViewHolder> {
 

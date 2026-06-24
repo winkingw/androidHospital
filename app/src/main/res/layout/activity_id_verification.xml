@@ -76,11 +76,11 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="📷"
-                    android:textSize="32sp" />
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_home_profile"
+                    android:tint="@color/primary_container" />
 
                 <TextView
                     android:id="@+id/tv_front_label"
@@ -119,11 +119,11 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="📷"
-                    android:textSize="32sp" />
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_home_profile"
+                    android:tint="@color/primary_container" />
 
                 <TextView
                     android:id="@+id/tv_back_label"
