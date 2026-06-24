@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/surface"
+    android:orientation="vertical">
+
+    <!-- ==================== A. 顶部标题栏 ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/margin_mobile"
+        android:paddingEnd="@dimen/margin_mobile">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:contentDescription="@string/action_back"
+            android:padding="@dimen/spacing_small"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@color/on_surface" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:layout_weight="1"
+            android:text="@string/appointment_title"
+            android:textColor="@color/on_surface"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/outline_variant" />
+
+    <!-- ==================== 内容区域（可滚动） ==================== -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ==================== B. 预约信息摘要卡片 ==================== -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_mobile"
+                android:layout_marginEnd="@dimen/margin_mobile"
+                android:layout_marginTop="@dimen/spacing_medium"
+                style="@style/Widget.SereneHealth.Card"
+                app:cardElevation="@dimen/card_elevation">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/card_padding">
+
+                    <!-- 就诊科室 -->
+                    <TextView
+                        android:id="@+id/tv_label_dept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appointment_dept_label"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="@dimen/text_size_caption"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_dept_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_small"
+                        android:textColor="@color/on_surface"
+                        android:textSize="@dimen/text_size_body"
+                        app:layout_constraintStart_toEndOf="@id/tv_label_dept"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_label_dept"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_label_dept" />
+
+                    <View
+                        android:id="@+id/divider_1"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/outline_variant"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_label_dept" />
+
+                    <!-- 就诊医生 -->
+                    <TextView
+                        android:id="@+id/tv_label_doctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appointment_doctor_label"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="@dimen/text_size_caption"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_1" />
+
+                    <TextView
+                        android:id="@+id/tv_doctor_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_small"
+                        android:textColor="@color/on_surface"
+                        android:textSize="@dimen/text_size_body"
+                        app:layout_constraintStart_toEndOf="@id/tv_label_doctor"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_label_doctor"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_label_doctor" />
+
+                    <View
+                        android:id="@+id/divider_2"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/outline_variant"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_label_doctor" />
+
+                    <!-- 就诊日期 -->
+                    <TextView
+                        android:id="@+id/tv_label_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appointment_date_label"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="@dimen/text_size_caption"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_2" />
+
+                    <TextView
+                        android:id="@+id/tv_date_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_small"
+                        android:textColor="@color/on_surface"
+                        android:textSize="@dimen/text_size_body"
+                        app:layout_constraintStart_toEndOf="@id/tv_label_date"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_label_date"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_label_date" />
+
+                    <View
+                        android:id="@+id/divider_3"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/outline_variant"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_label_date" />
+
+                    <!-- 就诊时段 -->
+                    <TextView
+                        android:id="@+id/tv_label_period"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appointment_period_label"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="@dimen/text_size_caption"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_3" />
+
+                    <TextView
+                        android:id="@+id/tv_period_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_small"
+                        android:textColor="@color/on_surface"
+                        android:textSize="@dimen/text_size_body"
+                        app:layout_constraintStart_toEndOf="@id/tv_label_period"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_label_period"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_label_period" />
+
+                    <View
+                        android:id="@+id/divider_4"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/outline_variant"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_label_period" />
+
+                    <!-- 诊室位置 -->
+                    <TextView
+                        android:id="@+id/tv_label_clinic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appointment_clinic_label"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="@dimen/text_size_caption"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_4" />
+
+                    <TextView
+                        android:id="@+id/tv_clinic_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_small"
+                        android:textColor="@color/on_surface"
+                        android:textSize="@dimen/text_size_body"
+                        app:layout_constraintStart_toEndOf="@id/tv_label_clinic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_label_clinic"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_label_clinic" />
+
+                    <View
+                        android:id="@+id/divider_5"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/outline_variant"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_label_clinic" />
+
+                    <!-- 挂号费用 -->
+                    <TextView
+                        android:id="@+id/tv_label_fee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appointment_fee_label"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="@dimen/text_size_caption"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_5" />
+
+                    <TextView
+                        android:id="@+id/tv_fee_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_small"
+                        android:textColor="@color/primary_container"
+                        android:textSize="@dimen/text_size_headline"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@id/tv_label_fee"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_label_fee"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_label_fee" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ==================== C. 就诊人选择卡片 ==================== -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_patient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_mobile"
+                android:layout_marginEnd="@dimen/margin_mobile"
+                android:layout_marginTop="@dimen/spacing_medium"
+                style="@style/Widget.SereneHealth.Card"
+                app:cardElevation="@dimen/card_elevation">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/card_padding">
+
+                    <!-- 就诊人标题 -->
+                    <TextView
+                        android:id="@+id/tv_patient_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appointment_patient_label"
+                        android:textColor="@color/on_surface"
+                        android:textSize="@dimen/text_size_subtitle"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- 姓名 + 性别 -->
+                    <TextView
+                        android:id="@+id/tv_patient_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:textColor="@color/on_surface"
+                        android:textSize="@dimen/text_size_subtitle"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_patient_title" />
+
+                    <TextView
+                        android:id="@+id/tv_patient_gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_small"
+                        android:background="@drawable/shape_gender_tag"
+                        android:paddingHorizontal="@dimen/spacing_small"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_caption"
+                        app:layout_constraintStart_toEndOf="@id/tv_patient_name"
+                        app:layout_constraintTop_toTopOf="@id/tv_patient_name"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_patient_name" />
+
+                    <!-- 身份证号 -->
+                    <TextView
+                        android:id="@+id/tv_patient_idcard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="@dimen/text_size_body"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_patient_name" />
+
+                    <!-- 手机号 -->
+                    <TextView
+                        android:id="@+id/tv_patient_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_tiny"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="@dimen/text_size_body"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_patient_idcard" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ==================== D. 确认按钮 ==================== -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="@dimen/margin_mobile"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:text="@string/appointment_confirm"
+                android:textSize="@dimen/text_size_title"
+                android:textStyle="bold"
+                style="@style/Widget.SereneHealth.Button.Primary"
+                app:cornerRadius="@dimen/card_corner_radius" />
+
+            <!-- ==================== E. 成功状态页面 ==================== -->
+            <LinearLayout
+                android:id="@+id/success_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_mobile"
+                android:visibility="gone">
+
+                <!-- 成功图标 -->
+                <ImageView
+                    android:layout_width="@dimen/icon_size_xlarge"
+                    android:layout_height="@dimen/icon_size_xlarge"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_medical_services"
+                    android:tint="@color/primary_container" />
+
+                <!-- 预约成功 -->
+                <TextView
+                    android:id="@+id/tv_success_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:text="@string/appointment_success"
+                    android:textColor="@color/on_surface"
+                    android:textSize="@dimen/text_size_headline_md"
+                    android:textStyle="bold" />
+
+                <!-- 预约编号 -->
+                <TextView
+                    android:id="@+id/tv_appointment_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="@dimen/text_size_body" />
+
+                <!-- 待支付金额 -->
+                <TextView
+                    android:id="@+id/tv_pay_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:textColor="@color/primary_container"
+                    android:textSize="@dimen/text_size_display"
+                    android:textStyle="bold" />
+
+                <!-- 就诊提示 -->
+                <TextView
+                    android:id="@+id/tv_visit_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:text="@string/appointment_visit_hint"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="@dimen/text_size_caption" />
+
+                <!-- 返回首页按钮 -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_return_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="@dimen/spacing_xlarge"
+                    android:text="@string/appointment_return_home"
+                    android:textSize="@dimen/text_size_subtitle"
+                    android:textStyle="bold"
+                    style="@style/Widget.SereneHealth.Button.Secondary"
+                    app:cornerRadius="@dimen/card_corner_radius" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

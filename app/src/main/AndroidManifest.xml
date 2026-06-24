@@ -33,6 +33,21 @@
             android:name=".activity.DepartmentListActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.DoctorListActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity" />
+
+        <activity
+            android:name=".activity.DoctorDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity" />
+
+        <activity
+            android:name=".activity.AppointmentActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity" />
+
+        <activity
             android:name=".activity.IDVerificationActivity"
             android:label="@string/id_verification_title"
             android:exported="true"

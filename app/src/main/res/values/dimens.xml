@@ -23,6 +23,12 @@
     <dimen name="icon_size_large">32dp</dimen>
     <dimen name="icon_size_xlarge">48dp</dimen>
 
+    <!-- Line spacing -->
+    <dimen name="line_spacing_small">2dp</dimen>
+
+    <!-- Card stroke -->
+    <dimen name="card_stroke_width">1dp</dimen>
+
     <!-- Text -->
     <dimen name="text_size_caption">12sp</dimen>
     <dimen name="text_size_body">14sp</dimen>
@@ -33,4 +39,21 @@
     <dimen name="text_size_label_lg">13sp</dimen>
     <dimen name="text_size_label_sm">11sp</dimen>
     <dimen name="text_size_tiny">10sp</dimen>
+
+    <!-- Date chip -->
+    <dimen name="date_chip_min_width">64dp</dimen>
+
+    <!-- Slot chip -->
+    <dimen name="slot_chip_min_width">90dp</dimen>
+    <dimen name="slot_chip_height">56dp</dimen>
+    <dimen name="slot_chip_margin">4dp</dimen>
+
+    <!-- Display text -->
+    <dimen name="text_size_display">28sp</dimen>
+
+    <!-- Doctor avatar -->
+    <dimen name="doctor_avatar_size">56dp</dimen>
+
+    <!-- Left bar -->
+    <dimen name="dept_left_bar_width">4dp</dimen>
 </resources>

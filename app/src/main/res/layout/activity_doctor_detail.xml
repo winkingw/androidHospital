@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/surface"
+    android:orientation="vertical">
+
+    <!-- ==================== 顶部标题栏 ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/margin_mobile"
+        android:paddingEnd="@dimen/margin_mobile">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:contentDescription="@string/action_back"
+            android:padding="@dimen/spacing_small"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@color/on_surface" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:layout_weight="1"
+            android:text="@string/doctor_detail_title"
+            android:textColor="@color/on_surface"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/outline_variant" />
+
+    <!-- ==================== 内容区域（可滚动） ==================== -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ==================== 医生信息卡片 ==================== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_mobile"
+                android:layout_marginEnd="@dimen/margin_mobile"
+                android:layout_marginTop="@dimen/spacing_medium"
+                style="@style/Widget.SereneHealth.Card"
+                app:cardElevation="@dimen/card_elevation">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/card_padding">
+
+                    <!-- 圆形头像 -->
+                    <ImageView
+                        android:id="@+id/iv_doctor_avatar"
+                        android:layout_width="@dimen/icon_size_xlarge"
+                        android:layout_height="@dimen/icon_size_xlarge"
+                        android:background="@drawable/shape_circle_avatar"
+                        android:contentDescription="@null"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_medical_services"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/primary_container" />
+
+                    <!-- 医生姓名 -->
+                    <TextView
+                        android:id="@+id/tv_doctor_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_medium"
+                        android:textColor="@color/on_surface"
+                        android:textSize="@dimen/text_size_title"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@id/iv_doctor_avatar"
+                        app:layout_constraintTop_toTopOf="@id/iv_doctor_avatar" />
+
+                    <!-- 职称 -->
+                    <TextView
+                        android:id="@+id/tv_doctor_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_tiny"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="@dimen/text_size_body"
+                        app:layout_constraintStart_toStartOf="@id/tv_doctor_name"
+                        app:layout_constraintTop_toBottomOf="@id/tv_doctor_name" />
+
+                    <!-- 科室 -->
+                    <TextView
+                        android:id="@+id/tv_doctor_dept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_small"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="@dimen/text_size_body"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_doctor_title"
+                        app:layout_constraintStart_toEndOf="@id/tv_doctor_title"
+                        app:layout_constraintTop_toTopOf="@id/tv_doctor_title" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ==================== Tab 切换栏 ==================== -->
+            <LinearLayout
+                android:id="@+id/tab_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:layout_marginStart="@dimen/margin_mobile"
+                android:layout_marginEnd="@dimen/margin_mobile"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@color/surface_container_lowest"
+                android:padding="@dimen/spacing_tiny">
+
+                <TextView
+                    android:id="@+id/tv_tab_intro"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/doctor_detail_tab_intro"
+                    android:textSize="@dimen/text_size_body"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:background="@drawable/shape_tab_selected" />
+
+                <TextView
+                    android:id="@+id/tv_tab_schedule"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/doctor_detail_tab_schedule"
+                    android:textSize="@dimen/text_size_body"
+                    android:textColor="@color/on_surface_variant"
+                    android:background="@drawable/shape_tab_unselected" />
+
+            </LinearLayout>
+
+            <!-- ==================== Tab 内容区域 ==================== -->
+
+            <!-- 医生简介内容 -->
+            <LinearLayout
+                android:id="@+id/layout_intro_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_mobile"
+                    android:layout_marginEnd="@dimen/margin_mobile"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    style="@style/Widget.SereneHealth.Card"
+                    app:cardElevation="@dimen/card_elevation">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding">
+
+                        <TextView
+                            android:id="@+id/tv_intro_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/on_surface"
+                            android:textSize="@dimen/text_size_body"
+                            android:lineSpacingExtra="@dimen/line_spacing_small" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- 出诊信息内容 -->
+            <LinearLayout
+                android:id="@+id/layout_schedule_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!-- 日期选择器区域 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_mobile"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="@string/doctor_detail_select_date"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="@dimen/text_size_body" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_date_picker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_mobile"
+                    android:layout_marginEnd="@dimen/margin_mobile"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <!-- 排班列表区域 -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone" />
+
+                <!-- 空状态 -->
+                <TextView
+                    android:id="@+id/empty_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:gravity="center"
+                    android:padding="@dimen/spacing_xlarge"
+                    android:text="@string/doctor_detail_no_schedule"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="@dimen/text_size_body"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
