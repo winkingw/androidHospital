@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Serene Health</string>
+    <string name="nav_home">首页</string>
+    <string name="nav_health">健康档案</string>
+    <string name="nav_profile">个人中心</string>
+</resources>
