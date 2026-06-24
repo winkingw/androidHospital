@@ -210,7 +210,7 @@ public List<Appointment> queryAppointmentsByDoctor(long doctorId);
 
 ### 3.7 PaymentOrderDao — 缴费订单
 
-适用范围：功能5(自助缴费)、功能26(模拟支付)
+适用范围：功能5(自助缴费+模拟支付)
 
 ```java
 // 创建缴费订单，返回订单ID
@@ -347,7 +347,7 @@ public long insert(Feedback feedback);
 
 ### 3.14 AdminUserDao — 后台账号
 
-适用范围：功能18-25(后台管理端登录)
+适用范围：功能18,19,21-25(后台管理端登录)
 
 ```java
 // 登录验证，返回AdminUser对象，失败返回null
