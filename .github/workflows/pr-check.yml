@@ -1,0 +1,85 @@
+name: PR File Check
+
+on:
+  pull_request:
+    branches: [master, main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for Forbidden Files
+        run: |
+          base_sha="${{ github.event.pull_request.base.sha }}"
+          head_sha="${{ github.event.pull_request.head.sha }}"
+          warn_count=0
+
+          while IFS= read -r file; do
+            case "$file" in
+              *.class | *.apk | *.aab | *.ap_ | *.dex)
+                echo "::warning::不建议提交编译产物: $file"
+                warn_count=$((warn_count + 1)) ;;
+              build/* | */build/*)
+                echo "::warning::不建议提交 build/ 目录: $file"
+                warn_count=$((warn_count + 1)) ;;
+              .idea/* | */\.idea/*)
+                echo "::warning::不建议提交 IDE 配置 .idea/: $file"
+                warn_count=$((warn_count + 1)) ;;
+              *.iml | *.ipr | *.iws)
+                echo "::warning::不建议提交 IDE 模块文件: $file"
+                warn_count=$((warn_count + 1)) ;;
+              local.properties)
+                echo "::warning::不建议提交 local.properties（含本机 SDK 路径）"
+                warn_count=$((warn_count + 1)) ;;
+              *.jks | *.keystore)
+                echo "::warning::不建议提交签名密钥文件: $file"
+                warn_count=$((warn_count + 1)) ;;
+              *.log)
+                echo "::warning::不建议提交日志文件: $file"
+                warn_count=$((warn_count + 1)) ;;
+            esac
+          done < <(git diff --name-only "$base_sha...$head_sha")
+
+          if [ "$warn_count" -gt 0 ]; then
+            echo "::warning::发现 $warn_count 个不建议提交的文件，请检查是否需要清理"
+          else
+            echo "✅ 未发现不建议提交的文件"
+          fi
+
+      - name: Check Module Boundaries
+        run: |
+          branch="${{ github.event.pull_request.head.ref }}"
+          base_sha="${{ github.event.pull_request.base.sha }}"
+          head_sha="${{ github.event.pull_request.head.sha }}"
+
+          # 组长分支不限制
+          if [ "$branch" = "feature/01-home" ]; then
+            echo "✅ 组长分支，无公共模块限制"
+            exit 0
+          fi
+
+          warning_count=0
+          while IFS= read -r file; do
+            case "$file" in
+              app/src/main/java/com/serenehealth/bean/** | \
+              app/src/main/java/com/serenehealth/db/** | \
+              app/src/main/java/com/serenehealth/util/**)
+                echo "::warning::非组长分支修改了公共模块: $file"
+                echo "公共模块（bean/、db/、util/）通常由组长维护，请确认本次修改是否必要"
+                warning_count=$((warning_count + 1)) ;;
+            esac
+          done < <(git diff --name-only "$base_sha...$head_sha")
+
+          if [ "$warning_count" -gt 0 ]; then
+            echo "::warning::共 $warning_count 个公共模块文件被修改，请组长 review 时重点检查"
+          else
+            echo "✅ 模块边界检查通过"
+          fi
