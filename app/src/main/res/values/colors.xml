@@ -28,8 +28,18 @@
     <color name="surface">#FFFAF8FF</color>
     <color name="on_surface">#FF131B2E</color>
     <color name="surface_variant">#FFDAE2FD</color>
+    <color name="surface_container_lowest">#FFFFFFFF</color>
+    <color name="surface_container_low">#FFF2F3FF</color>
+    <color name="surface_container">#FFEAEDFF</color>
     <color name="surface_container_high">#FFE2E7FF</color>
+    <color name="surface_container_highest">#FFDAE2FD</color>
+    <color name="surface_dim">#FFD2D9F4</color>
+    <color name="surface_bright">#FFFAF8FF</color>
     <color name="on_surface_variant">#FF424752</color>
+
+    <!-- Background -->
+    <color name="background">#FFFAF8FF</color>
+    <color name="on_background">#FF131B2E</color>
 
     <!-- Outline -->
     <color name="outline">#FF727783</color>
@@ -48,4 +58,9 @@
 
     <!-- Badge -->
     <color name="badge_red">#FFE53935</color>
+
+    <!-- Alpha variants for icon backgrounds (10% opacity) -->
+    <color name="primary_alpha_10">#1A00478D</color>
+    <color name="secondary_alpha_10">#1A505F76</color>
+    <color name="tertiary_alpha_10">#1A42484F</color>
 </resources>

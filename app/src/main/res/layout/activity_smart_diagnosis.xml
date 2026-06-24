@@ -106,7 +106,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_headache"
-            style="@style/Widget.Material3.Chip.Assist"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/symptom_headache"
@@ -115,7 +115,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_fever"
-            style="@style/Widget.Material3.Chip.Assist"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/symptom_fever"
@@ -124,7 +124,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_cough"
-            style="@style/Widget.Material3.Chip.Assist"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/symptom_cough"
@@ -133,7 +133,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_abdominal_pain"
-            style="@style/Widget.Material3.Chip.Assist"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/symptom_abdominal_pain"
@@ -142,7 +142,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_rash"
-            style="@style/Widget.Material3.Chip.Assist"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/symptom_rash"
@@ -151,7 +151,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_joint_pain"
-            style="@style/Widget.Material3.Chip.Assist"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/symptom_joint_pain"

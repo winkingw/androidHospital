@@ -53,4 +53,46 @@
     <string name="home_developing">功能开发中</string>
     <string name="home_no_map_app">未安装地图应用</string>
     <string name="home_no_browser">无法打开浏览器</string>
+
+    <!-- 新首页 - 健康码 -->
+    <string name="home_health_code">健康码</string>
+    <string name="home_medical_card">电子医疗卡</string>
+    <string name="home_show_qrcode">出示二维码</string>
+
+    <!-- 新首页 - 快速服务 -->
+    <string name="home_quick_service">快速服务</string>
+    <string name="home_dept_subtitle">在线挂号/查看医生</string>
+    <string name="home_payment_subtitle">医保统筹/门诊结算</string>
+    <string name="home_quick_appointment">快速预约</string>
+    <string name="home_no_queue">无需排队</string>
+
+    <!-- 新首页 - 二级功能 -->
+    <string name="home_appointment_record">预约记录</string>
+    <string name="home_appointment_hint">查看我的行程</string>
+    <string name="home_smart_navigation">智能导航</string>
+    <string name="home_navigation_hint">室内精准路径</string>
+    <string name="home_message_center">消息中心</string>
+    <string name="home_message_hint">通知消息汇总</string>
+    <string name="home_smart_diagnosis">智能导诊</string>
+    <string name="home_diagnosis_hint">症状自查推荐</string>
+
+    <!-- 新首页 - 健康讲堂 -->
+    <string name="home_health_lecture">健康讲堂</string>
+    <string name="home_health_knowledge">健康知识科普</string>
+    <string name="home_view_now">立即查看</string>
+
+    <!-- 新首页 - 常用服务 -->
+    <string name="home_common_service">常用服务</string>
+    <string name="home_check_appointment">检查预约</string>
+    <string name="home_report_query">报告查询</string>
+    <string name="home_online_consult">在线咨询</string>
+    <string name="home_dept_navigation">科室导航</string>
+    <string name="home_medicine_query">药品查询</string>
+    <string name="home_physical_exam_book">体检预约</string>
+    <string name="home_visit_guide">就诊指南</string>
+    <string name="home_health_assessment">健康测评</string>
+
+    <!-- 通用 -->
+    <string name="map_search_query">医院</string>
+    <string name="url_health_lecture">https://www.haodf.com/</string>
 </resources>

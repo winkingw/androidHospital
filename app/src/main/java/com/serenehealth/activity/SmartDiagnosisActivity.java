@@ -22,6 +22,7 @@ import com.serenehealth.bean.Department;
 import com.serenehealth.bean.SymptomDepartmentRule;
 import com.serenehealth.databinding.ActivitySmartDiagnosisBinding;
 import com.serenehealth.db.DBHelper;
+import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,26 +82,28 @@ public class SmartDiagnosisActivity extends AppCompatActivity {
             return false;
         });
 
-        // 快捷标签点击
-        binding.chipHeadache.setOnClickListener(v -> searchByTag(R.string.symptom_headache));
-        binding.chipFever.setOnClickListener(v -> searchByTag(R.string.symptom_fever));
-        binding.chipCough.setOnClickListener(v -> searchByTag(R.string.symptom_cough));
-        binding.chipAbdominalPain.setOnClickListener(v -> searchByTag(R.string.symptom_abdominal_pain));
-        binding.chipRash.setOnClickListener(v -> searchByTag(R.string.symptom_rash));
-        binding.chipJointPain.setOnClickListener(v -> searchByTag(R.string.symptom_joint_pain));
+        // 快捷标签多选监听
+        binding.chipGroupSymptoms.setOnCheckedStateChangeListener((group, checkedIds) -> {
+            StringBuilder sb = new StringBuilder();
+            for (int id : checkedIds) {
+                Chip chip = group.findViewById(id);
+                if (chip != null) {
+                    if (sb.length() > 0) {
+                        sb.append(" ");
+                    }
+                    sb.append(chip.getText().toString());
+                }
+            }
+            String keyword = sb.toString().trim();
+            binding.etSearch.setText(keyword);
+            if (!TextUtils.isEmpty(keyword)) {
+                binding.etSearch.setSelection(keyword.length());
+            }
+            doSearch();
+        });
     }
 
     // ==================== 6. 业务方法 ====================
-
-    /**
-     * 点击快捷标签，填入关键词并搜索
-     */
-    private void searchByTag(int stringResId) {
-        String keyword = getString(stringResId);
-        binding.etSearch.setText(keyword);
-        binding.etSearch.setSelection(keyword.length());
-        doSearch();
-    }
 
     /**
      * 执行搜索：获取关键词，在后台线程查询数据库
