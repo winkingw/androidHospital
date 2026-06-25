@@ -1,13 +1,485 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/surface"
+    android:fillViewport="true"
+    android:paddingTop="32dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/nav_profile"
-        android:textAppearance="@style/TextAppearance.SereneHealth.Headline" />
+        android:orientation="vertical">
 
-</FrameLayout>
+        <!-- ================================================================ -->
+        <!-- A. 用户信息头部卡片 -->
+        <!-- ================================================================ -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/user_header_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_mobile"
+            android:layout_marginTop="@dimen/spacing_large"
+            app:cardBackgroundColor="@color/primary_container"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/card_padding">
+
+                <!-- 头像圆形占位 -->
+                <FrameLayout
+                    android:id="@+id/fl_avatar"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/bg_icon_circle"
+                    android:backgroundTint="@color/primary_alpha_10">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_xlarge"
+                        android:layout_height="@dimen/icon_size_xlarge"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_home_profile"
+                        app:tint="@color/white" />
+
+                </FrameLayout>
+
+                <!-- 用户文本信息 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_headline"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_user_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_tiny"
+                        android:alpha="0.85"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_body" />
+
+                    <TextView
+                        android:id="@+id/tv_member_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:background="@drawable/bg_chip_dark"
+                        android:paddingHorizontal="@dimen/spacing_medium"
+                        android:paddingVertical="@dimen/spacing_tiny"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_caption"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ================================================================ -->
+        <!-- B. 菜单列表区域 -->
+        <!-- ================================================================ -->
+
+        <!-- 分割线 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:layout_marginHorizontal="@dimen/margin_mobile"
+            android:background="@color/outline_variant" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_mobile"
+            android:orientation="vertical">
+
+            <!-- B1. 预约记录 -->
+            <LinearLayout
+                android:id="@+id/menu_appointment_record"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_home_appointment"
+                    app:tint="@color/on_surface_variant" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_weight="1"
+                    android:text="@string/profile_appointment_record"
+                    android:textColor="@color/on_surface"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textColor="@color/outline"
+                    android:textSize="@dimen/text_size_body" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/outline_variant" />
+
+            <!-- B2. 医保卡 -->
+            <LinearLayout
+                android:id="@+id/menu_medical_card"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_home_payment"
+                    app:tint="@color/on_surface_variant" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_weight="1"
+                    android:text="@string/profile_medical_card"
+                    android:textColor="@color/on_surface"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textColor="@color/outline"
+                    android:textSize="@dimen/text_size_body" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/outline_variant" />
+
+            <!-- B3. 身份证核验 -->
+            <LinearLayout
+                android:id="@+id/menu_id_verification"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_qr_code"
+                    app:tint="@color/on_surface_variant" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_weight="1"
+                    android:text="@string/profile_id_verification"
+                    android:textColor="@color/on_surface"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textColor="@color/outline"
+                    android:textSize="@dimen/text_size_body" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/outline_variant" />
+
+            <!-- B4. 满意度评价 -->
+            <LinearLayout
+                android:id="@+id/menu_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_home_lecture"
+                    app:tint="@color/on_surface_variant" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_weight="1"
+                    android:text="@string/profile_feedback"
+                    android:textColor="@color/on_surface"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textColor="@color/outline"
+                    android:textSize="@dimen/text_size_body" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/outline_variant" />
+
+            <!-- B5. 意见反馈 -->
+            <LinearLayout
+                android:id="@+id/menu_suggestion"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_home_message"
+                    app:tint="@color/on_surface_variant" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_weight="1"
+                    android:text="@string/profile_suggestion"
+                    android:textColor="@color/on_surface"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textColor="@color/outline"
+                    android:textSize="@dimen/text_size_body" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/outline_variant" />
+
+            <!-- B6. 使用帮助 -->
+            <LinearLayout
+                android:id="@+id/menu_help"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_home_department"
+                    app:tint="@color/on_surface_variant" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_weight="1"
+                    android:text="@string/profile_help"
+                    android:textColor="@color/on_surface"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textColor="@color/outline"
+                    android:textSize="@dimen/text_size_body" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/outline_variant" />
+
+            <!-- B7. 隐私政策 -->
+            <LinearLayout
+                android:id="@+id/menu_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_home_profile"
+                    app:tint="@color/on_surface_variant" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_weight="1"
+                    android:text="@string/profile_privacy"
+                    android:textColor="@color/on_surface"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textColor="@color/outline"
+                    android:textSize="@dimen/text_size_body" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_medium"
+                android:background="@color/surface" />
+
+            <!-- B8. 退出登录（红色文字） -->
+            <LinearLayout
+                android:id="@+id/menu_logout"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_home_navigation"
+                    app:tint="@color/error" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_weight="1"
+                    android:text="@string/profile_logout"
+                    android:textColor="@color/error"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textColor="@color/outline"
+                    android:textSize="@dimen/text_size_body" />
+
+            </LinearLayout>
+
+            <!-- B9. 后台管理 -->
+            <LinearLayout
+                android:id="@+id/menu_admin"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_home_department"
+                    app:tint="@color/on_surface_variant" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_weight="1"
+                    android:text="后台管理"
+                    android:textColor="@color/on_surface"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textColor="@color/outline"
+                    android:textSize="@dimen/text_size_body" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- ================================================================ -->
+        <!-- C. 底部留白 80dp（避免被底部导航栏遮挡） -->
+        <!-- ================================================================ -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
+
+    </LinearLayout>
+
+</ScrollView>

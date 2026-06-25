@@ -63,4 +63,7 @@
     <color name="primary_alpha_10">#1A00478D</color>
     <color name="secondary_alpha_10">#1A505F76</color>
     <color name="tertiary_alpha_10">#1A42484F</color>
+
+    <!-- Status -->
+    <color name="status_visited">#FF2E7D32</color>
 </resources>

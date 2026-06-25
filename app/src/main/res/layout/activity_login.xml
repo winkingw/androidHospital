@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:paddingTop="32dp"
+    android:layout_height="match_parent"
+    android:background="@color/surface"
+    android:orientation="vertical">
+
+    <!-- ==================== 顶部标题栏 ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_container"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/spacing_large"
+        android:paddingEnd="@dimen/spacing_large">
+
+        <ImageView
+            android:layout_width="@dimen/icon_size_medium"
+            android:layout_height="@dimen/icon_size_medium"
+            android:src="@drawable/ic_home_profile"
+            android:tint="@color/on_primary"
+            android:importantForAccessibility="no" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Serene Health"
+            android:textAppearance="@style/TextAppearance.SereneHealth.Headline"
+            android:textColor="@color/on_primary" />
+
+        <!-- 占位，保持标题居中 -->
+        <View
+            android:layout_width="@dimen/icon_size_medium"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <!-- ==================== 登录表单区域（居中） ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_mobile">
+
+        <!-- 图标 -->
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="@dimen/section_gap"
+            android:src="@drawable/ic_home_profile"
+            android:tint="@color/primary_container"
+            android:importantForAccessibility="no" />
+
+        <!-- 登录卡片 -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginEnd="@dimen/spacing_large"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="0dp"
+            app:contentPadding="@dimen/card_padding"
+            app:strokeColor="@color/outline_variant"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- 手机号/用户名输入框 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/account_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:hint="手机号/用户名"
+                    app:boxStrokeColor="@color/primary_container"
+                    app:hintTextColor="@color/primary_container">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_account"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 密码输入框 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/password_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/section_gap"
+                    android:hint="@string/admin_login_password"
+                    app:boxStrokeColor="@color/primary_container"
+                    app:hintTextColor="@color/primary_container"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 统一登录按钮（自动识别用户/管理员） -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_user_login"
+                    style="@style/Widget.SereneHealth.Button.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_medium"
+                    android:minHeight="52dp"
+                    android:text="登录" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</LinearLayout>

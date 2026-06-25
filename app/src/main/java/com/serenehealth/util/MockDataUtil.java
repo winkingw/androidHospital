@@ -38,6 +38,7 @@ public class MockDataUtil {
         insertBanners(dbHelper);
         insertFeedbacks(dbHelper);
         insertAdminUsers(dbHelper);
+        insertHelpContent(dbHelper);
         insertSymptomRules(dbHelper);
     }
 
@@ -303,11 +304,11 @@ public class MockDataUtil {
         String[][] data = {
                 {"1", "1", "1",   "OUTPATIENT", "156.00", "8476.50", "门诊统筹结算-全科门诊"},
                 {"1", "1", null,   "PHARMACY",   "83.20",  "8393.30", "药房购药-维C银翘片"},
-                {"1", "1", null,   "REGISTER",   "120.00", "8273.30", "检查费用-心电图"},
+                {"1", "1", null,   "OTHER",      "120.00", "8273.30", "检查费用-心电图"},
                 {"1", "1", "2",   "OUTPATIENT", "220.00", "8053.30", "门诊统筹结算-消化内科"},
                 {"2", "2", "5",   "OUTPATIENT", "180.00", "12400.00","门诊统筹结算-呼吸内科"},
                 {"2", "2", null,   "PHARMACY",   "65.50",  "12334.50","药房购药-头孢克肟"},
-                {"2", "2", null,   "REGISTER",   "200.00", "12134.50","检查费用-胸片"},
+                {"2", "2", null,   "OTHER",      "200.00", "12134.50","检查费用-胸片"},
                 {"2", "2", "6",   "OUTPATIENT", "95.00",  "12039.50","门诊统筹结算-妇产科"},
         };
         for (String[] row : data) {
@@ -455,6 +456,30 @@ public class MockDataUtil {
             values.put("phone", row[5]);
             values.put("status", Integer.parseInt(row[6]));
             db.insert("t_admin_user", null, values);
+        }
+    }
+
+    // ==================== 15. 帮助/隐私/流程内容 ====================
+
+    private static void insertHelpContent(DBHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        // title, content_type, content, video_url, sort_no, status
+        String[][] data = {
+                {"挂号流程",       "REGISTER_FLOW", "1.选择科室→2.选择医生→3.选择日期时段→4.确认预约", null,                  "1", "1"},
+                {"常见问题",       "HELP",          "Q:如何取消预约？A:进入预约记录-取消预约",           null,                  "2", "1"},
+                {"隐私政策",       "PRIVACY",       "Serene Health重视您的隐私保护，所有医疗数据仅存储于本机...", null,          "3", "1"},
+        };
+        for (String[] row : data) {
+            ContentValues values = new ContentValues();
+            values.put("title", row[0]);
+            values.put("content_type", row[1]);
+            values.put("content", row[2]);
+            if (row[3] != null) {
+                values.put("video_url", row[3]);
+            }
+            values.put("sort_no", Integer.parseInt(row[4]));
+            values.put("status", Integer.parseInt(row[5]));
+            db.insert("t_help_content", null, values);
         }
     }
 

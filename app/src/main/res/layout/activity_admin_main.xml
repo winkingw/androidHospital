@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
+    android:background="@color/surface"
+    android:orientation="vertical">
+
+    <!-- Header with branding -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary_container"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/spacing_large"
+        android:paddingBottom="@dimen/spacing_large">
+
+        <!-- Top row: back + logout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/spacing_small"
+            android:paddingEnd="@dimen/spacing_large">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_back"
+                android:padding="@dimen/spacing_small"
+                android:src="@drawable/ic_arrow_back"
+                android:tint="@color/on_primary" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/btn_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/spacing_small"
+                android:text="退出"
+                android:textColor="@color/on_primary"
+                android:textSize="@dimen/text_size_body" />
+        </LinearLayout>
+
+        <!-- Branding section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/spacing_large"
+            android:paddingTop="@dimen/spacing_small">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Serene Health"
+                android:textColor="@color/on_primary"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:alpha="0.85"
+                android:text="后台管理系统"
+                android:textColor="@color/on_primary_container"
+                android:textSize="@dimen/text_size_body" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Content area -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/spacing_xlarge">
+
+        <LinearLayout
+            android:id="@+id/cards_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/margin_mobile"
+            android:paddingBottom="@dimen/spacing_xlarge">
+
+            <!-- Row 1: Department + Doctor (2-column grid) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!-- Department Management Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_admin_department"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/outline_variant"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_home_department"
+                            android:tint="@color/primary_container" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:gravity="center"
+                            android:text="科室管理"
+                            android:textAppearance="@style/TextAppearance.SereneHealth.Headline"
+                            android:textSize="@dimen/text_size_subtitle"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_tiny"
+                            android:gravity="center"
+                            android:text="管理医院科室信息"
+                            android:textAppearance="@style/TextAppearance.SereneHealth.Label"
+                            android:textColor="@color/on_surface_variant" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Doctor Management Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_admin_doctor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/outline_variant"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_home_profile"
+                            android:tint="@color/primary_container" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:gravity="center"
+                            android:text="医生管理"
+                            android:textAppearance="@style/TextAppearance.SereneHealth.Headline"
+                            android:textSize="@dimen/text_size_subtitle"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_tiny"
+                            android:gravity="center"
+                            android:text="管理医生账号和信息"
+                            android:textAppearance="@style/TextAppearance.SereneHealth.Label"
+                            android:textColor="@color/on_surface_variant" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Row 2: Schedule + Banner (2-column grid) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!-- Schedule Management Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_admin_schedule"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/outline_variant"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_home_appointment"
+                            android:tint="@color/primary_container" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:gravity="center"
+                            android:text="排班管理"
+                            android:textAppearance="@style/TextAppearance.SereneHealth.Headline"
+                            android:textSize="@dimen/text_size_subtitle"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_tiny"
+                            android:gravity="center"
+                            android:text="管理医生排班信息"
+                            android:textAppearance="@style/TextAppearance.SereneHealth.Label"
+                            android:textColor="@color/on_surface_variant" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Banner Management Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_admin_banner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/outline_variant"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_home_lecture"
+                            android:tint="@color/primary_container" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:gravity="center"
+                            android:text="轮播图管理"
+                            android:textAppearance="@style/TextAppearance.SereneHealth.Headline"
+                            android:textSize="@dimen/text_size_subtitle"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_tiny"
+                            android:gravity="center"
+                            android:text="管理首页轮播图"
+                            android:textAppearance="@style/TextAppearance.SereneHealth.Label"
+                            android:textColor="@color/on_surface_variant" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Doctor Appointments (full width, visible for DOCTOR role) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_doctor_appointments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/outline_variant"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_home_payment"
+                        android:tint="@color/primary_container" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_medium"
+                        android:gravity="center"
+                        android:text="预约管理"
+                        android:textAppearance="@style/TextAppearance.SereneHealth.Headline"
+                        android:textSize="@dimen/text_size_subtitle"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_tiny"
+                        android:gravity="center"
+                        android:text="查看和管理患者预约"
+                        android:textAppearance="@style/TextAppearance.SereneHealth.Label"
+                        android:textColor="@color/on_surface_variant" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
