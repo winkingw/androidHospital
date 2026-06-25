@@ -78,5 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             // Both failed
             Toast.makeText(this, "账号或密码错误", Toast.LENGTH_SHORT).show();
         });
+        binding.btnRegister.setOnClickListener(v ->
+                startActivity(new Intent(this, RegisterActivity.class)));
     }
 }

@@ -130,6 +130,14 @@
                     android:minHeight="52dp"
                     android:text="登录" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_register"
+                    style="@style/Widget.SereneHealth.Button.Secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:text="@string/register_entry" />
+
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>

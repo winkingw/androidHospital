@@ -101,7 +101,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="用户ID"
+                android:text="患者"
                 android:textAppearance="@style/TextAppearance.SereneHealth.Label"
                 android:textColor="@color/on_surface_variant"
                 android:textStyle="bold" />
@@ -153,6 +153,38 @@
                 android:textAppearance="@style/TextAppearance.SereneHealth.Body"
                 android:textSize="@dimen/text_size_body" />
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:background="@color/outline_variant" />
+
+        <TextView
+            android:id="@+id/tv_feedback_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="患者评价"
+            android:textColor="@color/on_surface"
+            android:textSize="@dimen/text_size_body"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_feedback_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny"
+            android:textColor="@color/primary"
+            android:textSize="@dimen/text_size_body" />
+
+        <TextView
+            android:id="@+id/tv_feedback_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny"
+            android:textColor="@color/on_surface_variant"
+            android:textSize="@dimen/text_size_body" />
 
     </LinearLayout>
 

@@ -134,6 +134,15 @@
     <string name="doctor_expertise_prefix">擅长：</string>
     <!-- 预约记录 -->
     <string name="appointment_record_title">预约记录</string>
+    <string name="appointment_record_empty">暂无预约记录</string>
+    <string name="appointment_record_all">全部</string>
+    <string name="appointment_record_booked">已预约</string>
+    <string name="appointment_record_visited">已就诊</string>
+    <string name="appointment_record_canceled">已取消</string>
+    <string name="appointment_record_expired">已过期</string>
+    <string name="appointment_cancel">取消预约</string>
+    <string name="appointment_feedback">去评价</string>
+    <string name="appointment_cancel_reason">临时有事，取消预约</string>
 
     <!-- 科室医生列表 -->
     <string name="department_doctor_list_title">科室医生</string>
@@ -198,6 +207,57 @@
     <string name="profile_developing">功能开发中</string>
     <string name="profile_member_normal">普通会员</string>
     <string name="profile_admin">后台管理</string>
+    <string name="profile_detail_title">个人信息</string>
+    <string name="profile_save">保存信息</string>
+    <string name="profile_real_name">姓名</string>
+    <string name="profile_phone">手机号</string>
+    <string name="profile_gender">性别：0未知 / 1男 / 2女</string>
+    <string name="profile_birth_date">出生日期（yyyy-MM-dd）</string>
+    <string name="profile_id_card">身份证号</string>
+    <string name="profile_health_score">健康指数</string>
+    <string name="profile_member_level_label">会员等级</string>
+
+    <!-- 成员C - 登录注册 -->
+    <string name="register_title">用户注册</string>
+    <string name="register_entry">注册新账号</string>
+    <string name="register_submit">注册并登录</string>
+    <string name="register_phone">手机号</string>
+    <string name="register_password">密码</string>
+    <string name="register_real_name">姓名</string>
+    <string name="login_entry">已有账号，返回登录</string>
+
+    <!-- 成员C - 缴费 -->
+    <string name="payment_title">自助缴费</string>
+    <string name="payment_empty">暂无缴费订单</string>
+    <string name="payment_unpaid">待支付</string>
+    <string name="payment_paid">已支付</string>
+    <string name="payment_canceled">已取消</string>
+    <string name="payment_refunded">已退款</string>
+    <string name="payment_mock_pay">模拟支付</string>
+    <string name="payment_medical_card_pay">医保卡支付</string>
+
+    <!-- 成员C - 医保卡 -->
+    <string name="medical_card_title">医保卡</string>
+    <string name="medical_card_bind">绑定医保卡</string>
+    <string name="medical_card_unbind">解绑医保卡</string>
+    <string name="medical_card_no">医保卡号</string>
+    <string name="medical_card_balance">账户余额</string>
+    <string name="medical_card_empty_record">暂无消费记录</string>
+    <string name="medical_card_not_bound">暂未绑定医保卡</string>
+
+    <!-- 成员C - 评价与补充页面 -->
+    <string name="feedback_title">满意度评价</string>
+    <string name="feedback_doctor_score">医生评分</string>
+    <string name="feedback_service_score">服务评分</string>
+    <string name="feedback_visit_score">就诊体验评分</string>
+    <string name="feedback_content">评价内容（选填）</string>
+    <string name="feedback_submit">提交评价</string>
+    <string name="qrcode_title">身份二维码</string>
+    <string name="suggestion_title">意见反馈</string>
+    <string name="suggestion_hint">请输入您的建议或遇到的问题</string>
+    <string name="suggestion_submit">提交意见</string>
+    <string name="help_title">使用帮助</string>
+    <string name="privacy_title">隐私政策</string>
 
     <!-- 后台管理 -->
     <string name="admin_login_title">后台管理登录</string>

@@ -3,53 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/surface"
     android:orientation="vertical"
-    android:background="@color/surface">
+    android:paddingTop="32dp">
 
-    <!-- 顶部工具栏 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/margin_mobile"
-        android:paddingEnd="@dimen/margin_mobile"
-        android:background="@color/white">
+        android:paddingHorizontal="@dimen/margin_mobile">
 
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@null"
             android:contentDescription="@string/action_back"
-            android:padding="@dimen/spacing_small" />
+            android:padding="@dimen/spacing_small"
+            android:src="@drawable/ic_arrow_back" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="@dimen/spacing_small"
-            android:text="@string/appointment_record_title"
-            android:textSize="@dimen/text_size_title"
+            android:layout_weight="1"
+            android:text="@string/payment_title"
             android:textColor="@color/on_surface"
+            android:textSize="@dimen/text_size_title"
             android:textStyle="bold" />
-
     </LinearLayout>
-
-    <!-- 分割线 -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/outline_variant" />
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/group_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_mobile"
-        app:singleSelection="true"
-        app:selectionRequired="true">
+        app:selectionRequired="true"
+        app:singleSelection="true">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_filter_all"
@@ -59,47 +51,32 @@
             android:text="@string/appointment_record_all" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_filter_booked"
+            android:id="@+id/btn_filter_unpaid"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/appointment_record_booked" />
+            android:text="@string/payment_unpaid" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_filter_visited"
+            android:id="@+id/btn_filter_paid"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/appointment_record_visited" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_filter_canceled"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/appointment_record_canceled" />
+            android:text="@string/payment_paid" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
-    <LinearLayout
-        android:id="@+id/layout_empty"
+    <TextView
+        android:id="@+id/tv_empty"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical"
-        android:background="@color/surface">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/appointment_record_empty"
-            android:textSize="@dimen/text_size_subtitle"
-            android:textColor="@color/on_surface_variant" />
-
-    </LinearLayout>
+        android:text="@string/payment_empty"
+        android:textColor="@color/on_surface_variant"
+        android:textSize="@dimen/text_size_subtitle" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_appointment_record"
+        android:id="@+id/rv_payment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -107,5 +84,4 @@
         android:paddingHorizontal="@dimen/margin_mobile"
         android:paddingBottom="@dimen/margin_mobile"
         android:visibility="gone" />
-
 </LinearLayout>

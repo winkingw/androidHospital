@@ -49,6 +49,13 @@ public class MedicalCardDao {
         values.put("valid_start", card.getValidStart());
         values.put("valid_end", card.getValidEnd());
         values.put("bind_status", card.getBindStatus());
+        values.put("unbind_time", (String) null);
+        values.put("update_time", getCurrentDateTime());
+        if (hasCardRow(card.getUserId())) {
+            int rows = db.update("t_medical_card", values, "user_id = ?",
+                    new String[]{String.valueOf(card.getUserId())});
+            return rows > 0 ? card.getUserId() : -1;
+        }
         return db.insert("t_medical_card", null, values);
     }
 
@@ -108,6 +115,19 @@ public class MedicalCardDao {
             card.setUpdateTime(cursor.getString(cursor.getColumnIndex("update_time")));
         }
         return card;
+    }
+
+    private boolean hasCardRow(long userId) {
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT id FROM t_medical_card WHERE user_id = ?",
+                    new String[]{String.valueOf(userId)});
+            return cursor.moveToFirst();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
     private String getCurrentDateTime() {

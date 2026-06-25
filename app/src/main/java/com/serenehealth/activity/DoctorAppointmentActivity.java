@@ -48,7 +48,7 @@ public class DoctorAppointmentActivity extends AppCompatActivity {
         } else {
             binding.rvAppointmentList.setVisibility(View.VISIBLE);
             binding.layoutEmpty.setVisibility(View.GONE);
-            adapter = new AdminAppointmentAdapter(appointments);
+            adapter = new AdminAppointmentAdapter(appointments, dbHelper);
             binding.rvAppointmentList.setAdapter(adapter);
         }
     }

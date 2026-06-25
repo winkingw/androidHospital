@@ -25,6 +25,42 @@
         </activity>
 
         <activity
+            android:name=".activity.RegisterActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.ProfileDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.PaymentActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.MedicalCardActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.FeedbackActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.QRCodeVerificationActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.SuggestionFeedbackActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.HelpActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.PrivacyPolicyActivity"
+            android:exported="false" />
+
+        <activity
 
             android:name=".activity.MessageCenterActivity"
             android:exported="false" />
