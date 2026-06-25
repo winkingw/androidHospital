@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_small"
+    style="@style/Widget.SereneHealth.Card"
+    app:cardElevation="@dimen/card_elevation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/card_padding">
+
+        <!-- 左侧色块小竖条 -->
+        <View
+            android:layout_width="@dimen/dept_left_bar_width"
+            android:layout_height="40dp"
+            android:layout_marginEnd="@dimen/spacing_medium"
+            android:background="@color/primary_container"
+            android:alpha="0.8" />
+
+        <!-- 科室信息区域 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- 科室名称 -->
+            <TextView
+                android:id="@+id/tv_dept_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_title"
+                android:textColor="@color/on_surface"
+                android:textStyle="bold" />
+
+            <!-- 科室简介 -->
+            <TextView
+                android:id="@+id/tv_dept_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:textSize="@dimen/text_size_label_lg"
+                android:textColor="@color/on_surface_variant"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:lineSpacingExtra="@dimen/line_spacing_small" />
+
+        </LinearLayout>
+
+        <!-- 右侧箭头 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:text="@string/label_arrow_right"
+            android:textSize="@dimen/text_size_headline"
+            android:textColor="@color/outline_variant"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

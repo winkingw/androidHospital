@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_small"
+    style="@style/Widget.SereneHealth.Card"
+    app:cardElevation="@dimen/card_elevation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/card_padding">
+
+        <!-- 顶部区域：头像 + 右侧信息 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- 左侧头像 -->
+            <FrameLayout
+                android:id="@+id/fl_avatar_container"
+                android:layout_width="@dimen/doctor_avatar_size"
+                android:layout_height="@dimen/doctor_avatar_size"
+                android:background="@drawable/shape_circle_avatar">
+
+                <ImageView
+                    android:id="@+id/iv_doctor_avatar"
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_medical_services"
+                    android:contentDescription="@null"
+                    app:tint="@color/primary_container" />
+
+            </FrameLayout>
+
+            <!-- 右侧信息区域 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/spacing_medium"
+                android:orientation="vertical">
+
+                <!-- 姓名 + 职称标签 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_doctor_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_title"
+                        android:textColor="@color/on_surface"
+                        android:textStyle="bold"
+                        tools:text="张医生" />
+
+                    <TextView
+                        android:id="@+id/tv_doctor_title_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_small"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:textSize="@dimen/text_size_label_sm"
+                        android:background="@drawable/shape_badge_gray"
+                        android:textColor="@color/on_surface_variant"
+                        tools:text="主任医师" />
+
+                </LinearLayout>
+
+                <!-- 科室名 -->
+                <TextView
+                    android:id="@+id/tv_doctor_dept"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:textSize="@dimen/text_size_label_lg"
+                    android:textColor="@color/on_surface_variant"
+                    tools:text="内科" />
+
+                <!-- 擅长区域 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_expertise_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/doctor_expertise_prefix"
+                        android:textSize="@dimen/text_size_label_lg"
+                        android:textColor="@color/on_surface_variant"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_doctor_intro"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/text_size_label_lg"
+                        android:textColor="@color/on_surface_variant"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        tools:text="擅长各种内科疾病的诊断和治疗" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 分割线 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:background="@color/outline_variant" />
+
+        <!-- 号源状态行 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_slot_status"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:gravity="center"
+                android:paddingStart="@dimen/spacing_medium"
+                android:paddingEnd="@dimen/spacing_medium"
+                android:text="@string/doctor_has_slot"
+                android:textSize="@dimen/text_size_caption"
+                android:textColor="@color/white"
+                android:background="@drawable/shape_tab_selected"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

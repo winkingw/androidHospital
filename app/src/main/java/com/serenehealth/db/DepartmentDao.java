@@ -58,6 +58,26 @@ public class DepartmentDao {
     }
 
     /**
+     * 按科室名搜索科室
+     */
+    public List<Department> searchDepartments(String keyword) {
+        List<Department> list = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT * FROM t_department WHERE dept_name LIKE ? ORDER BY sort_no ASC",
+                    new String[]{"%" + keyword + "%"});
+            while (cursor.moveToNext()) {
+                list.add(cursorToDepartment(cursor));
+            }
+            return list;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    /**
      * 新增科室，返回新ID
      */
     public long insertDepartment(Department dept) {

@@ -21,7 +21,7 @@
     <string name="symptom_fever">发热</string>
     <string name="symptom_cough">咳嗽</string>
     <string name="symptom_abdominal_pain">腹痛</string>
-    <string name="symptom_rash">皮疹</string>
+    <string name="symptom_rash">皮疹</string>a
     <string name="symptom_joint_pain">关节痛</string>
 
     <!-- 消息中心 -->
@@ -118,6 +118,20 @@
     <string name="label_course">疗程</string>
     <string name="no_records">暂无记录</string>
 
+    <!-- 科室与医生列表 -->
+    <string name="department_list_title">选择科室</string>
+    <string name="department_search_hint">搜索科室名称…</string>
+    <string name="doctor_list_title">医生列表</string>
+    <string name="doctor_search_hint">搜索医生…</string>
+    <string name="no_department_data">暂无匹配科室</string>
+    <string name="no_doctor_data">暂无匹配医生</string>
+    <string name="department_filter_all">全部</string>
+    <string name="doctor_title_chief">主任医师</string>
+    <string name="doctor_title_deputy">副主任医师</string>
+    <string name="doctor_title_attending">主治医师</string>
+    <string name="doctor_has_slot">有号</string>
+    <string name="doctor_no_slot">约满</string>
+    <string name="doctor_expertise_prefix">擅长：</string>
     <!-- 预约记录 -->
     <string name="appointment_record_title">预约记录</string>
 
@@ -136,6 +150,39 @@
     <string name="id_status_approved">审核通过</string>
     <string name="id_tap_to_upload">点击上传</string>
 
+    <!-- 医生详情与排班 -->
+    <string name="doctor_detail_title">医生详情</string>
+    <string name="appointment_stub_info" formatted="false">预约挂号 (doctor=%s, source_id=%d)</string>
+    <string name="doctor_detail_select_date">选择日期</string>
+    <string name="doctor_detail_no_schedule">暂无排班</string>
+    <string name="doctor_detail_clinic_room">诊室：%s</string>
+    <string name="doctor_detail_available">可约</string>
+    <string name="doctor_detail_full">已约满</string>
+    <string name="doctor_detail_slot_format" formatted="false">%s/%s</string>
+    <string name="doctor_detail_intro_prefix">擅长：</string>
+    <string name="doctor_detail_tab_intro">医生简介</string>
+    <string name="doctor_detail_tab_schedule">出诊信息</string>
+    <string name="doctor_detail_slot_remain" formatted="false">余%d</string>
+
+    <!-- 预约挂号 -->
+    <string name="appointment_title">预约挂号</string>
+    <string name="appointment_confirm">确认预约</string>
+    <string name="appointment_success">预约成功</string>
+    <string name="appointment_return_home">返回首页</string>
+    <string name="appointment_dept_label">就诊科室</string>
+    <string name="appointment_doctor_label">就诊医生</string>
+    <string name="appointment_date_label">就诊日期</string>
+    <string name="appointment_period_label">就诊时段</string>
+    <string name="appointment_clinic_label">诊室位置</string>
+    <string name="appointment_fee_label">挂号费用</string>
+    <string name="appointment_patient_label">就诊人</string>
+    <string name="appointment_fail_msg">预约失败，号源可能已被抢完</string>
+    <string name="appointment_visit_hint">请于就诊当日按时到达医院</string>
+    <string name="appointment_gender_male">男</string>
+    <string name="appointment_gender_female">女</string>
+    <string name="appointment_no_prefix">预约编号：</string>
+    <string name="appointment_amount_prefix">待支付金额：</string>
+    <string name="label_arrow_right">›</string>
     <!-- 个人中心 -->
     <string name="profile_title">个人中心</string>
     <string name="profile_appointment_record">预约记录</string>

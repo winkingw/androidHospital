@@ -27,11 +27,12 @@
             android:tint="@color/on_surface" />
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="@dimen/spacing_small"
-            android:text="@string/department_list_title"
+            android:text="@string/doctor_list_title"
             android:textSize="@dimen/text_size_title"
             android:textColor="@color/on_surface"
             android:textStyle="bold" />
@@ -62,7 +63,7 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/department_search_hint"
+            android:hint="@string/doctor_search_hint"
             app:boxStrokeColor="@color/primary_container"
             app:hintTextColor="@color/primary_container">
 
@@ -77,6 +78,71 @@
         </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+    <!-- 职称筛选栏 -->
+    <LinearLayout
+        android:id="@+id/filter_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/margin_mobile"
+        android:paddingEnd="@dimen/margin_mobile"
+        android:paddingBottom="@dimen/spacing_small"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_filter_all"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:gravity="center"
+            android:paddingStart="@dimen/spacing_medium"
+            android:paddingEnd="@dimen/spacing_medium"
+            android:text="@string/department_filter_all"
+            android:textSize="@dimen/text_size_caption"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_tab_selected"
+            android:layout_marginEnd="@dimen/spacing_small" />
+
+        <TextView
+            android:id="@+id/tv_filter_chief"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:gravity="center"
+            android:paddingStart="@dimen/spacing_medium"
+            android:paddingEnd="@dimen/spacing_medium"
+            android:text="@string/doctor_title_chief"
+            android:textSize="@dimen/text_size_caption"
+            android:textColor="@color/on_surface_variant"
+            android:background="@drawable/shape_tab_unselected"
+            android:layout_marginEnd="@dimen/spacing_small" />
+
+        <TextView
+            android:id="@+id/tv_filter_deputy"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:gravity="center"
+            android:paddingStart="@dimen/spacing_medium"
+            android:paddingEnd="@dimen/spacing_medium"
+            android:text="@string/doctor_title_deputy"
+            android:textSize="@dimen/text_size_caption"
+            android:textColor="@color/on_surface_variant"
+            android:background="@drawable/shape_tab_unselected"
+            android:layout_marginEnd="@dimen/spacing_small" />
+
+        <TextView
+            android:id="@+id/tv_filter_attending"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:gravity="center"
+            android:paddingStart="@dimen/spacing_medium"
+            android:paddingEnd="@dimen/spacing_medium"
+            android:text="@string/doctor_title_attending"
+            android:textSize="@dimen/text_size_caption"
+            android:textColor="@color/on_surface_variant"
+            android:background="@drawable/shape_tab_unselected" />
+
+    </LinearLayout>
 
     <!-- 列表区域 -->
     <FrameLayout
@@ -108,7 +174,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_department_data"
+                android:text="@string/no_doctor_data"
                 android:textSize="@dimen/text_size_body"
                 android:textColor="@color/on_surface_variant" />
 
