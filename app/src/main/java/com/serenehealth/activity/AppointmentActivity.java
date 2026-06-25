@@ -66,6 +66,9 @@ public class AppointmentActivity extends AppCompatActivity {
         registerSourceDao = dbHelper.getRegisterSourceDao();
 
         getIntentData();
+        if (!ensureRealNameVerified()) {
+            return;
+        }
         initViews();
         loadPatientInfo();
     }
@@ -210,6 +213,9 @@ public class AppointmentActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.appointment_fail_msg, Toast.LENGTH_SHORT).show();
             return;
         }
+        if (!ensureRealNameVerified()) {
+            return;
+        }
 
         // 按钮变灰，防止重复提交
         isProcessing = true;
@@ -305,5 +311,22 @@ public class AppointmentActivity extends AppCompatActivity {
             return idCard;
         }
         return idCard.substring(0, 3) + "******" + idCard.substring(idCard.length() - 2);
+    }
+
+    private boolean ensureRealNameVerified() {
+        if (currentUserId <= 0) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return false;
+        }
+        User user = userDao.queryUserById(currentUserId);
+        if (user != null && user.isRealNameVerified()) {
+            return true;
+        }
+        Intent intent = new Intent(this, IDVerificationActivity.class);
+        intent.putExtra("show_not_verified_dialog", true);
+        startActivity(intent);
+        finish();
+        return false;
     }
 }

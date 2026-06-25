@@ -95,6 +95,78 @@
             android:paddingHorizontal="@dimen/margin_mobile"
             android:paddingBottom="@dimen/spacing_xlarge">
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/doctor_header_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/primary_container"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/card_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/card_padding">
+
+                    <FrameLayout
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/bg_icon_circle"
+                        android:backgroundTint="@color/primary_alpha_10">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_xlarge"
+                            android:layout_height="@dimen/icon_size_xlarge"
+                            android:layout_gravity="center"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_home_profile"
+                            app:tint="@color/white" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/spacing_large"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_doctor_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_headline"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_doctor_department"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_tiny"
+                            android:alpha="0.85"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_body" />
+
+                        <TextView
+                            android:id="@+id/tv_doctor_account"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            android:background="@drawable/bg_chip_dark"
+                            android:paddingHorizontal="@dimen/spacing_medium"
+                            android:paddingVertical="@dimen/spacing_tiny"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_caption"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Row 1: Department + Doctor (2-column grid) -->
             <LinearLayout
                 android:layout_width="match_parent"

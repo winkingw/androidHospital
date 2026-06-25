@@ -8,6 +8,9 @@ public class User {
     private int gender;
     private String birthDate;
     private String idCardNo;
+    private String idCardFrontUri;
+    private String idCardBackUri;
+    private int realNameVerified;
     private int healthScore;
     private String memberLevel;
     private String createTime;
@@ -70,6 +73,34 @@ public class User {
 
     public void setIdCardNo(String idCardNo) {
         this.idCardNo = idCardNo;
+    }
+
+    public String getIdCardFrontUri() {
+        return idCardFrontUri;
+    }
+
+    public void setIdCardFrontUri(String idCardFrontUri) {
+        this.idCardFrontUri = idCardFrontUri;
+    }
+
+    public String getIdCardBackUri() {
+        return idCardBackUri;
+    }
+
+    public void setIdCardBackUri(String idCardBackUri) {
+        this.idCardBackUri = idCardBackUri;
+    }
+
+    public int getRealNameVerified() {
+        return realNameVerified;
+    }
+
+    public void setRealNameVerified(int realNameVerified) {
+        this.realNameVerified = realNameVerified;
+    }
+
+    public boolean isRealNameVerified() {
+        return realNameVerified == 1;
     }
 
     public int getHealthScore() {

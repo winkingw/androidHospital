@@ -79,24 +79,34 @@ public class AdminUserDao {
         user.setPassword(cursor.getString(cursor.getColumnIndexOrThrow("password")));
         user.setRealName(cursor.getString(cursor.getColumnIndexOrThrow("real_name")));
         user.setRoleType(cursor.getString(cursor.getColumnIndexOrThrow("role_type")));
-        if (!cursor.isNull(cursor.getColumnIndex("doctor_id"))) {
-            user.setDoctorId(cursor.getLong(cursor.getColumnIndex("doctor_id")));
+        int doctorIdIndex = cursor.getColumnIndex("doctor_id");
+        if (hasValue(cursor, doctorIdIndex)) {
+            user.setDoctorId(cursor.getLong(doctorIdIndex));
         }
-        if (!cursor.isNull(cursor.getColumnIndex("phone"))) {
-            user.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
+        int phoneIndex = cursor.getColumnIndex("phone");
+        if (hasValue(cursor, phoneIndex)) {
+            user.setPhone(cursor.getString(phoneIndex));
         }
-        if (!cursor.isNull(cursor.getColumnIndex("status"))) {
-            user.setStatus(cursor.getInt(cursor.getColumnIndex("status")));
+        int statusIndex = cursor.getColumnIndex("status");
+        if (hasValue(cursor, statusIndex)) {
+            user.setStatus(cursor.getInt(statusIndex));
         }
-        if (!cursor.isNull(cursor.getColumnIndex("last_login_time"))) {
-            user.setLastLoginTime(cursor.getString(cursor.getColumnIndex("last_login_time")));
+        int lastLoginTimeIndex = cursor.getColumnIndex("last_login_time");
+        if (hasValue(cursor, lastLoginTimeIndex)) {
+            user.setLastLoginTime(cursor.getString(lastLoginTimeIndex));
         }
-        if (!cursor.isNull(cursor.getColumnIndex("create_time"))) {
-            user.setCreateTime(cursor.getString(cursor.getColumnIndex("create_time")));
+        int createTimeIndex = cursor.getColumnIndex("create_time");
+        if (hasValue(cursor, createTimeIndex)) {
+            user.setCreateTime(cursor.getString(createTimeIndex));
         }
-        if (!cursor.isNull(cursor.getColumnIndex("update_time"))) {
-            user.setUpdateTime(cursor.getString(cursor.getColumnIndex("update_time")));
+        int updateTimeIndex = cursor.getColumnIndex("update_time");
+        if (hasValue(cursor, updateTimeIndex)) {
+            user.setUpdateTime(cursor.getString(updateTimeIndex));
         }
         return user;
+    }
+
+    private boolean hasValue(Cursor cursor, int columnIndex) {
+        return columnIndex >= 0 && !cursor.isNull(columnIndex);
     }
 }

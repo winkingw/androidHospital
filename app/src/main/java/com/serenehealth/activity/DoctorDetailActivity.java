@@ -21,8 +21,10 @@ import com.serenehealth.bean.Department;
 import com.serenehealth.bean.Doctor;
 import com.serenehealth.bean.DoctorSchedule;
 import com.serenehealth.bean.RegisterSource;
+import com.serenehealth.bean.User;
 import com.serenehealth.databinding.ActivityDoctorDetailBinding;
 import com.serenehealth.db.DBHelper;
+import com.serenehealth.util.SPUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -322,6 +324,9 @@ public class DoctorDetailActivity extends AppCompatActivity {
         if (doctor == null) {
             return;
         }
+        if (!ensureCanBookAppointment()) {
+            return;
+        }
         Intent intent = new Intent(this, AppointmentActivity.class);
         intent.putExtra("source_id", source.getId());
         intent.putExtra("doctor_id", doctor.getId());
@@ -333,6 +338,22 @@ public class DoctorDetailActivity extends AppCompatActivity {
         intent.putExtra("slot_time", source.getSlotStartTime() + "-" + source.getSlotEndTime());
         intent.putExtra("register_fee", source.getRegisterFee());
         startActivity(intent);
+    }
+
+    private boolean ensureCanBookAppointment() {
+        if (!SPUtil.isLoggedIn()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            return false;
+        }
+        long currentUserId = SPUtil.getCurrentUserId();
+        User user = dbHelper.getUserDao().queryUserById(currentUserId);
+        if (user != null && user.isRealNameVerified()) {
+            return true;
+        }
+        Intent intent = new Intent(this, IDVerificationActivity.class);
+        intent.putExtra("show_not_verified_dialog", true);
+        startActivity(intent);
+        return false;
     }
 
     // ==================== 8. 日期选择器适配器 ====================

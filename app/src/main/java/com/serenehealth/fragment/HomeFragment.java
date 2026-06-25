@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.serenehealth.R;
 import com.serenehealth.activity.AppointmentRecordActivity;
@@ -23,24 +25,47 @@ import com.serenehealth.activity.MessageCenterActivity;
 import com.serenehealth.activity.PaymentActivity;
 import com.serenehealth.activity.QRCodeVerificationActivity;
 import com.serenehealth.activity.SmartDiagnosisActivity;
-import com.serenehealth.adapter.CommonServiceAdapter;
+import com.serenehealth.adapter.BannerAdapter;
+import com.serenehealth.bean.Banner;
 import com.serenehealth.databinding.FragmentHomeBinding;
 import com.serenehealth.db.DBHelper;
 import com.serenehealth.util.SPUtil;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * 首页 Fragment
- * 采用 Bento Grid 卡片式布局，包含健康码卡片、快速服务、常用服务等功能模块。
- * 移除旧版轮播图逻辑，使用静态健康码卡片替代。
+ * 采用 Bento Grid 卡片式布局，包含轮播图、健康码卡片和服务入口。
  */
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private CommonServiceAdapter commonServiceAdapter;
     private OnHomeActionListener actionListener;
+    private final Handler bannerHandler = new Handler(Looper.getMainLooper());
+    private List<Banner> bannerList;
+    private boolean isBannerAutoScrollEvent;
+    private final ViewPager2.OnPageChangeCallback bannerPageChangeCallback =
+            new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageSelected(int position) {
+                    if (!isBannerAutoScrollEvent) {
+                        startBannerAutoScroll();
+                    }
+                }
+            };
+    private final Runnable bannerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (binding == null || bannerList == null || bannerList.size() <= 1) {
+                return;
+            }
+            int nextItem = (binding.bannerViewPager.getCurrentItem() + 1) % bannerList.size();
+            isBannerAutoScrollEvent = true;
+            binding.bannerViewPager.setCurrentItem(nextItem, true);
+            isBannerAutoScrollEvent = false;
+            bannerHandler.postDelayed(this, 3000);
+        }
+    };
 
     /**
      * 首页操作回调，由宿主 Activity 实现
@@ -82,11 +107,10 @@ public class HomeFragment extends Fragment {
         Context context = getContext();
         if (context == null) return;
 
-        // 加载常用服务网格
-        setupCommonServices(context);
+        DBHelper dbHelper = DBHelper.getInstance(context);
+        setupBanners(dbHelper);
 
         // 加载未读消息数
-        DBHelper dbHelper = DBHelper.getInstance(context);
         long userId = SPUtil.getCurrentUserId();
         if (userId > 0) {
             int unreadCount = dbHelper.getMessageDao().queryUnreadCount(userId);
@@ -94,40 +118,31 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    // ==================== 常用服务网格 ====================
+    // ==================== 轮播图 ====================
 
-    private void setupCommonServices(Context context) {
-        List<CommonServiceAdapter.CommonServiceItem> items = Arrays.asList(
-                new CommonServiceAdapter.CommonServiceItem(
-                        R.drawable.ic_home_appointment,
-                        getString(R.string.home_check_appointment)),
-                new CommonServiceAdapter.CommonServiceItem(
-                        R.drawable.ic_home_lecture,
-                        getString(R.string.home_report_query)),
-                new CommonServiceAdapter.CommonServiceItem(
-                        R.drawable.ic_home_message,
-                        getString(R.string.home_online_consult)),
-                new CommonServiceAdapter.CommonServiceItem(
-                        R.drawable.ic_home_navigation,
-                        getString(R.string.home_dept_navigation)),
-                new CommonServiceAdapter.CommonServiceItem(
-                        R.drawable.ic_home_payment,
-                        getString(R.string.home_medicine_query)),
-                new CommonServiceAdapter.CommonServiceItem(
-                        R.drawable.ic_home_appointment,
-                        getString(R.string.home_physical_exam_book)),
-                new CommonServiceAdapter.CommonServiceItem(
-                        R.drawable.ic_home_ai_guide,
-                        getString(R.string.home_visit_guide)),
-                new CommonServiceAdapter.CommonServiceItem(
-                        R.drawable.ic_home_profile,
-                        getString(R.string.home_health_assessment))
-        );
+    private void setupBanners(DBHelper dbHelper) {
+        bannerList = dbHelper.getBannerDao().queryActiveBanners();
+        if (bannerList == null || bannerList.isEmpty()) {
+            binding.bannerViewPager.setVisibility(View.GONE);
+            return;
+        }
+        binding.bannerViewPager.setAdapter(new BannerAdapter(requireContext(), bannerList));
+        binding.bannerViewPager.setOffscreenPageLimit(1);
+        binding.bannerViewPager.setVisibility(View.VISIBLE);
+        binding.bannerViewPager.unregisterOnPageChangeCallback(bannerPageChangeCallback);
+        binding.bannerViewPager.registerOnPageChangeCallback(bannerPageChangeCallback);
+        startBannerAutoScroll();
+    }
 
-        binding.commonServiceRecycler.setLayoutManager(
-                new GridLayoutManager(context, 4));
-        commonServiceAdapter = new CommonServiceAdapter(context, items);
-        binding.commonServiceRecycler.setAdapter(commonServiceAdapter);
+    private void startBannerAutoScroll() {
+        bannerHandler.removeCallbacks(bannerRunnable);
+        if (bannerList != null && bannerList.size() > 1) {
+            bannerHandler.postDelayed(bannerRunnable, 3000);
+        }
+    }
+
+    private void stopBannerAutoScroll() {
+        bannerHandler.removeCallbacks(bannerRunnable);
     }
 
     // ==================== 角标 ====================
@@ -193,26 +208,6 @@ public class HomeFragment extends Fragment {
             startActivity(new Intent(requireActivity(), MessageCenterActivity.class));
         });
 
-        // 常用服务点击
-        commonServiceAdapter.setOnItemClickListener((position, item) -> {
-            String title = item.title;
-            if (title.equals(getString(R.string.home_check_appointment))) {
-                startActivity(new Intent(requireActivity(), DepartmentListActivity.class));
-            } else if (title.equals(getString(R.string.home_report_query))) {
-                if (actionListener != null) {
-                    actionListener.switchToHealthArchive();
-                }
-            } else if (title.equals(getString(R.string.home_dept_navigation))) {
-                openNavigation(context);
-            } else if (title.equals(getString(R.string.home_health_assessment))) {
-                if (actionListener != null) {
-                    actionListener.switchToHealthArchive();
-                }
-            } else {
-                Toast.makeText(context, title + " - " + getString(R.string.home_developing),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     /**
@@ -259,8 +254,27 @@ public class HomeFragment extends Fragment {
     // ==================== 生命周期 ====================
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (binding != null && getContext() != null) {
+            setupBanners(DBHelper.getInstance(requireContext()));
+        }
+        startBannerAutoScroll();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopBannerAutoScroll();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
+        stopBannerAutoScroll();
+        if (binding != null) {
+            binding.bannerViewPager.unregisterOnPageChangeCallback(bannerPageChangeCallback);
+        }
         binding = null;
     }
 

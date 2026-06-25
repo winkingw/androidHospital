@@ -26,7 +26,7 @@
             android:contentDescription="@string/action_back"
             android:padding="@dimen/spacing_small"
             android:src="@drawable/ic_arrow_back"
-            android:tint="@color/on_primary" />
+            app:tint="@color/on_primary" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -38,6 +38,78 @@
             android:textColor="@color/on_primary"
             android:textSize="@dimen/text_size_title" />
     </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/doctor_header_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_mobile"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:cardBackgroundColor="@color/primary_container"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/card_elevation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/card_padding">
+
+            <FrameLayout
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bg_icon_circle"
+                android:backgroundTint="@color/primary_alpha_10">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_xlarge"
+                    android:layout_height="@dimen/icon_size_xlarge"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_home_profile"
+                    app:tint="@color/white" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_doctor_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_headline"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_doctor_department"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:alpha="0.85"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:id="@+id/tv_doctor_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:background="@drawable/bg_chip_dark"
+                    android:paddingHorizontal="@dimen/spacing_medium"
+                    android:paddingVertical="@dimen/spacing_tiny"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_caption"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Empty State -->
     <LinearLayout
@@ -56,7 +128,7 @@
             android:importantForAccessibility="no"
             android:alpha="0.5"
             android:src="@drawable/ic_home_payment"
-            android:tint="@color/outline_variant" />
+            app:tint="@color/outline_variant" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -80,7 +152,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_appointment_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:clipToPadding="false"
         android:paddingHorizontal="@dimen/margin_mobile"
         android:paddingTop="@dimen/spacing_small"

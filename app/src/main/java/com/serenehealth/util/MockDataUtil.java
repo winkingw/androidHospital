@@ -125,6 +125,7 @@ public class MockDataUtil {
             values.put("gender", Integer.parseInt(row[3]));
             values.put("birth_date", row[4]);
             values.put("id_card_no", row[5]);
+            values.put("real_name_verified", 1);
             values.put("health_score", Integer.parseInt(row[6]));
             values.put("member_level", row[7]);
             db.insert("t_user", null, values);
@@ -442,8 +443,8 @@ public class MockDataUtil {
         // username, password, real_name, role_type, doctor_id, phone, status
         String[][] data = {
                 {"admin", "123456", "管理员", "ADMIN", null, "13900000000", "1"},
-                {"doc01", "123456", "张建国", "DOCTOR", "1", "13800000001", "1"},
-                {"doc02", "123456", "王志强", "DOCTOR", "3", "13800000002", "1"},
+                {"zhangjianguo", "123456", "张建国", "DOCTOR", "1", "13800000001", "1"},
+                {"wangzhiqiang", "123456", "王志强", "DOCTOR", "3", "13800000002", "1"},
         };
         for (String[] row : data) {
             ContentValues values = new ContentValues();

@@ -81,11 +81,35 @@ public class UserDao {
         values.put("gender", user.getGender());
         values.put("birth_date", user.getBirthDate());
         values.put("id_card_no", user.getIdCardNo());
+        values.put("id_card_front_uri", user.getIdCardFrontUri());
+        values.put("id_card_back_uri", user.getIdCardBackUri());
+        values.put("real_name_verified", user.getRealNameVerified());
         values.put("health_score", user.getHealthScore());
         values.put("member_level", user.getMemberLevel());
         values.put("update_time", getCurrentDateTime());
         return db.update("t_user", values, "id = ?",
                 new String[]{String.valueOf(user.getId())});
+    }
+
+    public int updateRealNameVerification(long userId, String realName, String idCardNo) {
+        return updateRealNameVerification(userId, realName, idCardNo, null, null);
+    }
+
+    public int updateRealNameVerification(long userId, String realName, String idCardNo,
+                                          String frontUri, String backUri) {
+        ContentValues values = new ContentValues();
+        values.put("real_name", realName);
+        values.put("id_card_no", idCardNo);
+        values.put("id_card_front_uri", frontUri);
+        values.put("id_card_back_uri", backUri);
+        values.put("real_name_verified", 1);
+        values.put("update_time", getCurrentDateTime());
+        try {
+            return db.update("t_user", values, "id = ?",
+                    new String[]{String.valueOf(userId)});
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     /**
@@ -134,32 +158,56 @@ public class UserDao {
         User user = new User();
         user.setId(cursor.getLong(cursor.getColumnIndexOrThrow("id")));
         user.setPhone(cursor.getString(cursor.getColumnIndexOrThrow("phone")));
-        if (!cursor.isNull(cursor.getColumnIndex("password"))) {
-            user.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+        int passwordIndex = cursor.getColumnIndex("password");
+        if (hasValue(cursor, passwordIndex)) {
+            user.setPassword(cursor.getString(passwordIndex));
         }
         user.setRealName(cursor.getString(cursor.getColumnIndexOrThrow("real_name")));
-        if (!cursor.isNull(cursor.getColumnIndex("gender"))) {
-            user.setGender(cursor.getInt(cursor.getColumnIndex("gender")));
+        int genderIndex = cursor.getColumnIndex("gender");
+        if (hasValue(cursor, genderIndex)) {
+            user.setGender(cursor.getInt(genderIndex));
         }
-        if (!cursor.isNull(cursor.getColumnIndex("birth_date"))) {
-            user.setBirthDate(cursor.getString(cursor.getColumnIndex("birth_date")));
+        int birthDateIndex = cursor.getColumnIndex("birth_date");
+        if (hasValue(cursor, birthDateIndex)) {
+            user.setBirthDate(cursor.getString(birthDateIndex));
         }
-        if (!cursor.isNull(cursor.getColumnIndex("id_card_no"))) {
-            user.setIdCardNo(cursor.getString(cursor.getColumnIndex("id_card_no")));
+        int idCardNoIndex = cursor.getColumnIndex("id_card_no");
+        if (hasValue(cursor, idCardNoIndex)) {
+            user.setIdCardNo(cursor.getString(idCardNoIndex));
         }
-        if (!cursor.isNull(cursor.getColumnIndex("health_score"))) {
-            user.setHealthScore(cursor.getInt(cursor.getColumnIndex("health_score")));
+        int idCardFrontUriIndex = cursor.getColumnIndex("id_card_front_uri");
+        if (hasValue(cursor, idCardFrontUriIndex)) {
+            user.setIdCardFrontUri(cursor.getString(idCardFrontUriIndex));
         }
-        if (!cursor.isNull(cursor.getColumnIndex("member_level"))) {
-            user.setMemberLevel(cursor.getString(cursor.getColumnIndex("member_level")));
+        int idCardBackUriIndex = cursor.getColumnIndex("id_card_back_uri");
+        if (hasValue(cursor, idCardBackUriIndex)) {
+            user.setIdCardBackUri(cursor.getString(idCardBackUriIndex));
         }
-        if (!cursor.isNull(cursor.getColumnIndex("create_time"))) {
-            user.setCreateTime(cursor.getString(cursor.getColumnIndex("create_time")));
+        int verifiedIndex = cursor.getColumnIndex("real_name_verified");
+        if (hasValue(cursor, verifiedIndex)) {
+            user.setRealNameVerified(cursor.getInt(verifiedIndex));
         }
-        if (!cursor.isNull(cursor.getColumnIndex("update_time"))) {
-            user.setUpdateTime(cursor.getString(cursor.getColumnIndex("update_time")));
+        int healthScoreIndex = cursor.getColumnIndex("health_score");
+        if (hasValue(cursor, healthScoreIndex)) {
+            user.setHealthScore(cursor.getInt(healthScoreIndex));
+        }
+        int memberLevelIndex = cursor.getColumnIndex("member_level");
+        if (hasValue(cursor, memberLevelIndex)) {
+            user.setMemberLevel(cursor.getString(memberLevelIndex));
+        }
+        int createTimeIndex = cursor.getColumnIndex("create_time");
+        if (hasValue(cursor, createTimeIndex)) {
+            user.setCreateTime(cursor.getString(createTimeIndex));
+        }
+        int updateTimeIndex = cursor.getColumnIndex("update_time");
+        if (hasValue(cursor, updateTimeIndex)) {
+            user.setUpdateTime(cursor.getString(updateTimeIndex));
         }
         return user;
+    }
+
+    private boolean hasValue(Cursor cursor, int columnIndex) {
+        return columnIndex >= 0 && !cursor.isNull(columnIndex);
     }
 
     private String getCurrentDateTime() {
