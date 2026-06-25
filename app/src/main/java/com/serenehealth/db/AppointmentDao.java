@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.serenehealth.bean.Appointment;
+import com.serenehealth.bean.DoctorAppointmentDTO;
 import com.serenehealth.bean.Message;
 import com.serenehealth.bean.PaymentOrder;
 import com.serenehealth.bean.RegisterSource;
@@ -233,6 +234,92 @@ public class AppointmentDao {
                 cursor.close();
             }
         }
+    }
+
+    /**
+     * 医生端：查询某医生名下预约的详细信息（含患者、排班、科室）
+     */
+    public List<DoctorAppointmentDTO> queryDoctorAppointmentsDetail(long doctorId) {
+        List<DoctorAppointmentDTO> list = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(
+                    "SELECT a.*, u.real_name, u.phone, u.gender, "
+                            + "ds.schedule_date, ds.period, ds.clinic_room, "
+                            + "rs.slot_start_time, rs.slot_end_time, rs.register_fee, "
+                            + "d.doctor_name, dep.dept_name AS department_name "
+                            + "FROM t_appointment a "
+                            + "JOIN t_register_source rs ON a.source_id = rs.id "
+                            + "JOIN t_doctor_schedule ds ON rs.schedule_id = ds.id "
+                            + "JOIN t_user u ON a.user_id = u.id "
+                            + "JOIN t_doctor d ON ds.doctor_id = d.id "
+                            + "JOIN t_department dep ON d.department_id = dep.id "
+                            + "WHERE ds.doctor_id = ? "
+                            + "ORDER BY a.create_time DESC",
+                    new String[]{String.valueOf(doctorId)});
+            while (cursor.moveToNext()) {
+                list.add(cursorToDoctorAppointmentDTO(cursor));
+            }
+            return list;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    private DoctorAppointmentDTO cursorToDoctorAppointmentDTO(Cursor cursor) {
+        DoctorAppointmentDTO dto = new DoctorAppointmentDTO();
+        dto.setId(cursor.getLong(cursor.getColumnIndexOrThrow("id")));
+        dto.setAppointmentNo(cursor.getString(cursor.getColumnIndexOrThrow("appointment_no")));
+        dto.setUserId(cursor.getLong(cursor.getColumnIndexOrThrow("user_id")));
+        dto.setSourceId(cursor.getLong(cursor.getColumnIndexOrThrow("source_id")));
+        if (!cursor.isNull(cursor.getColumnIndex("appointment_status"))) {
+            dto.setAppointmentStatus(cursor.getString(cursor.getColumnIndex("appointment_status")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("cancel_reason"))) {
+            dto.setCancelReason(cursor.getString(cursor.getColumnIndex("cancel_reason")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("create_time"))) {
+            dto.setCreateTime(cursor.getString(cursor.getColumnIndex("create_time")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("update_time"))) {
+            dto.setUpdateTime(cursor.getString(cursor.getColumnIndex("update_time")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("real_name"))) {
+            dto.setPatientName(cursor.getString(cursor.getColumnIndex("real_name")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("phone"))) {
+            dto.setPatientPhone(cursor.getString(cursor.getColumnIndex("phone")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("gender"))) {
+            dto.setPatientGender(cursor.getInt(cursor.getColumnIndex("gender")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("schedule_date"))) {
+            dto.setScheduleDate(cursor.getString(cursor.getColumnIndex("schedule_date")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("period"))) {
+            dto.setPeriod(cursor.getString(cursor.getColumnIndex("period")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("clinic_room"))) {
+            dto.setClinicRoom(cursor.getString(cursor.getColumnIndex("clinic_room")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("slot_start_time"))) {
+            dto.setSlotStartTime(cursor.getString(cursor.getColumnIndex("slot_start_time")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("slot_end_time"))) {
+            dto.setSlotEndTime(cursor.getString(cursor.getColumnIndex("slot_end_time")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("register_fee"))) {
+            dto.setRegisterFee(cursor.getDouble(cursor.getColumnIndex("register_fee")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("doctor_name"))) {
+            dto.setDoctorName(cursor.getString(cursor.getColumnIndex("doctor_name")));
+        }
+        if (!cursor.isNull(cursor.getColumnIndex("department_name"))) {
+            dto.setDepartmentName(cursor.getString(cursor.getColumnIndex("department_name")));
+        }
+        return dto;
     }
 
     private Appointment cursorToAppointment(Cursor cursor) {
