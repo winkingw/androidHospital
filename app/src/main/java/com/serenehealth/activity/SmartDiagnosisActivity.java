@@ -169,8 +169,9 @@ public class SmartDiagnosisActivity extends AppCompatActivity {
      */
     private void onResultItemClick(SmartDiagnosisResult item) {
         long departmentId = item.department.getId();
-        Intent intent = new Intent(this, DepartmentListActivity.class);
+        Intent intent = new Intent(this, DoctorListActivity.class);
         intent.putExtra("department_id", departmentId);
+        intent.putExtra("department_name", item.department.getDeptName());
         startActivity(intent);
         Toast.makeText(this, R.string.smart_jump_department, Toast.LENGTH_SHORT).show();
     }

@@ -304,5 +304,8 @@
     <string name="admin_banner_empty">暂无轮播图</string>
     <string name="admin_appointment_title">我的预约</string>
     <string name="admin_appointment_empty">暂无预约记录</string>
+    <string name="doctor_appt_patient">患者</string>
+    <string name="doctor_appt_schedule_format" formatted="false">%s  %s  号源%s-%s</string>
+    <string name="doctor_appt_dept_clinic_format" formatted="false">%s  |  %s</string>
 
 </resources>

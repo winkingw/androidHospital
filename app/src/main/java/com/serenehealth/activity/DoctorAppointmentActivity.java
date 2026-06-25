@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.serenehealth.adapter.AdminAppointmentAdapter;
-import com.serenehealth.bean.Appointment;
+import com.serenehealth.bean.DoctorAppointmentDTO;
 import com.serenehealth.databinding.ActivityDoctorAppointmentBinding;
 import com.serenehealth.db.DBHelper;
 import com.serenehealth.util.SPUtil;
@@ -40,7 +40,8 @@ public class DoctorAppointmentActivity extends AppCompatActivity {
 
     private void initData(long doctorId) {
         binding.rvAppointmentList.setLayoutManager(new LinearLayoutManager(this));
-        List<Appointment> appointments = dbHelper.getAppointmentDao().queryAppointmentsByDoctor(doctorId);
+        List<DoctorAppointmentDTO> appointments = dbHelper.getAppointmentDao()
+                .queryDoctorAppointmentsDetail(doctorId);
 
         if (appointments == null || appointments.isEmpty()) {
             binding.rvAppointmentList.setVisibility(View.GONE);

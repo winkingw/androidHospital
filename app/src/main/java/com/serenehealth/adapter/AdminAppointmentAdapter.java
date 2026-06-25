@@ -1,7 +1,6 @@
 package com.serenehealth.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,21 +9,16 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.serenehealth.R;
-import com.serenehealth.bean.Appointment;
-import com.serenehealth.bean.Feedback;
-import com.serenehealth.bean.User;
+import com.serenehealth.bean.DoctorAppointmentDTO;
 import com.serenehealth.databinding.ItemAdminAppointmentBinding;
-import com.serenehealth.db.DBHelper;
 
 import java.util.List;
 
 public class AdminAppointmentAdapter extends RecyclerView.Adapter<AdminAppointmentAdapter.ViewHolder> {
-    private final List<Appointment> appointmentList;
-    private final DBHelper dbHelper;
+    private final List<DoctorAppointmentDTO> appointmentList;
 
-    public AdminAppointmentAdapter(List<Appointment> appointmentList, DBHelper dbHelper) {
+    public AdminAppointmentAdapter(List<DoctorAppointmentDTO> appointmentList) {
         this.appointmentList = appointmentList;
-        this.dbHelper = dbHelper;
     }
 
     @NonNull
@@ -38,18 +32,31 @@ public class AdminAppointmentAdapter extends RecyclerView.Adapter<AdminAppointme
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
-        Appointment appt = appointmentList.get(position);
+        DoctorAppointmentDTO appt = appointmentList.get(position);
 
-        holder.binding.tvAppointmentNo.setText(appt.getAppointmentNo());
+        holder.binding.tvPatientName.setText(appt.getPatientName());
 
         String status = appt.getAppointmentStatus();
         holder.binding.tvStatus.setText(mapStatus(status));
         holder.binding.tvStatus.setTextColor(getStatusColor(context, status));
 
-        holder.binding.tvTime.setText(appt.getCreateTime());
-        holder.binding.tvUserId.setText(resolveUserText(appt.getUserId()));
-        holder.binding.tvSourceId.setText(String.valueOf(appt.getSourceId()));
-        bindFeedback(holder, appt);
+        String periodText = "MORNING".equals(appt.getPeriod()) ? "上午" :
+                "AFTERNOON".equals(appt.getPeriod()) ? "下午" : appt.getPeriod();
+
+        String slotTime = appt.getSlotStartTime() != null && appt.getSlotEndTime() != null
+                ? appt.getSlotStartTime().substring(0, 5) + "-" + appt.getSlotEndTime().substring(0, 5)
+                : "";
+
+        String scheduleInfo = appt.getScheduleDate() + "  " + periodText + "  " + slotTime;
+        holder.binding.tvScheduleInfo.setText(scheduleInfo);
+
+        String clinicRoom = appt.getClinicRoom() != null ? appt.getClinicRoom() : "未指定";
+        String deptClinic = context.getString(R.string.doctor_appt_dept_clinic_format,
+                appt.getDepartmentName(), clinicRoom);
+        holder.binding.tvDeptClinic.setText(deptClinic);
+
+        holder.binding.tvAppointmentNo.setText(
+                context.getString(R.string.appointment_no_prefix) + appt.getAppointmentNo());
     }
 
     @Override
@@ -87,37 +94,6 @@ public class AdminAppointmentAdapter extends RecyclerView.Adapter<AdminAppointme
             default:
                 return ContextCompat.getColor(context, R.color.on_surface);
         }
-    }
-
-    private String resolveUserText(long userId) {
-        if (dbHelper == null) {
-            return String.valueOf(userId);
-        }
-        User user = dbHelper.getUserDao().queryUserById(userId);
-        if (user == null) {
-            return String.valueOf(userId);
-        }
-        return user.getRealName() + " (" + user.getPhone() + ")";
-    }
-
-    private void bindFeedback(ViewHolder holder, Appointment appointment) {
-        if (dbHelper == null) {
-            holder.binding.tvFeedbackScore.setText("暂无评价");
-            holder.binding.tvFeedbackContent.setText("");
-            return;
-        }
-        Feedback feedback = dbHelper.getFeedbackDao().queryByAppointmentId(appointment.getId());
-        if (feedback == null) {
-            holder.binding.tvFeedbackScore.setText("暂无评价");
-            holder.binding.tvFeedbackContent.setText("");
-            return;
-        }
-        holder.binding.tvFeedbackScore.setText("医生 " + feedback.getDoctorScore()
-                + " / 服务 " + feedback.getServiceScore()
-                + " / 体验 " + feedback.getVisitScore());
-        String content = feedback.getContent();
-        holder.binding.tvFeedbackContent.setText(content == null || content.isEmpty()
-                ? "用户未填写文字评价" : content);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
