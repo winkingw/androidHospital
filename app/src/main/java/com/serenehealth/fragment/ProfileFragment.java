@@ -14,7 +14,14 @@ import androidx.fragment.app.Fragment;
 
 import com.serenehealth.R;
 import com.serenehealth.activity.AppointmentRecordActivity;
+import com.serenehealth.activity.FeedbackActivity;
+import com.serenehealth.activity.HelpActivity;
 import com.serenehealth.activity.IDVerificationActivity;
+import com.serenehealth.activity.MedicalCardActivity;
+import com.serenehealth.activity.PaymentActivity;
+import com.serenehealth.activity.PrivacyPolicyActivity;
+import com.serenehealth.activity.ProfileDetailActivity;
+import com.serenehealth.activity.SuggestionFeedbackActivity;
 import com.serenehealth.bean.User;
 import com.serenehealth.databinding.FragmentProfileBinding;
 import com.serenehealth.db.DBHelper;
@@ -104,7 +111,12 @@ public class ProfileFragment extends Fragment {
         // B2. 医保卡
         binding.menuMedicalCard.setOnClickListener(v -> {
             if (!checkLogin()) return;
-            Toast.makeText(requireContext(), R.string.profile_developing, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(requireActivity(), MedicalCardActivity.class));
+        });
+
+        binding.menuPayment.setOnClickListener(v -> {
+            if (!checkLogin()) return;
+            startActivity(new Intent(requireActivity(), PaymentActivity.class));
         });
 
         // B3. 身份证核验
@@ -116,22 +128,27 @@ public class ProfileFragment extends Fragment {
         // B4. 满意度评价
         binding.menuFeedback.setOnClickListener(v -> {
             if (!checkLogin()) return;
-            Toast.makeText(requireContext(), R.string.profile_developing, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(requireActivity(), FeedbackActivity.class));
         });
 
         // B5. 意见反馈
         binding.menuSuggestion.setOnClickListener(v -> {
             if (!checkLogin()) return;
-            Toast.makeText(requireContext(), R.string.profile_developing, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(requireActivity(), SuggestionFeedbackActivity.class));
         });
 
         // B6. 使用帮助
         binding.menuHelp.setOnClickListener(v ->
-                Toast.makeText(requireContext(), R.string.profile_developing, Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(requireActivity(), HelpActivity.class)));
 
         // B7. 隐私政策
         binding.menuPrivacy.setOnClickListener(v ->
-                Toast.makeText(requireContext(), R.string.profile_developing, Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(requireActivity(), PrivacyPolicyActivity.class)));
+
+        binding.userHeaderCard.setOnClickListener(v -> {
+            if (!checkLogin()) return;
+            startActivity(new Intent(requireActivity(), ProfileDetailActivity.class));
+        });
 
         // B8. 退出登录
         binding.menuLogout.setOnClickListener(v -> showLogoutDialog());

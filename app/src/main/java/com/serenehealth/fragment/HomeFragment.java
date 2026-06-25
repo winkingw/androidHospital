@@ -20,6 +20,8 @@ import com.serenehealth.activity.AppointmentRecordActivity;
 import com.serenehealth.activity.DepartmentListActivity;
 import com.serenehealth.activity.LoginActivity;
 import com.serenehealth.activity.MessageCenterActivity;
+import com.serenehealth.activity.PaymentActivity;
+import com.serenehealth.activity.QRCodeVerificationActivity;
 import com.serenehealth.activity.SmartDiagnosisActivity;
 import com.serenehealth.adapter.CommonServiceAdapter;
 import com.serenehealth.databinding.FragmentHomeBinding;
@@ -146,8 +148,10 @@ public class HomeFragment extends Fragment {
         if (context == null) return;
 
         // B. 健康码卡片
-        binding.heroCard.setOnClickListener(v ->
-                Toast.makeText(context, R.string.home_developing, Toast.LENGTH_SHORT).show());
+        binding.heroCard.setOnClickListener(v -> {
+            if (!checkLogin()) return;
+            startActivity(new Intent(requireActivity(), QRCodeVerificationActivity.class));
+        });
 
         // C1. 科室挂号 → DepartmentListActivity
         binding.cardDepartment.setOnClickListener(v ->
@@ -156,7 +160,7 @@ public class HomeFragment extends Fragment {
         // C2. 自助缴费 → 队员C 负责
         binding.cardPayment.setOnClickListener(v -> {
             if (!checkLogin()) return;
-            Toast.makeText(context, R.string.home_developing, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(requireActivity(), PaymentActivity.class));
         });
 
         // D1. 预约记录

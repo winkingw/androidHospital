@@ -131,7 +131,11 @@ public class SPUtil {
     public static void clear() {
         SharedPreferences prefs = getSp();
         if (prefs != null) {
-            prefs.edit().clear().apply();
+            boolean firstLaunch = prefs.getBoolean("is_first_launch", true);
+            prefs.edit()
+                    .clear()
+                    .putBoolean("is_first_launch", firstLaunch)
+                    .apply();
         }
     }
 }

@@ -4,7 +4,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.serenehealth.bean.MedicalCard;
+import com.serenehealth.bean.MedicalCardRecord;
 import com.serenehealth.bean.PaymentOrder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PaymentOrderDao {
 
@@ -57,6 +62,45 @@ public class PaymentOrderDao {
     }
 
     /**
+     * 根据用户查询全部缴费订单，按创建时间倒序
+     */
+    public List<PaymentOrder> queryOrdersByUser(long userId) {
+        List<PaymentOrder> list = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT * FROM t_payment_order WHERE user_id = ? ORDER BY create_time DESC",
+                    new String[]{String.valueOf(userId)});
+            while (cursor.moveToNext()) {
+                list.add(cursorToPaymentOrder(cursor));
+            }
+            return list;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    /**
+     * 根据订单ID查询订单
+     */
+    public PaymentOrder queryOrderById(long orderId) {
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT * FROM t_payment_order WHERE id = ?",
+                    new String[]{String.valueOf(orderId)});
+            if (cursor.moveToFirst()) {
+                return cursorToPaymentOrder(cursor);
+            }
+            return null;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    /**
      * 模拟支付成功：状态→PAID，记录支付时间
      */
     public int payOrder(long orderId, String payChannel) {
@@ -67,6 +111,59 @@ public class PaymentOrderDao {
         values.put("update_time", getCurrentDateTime());
         return db.update("t_payment_order", values, "id = ?",
                 new String[]{String.valueOf(orderId)});
+    }
+
+    /**
+     * 医保卡支付：订单、医保卡余额、消费记录在同一事务中同步更新。
+     */
+    public boolean payOrderWithMedicalCard(long orderId, MedicalCard card) {
+        PaymentOrder order = queryOrderById(orderId);
+        if (order == null || card == null || !"UNPAID".equals(order.getOrderStatus())) {
+            return false;
+        }
+        if (card.getBalance() < order.getAmount()) {
+            return false;
+        }
+
+        db.beginTransaction();
+        try {
+            double newBalance = card.getBalance() - order.getAmount();
+            ContentValues orderValues = new ContentValues();
+            orderValues.put("order_status", "PAID");
+            orderValues.put("pay_channel", "MEDICAL_CARD");
+            orderValues.put("medical_card_id", card.getId());
+            orderValues.put("pay_time", getCurrentDateTime());
+            orderValues.put("update_time", getCurrentDateTime());
+            int orderRows = db.update("t_payment_order", orderValues, "id = ?",
+                    new String[]{String.valueOf(orderId)});
+            if (orderRows <= 0) {
+                return false;
+            }
+
+            int cardRows = dbHelper.getMedicalCardDao().updateBalance(card.getUserId(), newBalance);
+            if (cardRows <= 0) {
+                return false;
+            }
+
+            MedicalCardRecord record = new MedicalCardRecord();
+            record.setCardId(card.getId());
+            record.setUserId(card.getUserId());
+            record.setRelatedOrderId(orderId);
+            record.setRecordType("REGISTER");
+            record.setAmount(order.getAmount());
+            record.setBalanceAfter(newBalance);
+            record.setDescription("医保卡支付-" + order.getOrderNo());
+            record.setRecordTime(getCurrentDateTime());
+            long recordId = dbHelper.getMedicalCardRecordDao().insert(record);
+            if (recordId == -1) {
+                return false;
+            }
+
+            db.setTransactionSuccessful();
+            return true;
+        } finally {
+            db.endTransaction();
+        }
     }
 
     /**

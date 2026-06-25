@@ -79,6 +79,23 @@ public class FeedbackDao {
         return db.insert("t_feedback", null, values);
     }
 
+    /**
+     * 更新某预约对应的评价，避免同一预约重复插入多条评价。
+     */
+    public int updateByAppointmentId(Feedback feedback) {
+        ContentValues values = new ContentValues();
+        if (feedback.getDoctorId() > 0) {
+            values.put("doctor_id", feedback.getDoctorId());
+        }
+        values.put("doctor_score", feedback.getDoctorScore());
+        values.put("service_score", feedback.getServiceScore());
+        values.put("visit_score", feedback.getVisitScore());
+        values.put("content", feedback.getContent());
+        values.put("create_time", getCurrentDateTime());
+        return db.update("t_feedback", values, "appointment_id = ?",
+                new String[]{String.valueOf(feedback.getAppointmentId())});
+    }
+
     private Feedback cursorToFeedback(Cursor cursor) {
         Feedback feedback = new Feedback();
         feedback.setId(cursor.getLong(cursor.getColumnIndexOrThrow("id")));
@@ -105,5 +122,10 @@ public class FeedbackDao {
             feedback.setCreateTime(cursor.getString(cursor.getColumnIndex("create_time")));
         }
         return feedback;
+    }
+
+    private String getCurrentDateTime() {
+        return new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+                java.util.Locale.getDefault()).format(new java.util.Date());
     }
 }
