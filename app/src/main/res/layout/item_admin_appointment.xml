@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Top row: Appointment No + Status Chip -->
+        <!-- Row 1: Patient name + Status chip -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,18 +24,18 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_appointment_no"
+                android:id="@+id/tv_patient_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAppearance="@style/TextAppearance.SereneHealth.Headline"
+                android:textColor="@color/on_surface"
                 android:textSize="@dimen/text_size_subtitle"
                 android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/secondary_container"
                 app:cardCornerRadius="999dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp">
@@ -52,107 +52,74 @@
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
+        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/spacing_medium"
-            android:layout_marginBottom="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginBottom="@dimen/spacing_small"
             android:background="@color/outline_variant" />
 
-        <!-- Appointment Time -->
+        <!-- Row 2: Schedule date + Period -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="预约时间"
-                android:textAppearance="@style/TextAppearance.SereneHealth.Label"
-                android:textColor="@color/on_surface_variant"
-                android:textStyle="bold" />
+            <ImageView
+                android:layout_width="@dimen/icon_size_small"
+                android:layout_height="@dimen/icon_size_small"
+                android:alpha="0.6"
+                android:src="@drawable/ic_home_appointment"
+                android:tint="@color/on_surface_variant" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_small"
-                android:text=": "
-                android:textColor="@color/on_surface_variant" />
-
-            <TextView
-                android:id="@+id/tv_time"
+                android:id="@+id/tv_schedule_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_small"
                 android:layout_weight="1"
                 android:textAppearance="@style/TextAppearance.SereneHealth.Body"
+                android:textColor="@color/on_surface"
                 android:textSize="@dimen/text_size_body" />
         </LinearLayout>
 
-        <!-- User ID -->
+        <!-- Row 3: Department + Clinic room -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginTop="@dimen/spacing_tiny"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="用户ID"
-                android:textAppearance="@style/TextAppearance.SereneHealth.Label"
-                android:textColor="@color/on_surface_variant"
-                android:textStyle="bold" />
+            <ImageView
+                android:layout_width="@dimen/icon_size_small"
+                android:layout_height="@dimen/icon_size_small"
+                android:alpha="0.6"
+                android:src="@drawable/ic_medical_services"
+                android:tint="@color/on_surface_variant" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_small"
-                android:text=": "
-                android:textColor="@color/on_surface_variant" />
-
-            <TextView
-                android:id="@+id/tv_user_id"
+                android:id="@+id/tv_dept_clinic"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_small"
                 android:layout_weight="1"
                 android:textAppearance="@style/TextAppearance.SereneHealth.Body"
+                android:textColor="@color/on_surface"
                 android:textSize="@dimen/text_size_body" />
         </LinearLayout>
 
-        <!-- Source ID -->
-        <LinearLayout
+        <!-- Row 4: Appointment number (secondary) -->
+        <TextView
+            android:id="@+id/tv_appointment_no"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="号源"
-                android:textAppearance="@style/TextAppearance.SereneHealth.Label"
-                android:textColor="@color/on_surface_variant"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_small"
-                android:text=": "
-                android:textColor="@color/on_surface_variant" />
-
-            <TextView
-                android:id="@+id/tv_source_id"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="@style/TextAppearance.SereneHealth.Body"
-                android:textSize="@dimen/text_size_body" />
-        </LinearLayout>
+            android:textAppearance="@style/TextAppearance.SereneHealth.Label"
+            android:textColor="@color/on_surface_variant"
+            android:textSize="@dimen/text_size_caption" />
 
     </LinearLayout>
 

@@ -1,7 +1,6 @@
 package com.serenehealth.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,15 +9,15 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.serenehealth.R;
-import com.serenehealth.bean.Appointment;
+import com.serenehealth.bean.DoctorAppointmentDTO;
 import com.serenehealth.databinding.ItemAdminAppointmentBinding;
 
 import java.util.List;
 
 public class AdminAppointmentAdapter extends RecyclerView.Adapter<AdminAppointmentAdapter.ViewHolder> {
-    private final List<Appointment> appointmentList;
+    private final List<DoctorAppointmentDTO> appointmentList;
 
-    public AdminAppointmentAdapter(List<Appointment> appointmentList) {
+    public AdminAppointmentAdapter(List<DoctorAppointmentDTO> appointmentList) {
         this.appointmentList = appointmentList;
     }
 
@@ -33,17 +32,31 @@ public class AdminAppointmentAdapter extends RecyclerView.Adapter<AdminAppointme
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
-        Appointment appt = appointmentList.get(position);
+        DoctorAppointmentDTO appt = appointmentList.get(position);
 
-        holder.binding.tvAppointmentNo.setText(appt.getAppointmentNo());
+        holder.binding.tvPatientName.setText(appt.getPatientName());
 
         String status = appt.getAppointmentStatus();
         holder.binding.tvStatus.setText(mapStatus(status));
         holder.binding.tvStatus.setTextColor(getStatusColor(context, status));
 
-        holder.binding.tvTime.setText(appt.getCreateTime());
-        holder.binding.tvUserId.setText("用户ID: " + appt.getUserId());
-        holder.binding.tvSourceId.setText("号源: " + appt.getSourceId());
+        String periodText = "MORNING".equals(appt.getPeriod()) ? "上午" :
+                "AFTERNOON".equals(appt.getPeriod()) ? "下午" : appt.getPeriod();
+
+        String slotTime = appt.getSlotStartTime() != null && appt.getSlotEndTime() != null
+                ? appt.getSlotStartTime().substring(0, 5) + "-" + appt.getSlotEndTime().substring(0, 5)
+                : "";
+
+        String scheduleInfo = appt.getScheduleDate() + "  " + periodText + "  " + slotTime;
+        holder.binding.tvScheduleInfo.setText(scheduleInfo);
+
+        String clinicRoom = appt.getClinicRoom() != null ? appt.getClinicRoom() : "未指定";
+        String deptClinic = context.getString(R.string.doctor_appt_dept_clinic_format,
+                appt.getDepartmentName(), clinicRoom);
+        holder.binding.tvDeptClinic.setText(deptClinic);
+
+        holder.binding.tvAppointmentNo.setText(
+                context.getString(R.string.appointment_no_prefix) + appt.getAppointmentNo());
     }
 
     @Override

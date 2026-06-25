@@ -174,6 +174,7 @@ public class MockDataUtil {
         values.put("period", period);
         values.put("start_time", startTime);
         values.put("end_time", endTime);
+        values.put("clinic_room", "B栋" + ((doctorId % 5) + 1) + "楼 诊室" + (doctorId % 10 + 1));
         values.put("schedule_status", 1);
         return db.insert("t_doctor_schedule", null, values);
     }
