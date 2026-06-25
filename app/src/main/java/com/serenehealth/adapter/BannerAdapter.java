@@ -17,8 +17,6 @@ import java.util.List;
 
 /**
  * 首页轮播图适配器（纯色背景 + 标题文字展示）。
- * 当前首页使用静态健康码卡片，此适配器保留供后续 BannerDao.queryActiveBanners() 动态轮播功能使用。
- * TODO 2026-06-24 待接入 BannerDao 实现动态轮播
  */
 public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.BannerViewHolder> {
 

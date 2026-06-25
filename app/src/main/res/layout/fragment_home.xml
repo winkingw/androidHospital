@@ -62,7 +62,19 @@
         </RelativeLayout>
 
         <!-- ================================================================ -->
-        <!-- B. Hero 健康码卡片 -->
+        <!-- B. 首页轮播图 -->
+        <!-- ================================================================ -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/banner_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="144dp"
+            android:layout_marginHorizontal="@dimen/margin_mobile"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:clipToPadding="false"
+            android:visibility="gone" />
+
+        <!-- ================================================================ -->
+        <!-- C. Hero 健康码卡片 -->
         <!-- ================================================================ -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/hero_card"
@@ -145,7 +157,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <!-- ================================================================ -->
-        <!-- C. Bento Grid 一级功能区 -->
+        <!-- D. Bento Grid 一级功能区 -->
         <!-- ================================================================ -->
 
         <!-- 区域标题 -->
@@ -319,7 +331,7 @@
         </LinearLayout>
 
         <!-- ================================================================ -->
-        <!-- D. 二级功能卡片区（2×2 网格） -->
+        <!-- E. 二级功能卡片区（2×2 网格） -->
         <!-- ================================================================ -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -623,7 +635,7 @@
         </LinearLayout>
 
         <!-- ================================================================ -->
-        <!-- E. 健康讲堂横幅 -->
+        <!-- F. 健康讲堂横幅 -->
         <!-- ================================================================ -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/lecture_banner"
@@ -720,28 +732,6 @@
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
-
-        <!-- ================================================================ -->
-        <!-- F. 常用服务网格（4列×2行） -->
-        <!-- ================================================================ -->
-
-        <!-- 区域标题 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_mobile"
-            android:layout_marginTop="@dimen/spacing_xlarge"
-            android:text="@string/home_common_service"
-            android:textColor="@color/on_surface"
-            android:textSize="@dimen/text_size_title"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/common_service_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small"
-            android:nestedScrollingEnabled="false" />
 
         <!-- ================================================================ -->
         <!-- G. 底部留白 80dp（避免被底部导航栏遮挡） -->

@@ -17,6 +17,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
     private DBHelper dbHelper;
+    private boolean dataReady = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +25,8 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize database and mock data on first launch
-        if (SPUtil.isFirstLaunch()) {
-            dbHelper = DBHelper.getInstance(this);
-            dbHelper.getWritableDatabase();
-            MockDataUtil.initAll(dbHelper);
-            SPUtil.setFirstLaunchDone();
-        }
+        dbHelper = DBHelper.getInstance(this);
+        setListeners();
 
         // Check if already logged in
         if (SPUtil.isLoggedIn()) {
@@ -44,13 +40,18 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        dbHelper = DBHelper.getInstance(this);
-        setListeners();
+        if (SPUtil.isFirstLaunch()) {
+            initializeMockDataAsync();
+        }
     }
 
     private void setListeners() {
         // Unified login: auto-detect user or admin
         binding.btnUserLogin.setOnClickListener(v -> {
+            if (!dataReady) {
+                Toast.makeText(this, "数据初始化中，请稍候", Toast.LENGTH_SHORT).show();
+                return;
+            }
             String account = binding.etAccount.getText().toString().trim();
             String password = binding.etPassword.getText().toString().trim();
             if (account.isEmpty() || password.isEmpty()) {
@@ -80,5 +81,29 @@ public class LoginActivity extends AppCompatActivity {
         });
         binding.btnRegister.setOnClickListener(v ->
                 startActivity(new Intent(this, RegisterActivity.class)));
+    }
+
+    private void initializeMockDataAsync() {
+        dataReady = false;
+        binding.btnUserLogin.setEnabled(false);
+        binding.btnRegister.setEnabled(false);
+        binding.btnUserLogin.setText("初始化中...");
+
+        new Thread(() -> {
+            dbHelper.getWritableDatabase();
+            MockDataUtil.initAll(dbHelper);
+            SPUtil.setFirstLaunchDone();
+
+            runOnUiThread(() -> {
+                if (isFinishing()) {
+                    return;
+                }
+                dataReady = true;
+                binding.btnUserLogin.setEnabled(true);
+                binding.btnRegister.setEnabled(true);
+                binding.btnUserLogin.setText("登录");
+                Toast.makeText(this, "数据初始化完成", Toast.LENGTH_SHORT).show();
+            });
+        }).start();
     }
 }

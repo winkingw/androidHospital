@@ -15,14 +15,13 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.serenehealth.R;
 import com.serenehealth.adapter.VisitHistoryAdapter;
 import com.serenehealth.bean.Department;
 import com.serenehealth.bean.Doctor;
+import com.serenehealth.bean.User;
 import com.serenehealth.bean.VisitHistory;
 import com.serenehealth.databinding.FragmentHealthArchiveBinding;
 import com.serenehealth.databinding.ItemPrescriptionCardBinding;
@@ -33,9 +32,14 @@ import com.serenehealth.util.SPUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class HealthArchiveFragment extends Fragment {
+
+    private static final int TAB_MEDICAL_RECORDS = 0;
+    private static final int TAB_REPORTS = 1;
+    private static final int TAB_PRESCRIPTIONS = 2;
 
     private FragmentHealthArchiveBinding binding;
     private DBHelper dbHelper;
@@ -44,16 +48,12 @@ public class HealthArchiveFragment extends Fragment {
     private final List<String[]> reportData = new ArrayList<>();
     private final List<String[]> prescriptionData = new ArrayList<>();
     private final List<VisitHistory> visitData = new ArrayList<>();
-    private Map<Long, String> departmentMap = new HashMap<>();
-    private Map<Long, String> doctorMap = new HashMap<>();
+    private final Map<Long, String> departmentMap = new HashMap<>();
+    private final Map<Long, String> doctorMap = new HashMap<>();
 
     private ReportAdapter reportAdapter;
     private PrescriptionAdapter prescriptionAdapter;
     private VisitHistoryAdapter visitAdapter;
-
-    private static final int TAB_REPORTS = 0;
-    private static final int TAB_PRESCRIPTIONS = 1;
-    private static final int TAB_MEDICAL_RECORDS = 2;
 
     @Nullable
     @Override
@@ -61,6 +61,7 @@ public class HealthArchiveFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentHealthArchiveBinding.inflate(inflater, container, false);
         initData();
+        bindArchiveHeader();
         setupViewPager();
         return binding.getRoot();
     }
@@ -82,7 +83,7 @@ public class HealthArchiveFragment extends Fragment {
         reportData.clear();
         reportData.add(new String[]{"血常规", "检验", "白细胞、红细胞均在正常范围", "2026-06-20"});
         reportData.add(new String[]{"心电图", "检查", "窦性心律，未见明显异常", "2026-06-20"});
-        reportData.add(new String[]{"B超(腹部)", "检查", "肝胆脾胰未见占位性病变", "2026-06-15"});
+        reportData.add(new String[]{"B超（腹部）", "检查", "肝胆脾胰未见占位性病变", "2026-06-15"});
     }
 
     private void initPrescriptionData() {
@@ -109,14 +110,50 @@ public class HealthArchiveFragment extends Fragment {
 
     private void initVisitData() {
         visitData.clear();
-        long userId = SPUtil.getCurrentUserId();
-        if (userId <= 0) {
-            userId = 1;
-        }
+        long userId = getDisplayUserId();
         List<VisitHistory> records = dbHelper.getVisitHistoryDao().queryByUserId(userId);
         if (records != null) {
             visitData.addAll(records);
         }
+    }
+
+    private long getDisplayUserId() {
+        long userId = SPUtil.getCurrentUserId();
+        return userId > 0 ? userId : 1;
+    }
+
+    private void bindArchiveHeader() {
+        long userId = getDisplayUserId();
+        User user = dbHelper.getUserDao().queryUserById(userId);
+        String userName = user != null && user.getRealName() != null && !user.getRealName().isEmpty()
+                ? user.getRealName() : "未登录用户";
+        int healthScore = user != null && user.getHealthScore() > 0 ? user.getHealthScore() : 88;
+        String genderText = formatGender(user != null ? user.getGender() : 0);
+        String birthDate = user != null && user.getBirthDate() != null && !user.getBirthDate().isEmpty()
+                ? user.getBirthDate() : "未填写";
+
+        binding.tvArchiveUserName.setText(userName);
+        binding.tvArchiveNo.setText(String.format(Locale.getDefault(), "档案编号：SH%08d", userId));
+        binding.tvArchiveLineIdentity.setText(
+                String.format(Locale.getDefault(), "性别：%s", genderText));
+        binding.tvArchiveLineHealth.setText(
+                String.format(Locale.getDefault(), "出生日期：%s", birthDate));
+        binding.tvArchiveLineContact.setText(
+                String.format(Locale.getDefault(), "健康分：%d", healthScore));
+        binding.tvVisitCount.setText(String.valueOf(visitData.size()));
+        binding.tvReportCount.setText(String.valueOf(reportData.size()));
+        binding.tvPrescriptionCount.setText(
+                String.format(Locale.getDefault(), "用药方案 %d 项", prescriptionData.size()));
+    }
+
+    private String formatGender(int gender) {
+        if (gender == 1) {
+            return "男";
+        }
+        if (gender == 2) {
+            return "女";
+        }
+        return "未填";
     }
 
     private void setupViewPager() {
@@ -126,14 +163,14 @@ public class HealthArchiveFragment extends Fragment {
         tabLayoutMediator = new TabLayoutMediator(binding.tabLayout, binding.viewPager,
                 (tab, position) -> {
                     switch (position) {
+                        case TAB_MEDICAL_RECORDS:
+                            tab.setText("我的就诊记录");
+                            break;
                         case TAB_REPORTS:
-                            tab.setText(R.string.tab_reports);
+                            tab.setText("检查报告单");
                             break;
                         case TAB_PRESCRIPTIONS:
-                            tab.setText(R.string.tab_prescriptions);
-                            break;
-                        case TAB_MEDICAL_RECORDS:
-                            tab.setText(R.string.tab_medical_records);
+                            tab.setText("用药方案");
                             break;
                     }
                 });
@@ -149,8 +186,6 @@ public class HealthArchiveFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-    // ==================== ViewPager2 Page Adapter ====================
 
     private class TabPageAdapter extends RecyclerView.Adapter<TabPageAdapter.PageViewHolder> {
 
@@ -191,37 +226,24 @@ public class HealthArchiveFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull PageViewHolder holder, int position) {
             switch (position) {
+                case TAB_MEDICAL_RECORDS:
+                    bindPage(holder, visitAdapter, visitData.isEmpty());
+                    break;
                 case TAB_REPORTS:
-                    holder.recyclerView.setAdapter(reportAdapter);
-                    if (reportData.isEmpty()) {
-                        holder.recyclerView.setVisibility(View.GONE);
-                        holder.emptyView.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.recyclerView.setVisibility(View.VISIBLE);
-                        holder.emptyView.setVisibility(View.GONE);
-                    }
+                    bindPage(holder, reportAdapter, reportData.isEmpty());
                     break;
                 case TAB_PRESCRIPTIONS:
-                    holder.recyclerView.setAdapter(prescriptionAdapter);
-                    if (prescriptionData.isEmpty()) {
-                        holder.recyclerView.setVisibility(View.GONE);
-                        holder.emptyView.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.recyclerView.setVisibility(View.VISIBLE);
-                        holder.emptyView.setVisibility(View.GONE);
-                    }
-                    break;
-                case TAB_MEDICAL_RECORDS:
-                    holder.recyclerView.setAdapter(visitAdapter);
-                    if (visitData.isEmpty()) {
-                        holder.recyclerView.setVisibility(View.GONE);
-                        holder.emptyView.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.recyclerView.setVisibility(View.VISIBLE);
-                        holder.emptyView.setVisibility(View.GONE);
-                    }
+                    bindPage(holder, prescriptionAdapter, prescriptionData.isEmpty());
                     break;
             }
+        }
+
+        private void bindPage(@NonNull PageViewHolder holder,
+                              RecyclerView.Adapter<?> adapter,
+                              boolean empty) {
+            holder.recyclerView.setAdapter(adapter);
+            holder.recyclerView.setVisibility(empty ? View.GONE : View.VISIBLE);
+            holder.emptyView.setVisibility(empty ? View.VISIBLE : View.GONE);
         }
 
         @Override
@@ -240,8 +262,6 @@ public class HealthArchiveFragment extends Fragment {
             }
         }
     }
-
-    // ==================== Inner Adapters ====================
 
     private class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder> {
 

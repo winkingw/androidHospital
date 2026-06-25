@@ -29,7 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "serene_health.db";
 
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 3;
 
     private static volatile DBHelper instance;
 
@@ -91,6 +91,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "    gender        INTEGER,\n"
                 + "    birth_date    TEXT,\n"
                 + "    id_card_no    TEXT    UNIQUE,\n"
+                + "    id_card_front_uri TEXT,\n"
+                + "    id_card_back_uri  TEXT,\n"
+                + "    real_name_verified INTEGER DEFAULT 0,\n"
                 + "    health_score  INTEGER,\n"
                 + "    member_level  TEXT    DEFAULT '普通会员',\n"
                 + "    create_time   TEXT    NOT NULL DEFAULT (datetime('now','localtime')),\n"
@@ -335,6 +338,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE t_user ADD COLUMN real_name_verified INTEGER DEFAULT 0");
+            db.execSQL("UPDATE t_user SET real_name_verified = 1 "
+                    + "WHERE id_card_no IS NOT NULL AND TRIM(id_card_no) != ''");
+            db.execSQL("UPDATE t_admin_user SET username = 'zhangjianguo' WHERE username = 'doc01'");
+            db.execSQL("UPDATE t_admin_user SET username = 'wangzhiqiang' WHERE username = 'doc02'");
+        }
+        if (oldVersion < 3) {
+            db.execSQL("ALTER TABLE t_user ADD COLUMN id_card_front_uri TEXT");
+            db.execSQL("ALTER TABLE t_user ADD COLUMN id_card_back_uri TEXT");
+            db.execSQL("UPDATE t_admin_user SET username = 'zhangjianguo' WHERE username = 'doc01'");
+            db.execSQL("UPDATE t_admin_user SET username = 'wangzhiqiang' WHERE username = 'doc02'");
+        }
+
+        if (oldVersion < 3) {
+            return;
+        }
+
         // 按从表到主表的顺序删除，避免外键冲突
         db.execSQL("DROP TABLE IF EXISTS t_help_content");
         db.execSQL("DROP TABLE IF EXISTS t_symptom_department_rule");

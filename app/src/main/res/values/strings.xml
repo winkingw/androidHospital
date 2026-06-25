@@ -38,7 +38,7 @@
     <!-- 首页 -->
     <string name="home_title">Serene Health</string>
     <string name="home_search_hint">搜索科室或症状…</string>
-    <string name="home_service">快速服务</string>
+    <string name="home_service">服务</string>
     <string name="home_quick_entry">快捷入口</string>
     <string name="home_department">科室挂号</string>
     <string name="home_ai_guide">智能导诊</string>
@@ -61,7 +61,7 @@
     <string name="home_show_qrcode">出示二维码</string>
 
     <!-- 新首页 - 快速服务 -->
-    <string name="home_quick_service">快速服务</string>
+    <string name="home_quick_service">服务</string>
     <string name="home_dept_subtitle">在线挂号/查看医生</string>
     <string name="home_payment_subtitle">医保统筹/门诊结算</string>
     <string name="home_quick_appointment">快速预约</string>
@@ -81,18 +81,6 @@
     <string name="home_health_lecture">健康讲堂</string>
     <string name="home_health_knowledge">健康知识科普</string>
     <string name="home_view_now">立即查看</string>
-
-    <!-- 新首页 - 常用服务 -->
-    <string name="home_common_service">常用服务</string>
-    <string name="home_check_appointment">检查预约</string>
-    <string name="home_report_query">报告查询</string>
-    <string name="home_report_query_tip">请在「健康档案」中查看报告</string>
-    <string name="home_online_consult">在线咨询</string>
-    <string name="home_dept_navigation">科室导航</string>
-    <string name="home_medicine_query">药品查询</string>
-    <string name="home_physical_exam_book">体检预约</string>
-    <string name="home_visit_guide">就诊指南</string>
-    <string name="home_health_assessment">健康测评</string>
 
     <!-- 通用 -->
     <string name="map_search_query">医院</string>
@@ -149,15 +137,28 @@
     <string name="no_doctors_in_department">暂无医生信息</string>
     <string name="doctor_detail_developing">医生详情功能开发中</string>
 
-    <!-- 身份证核验 -->
-    <string name="id_verification_title">身份证核验</string>
+    <!-- 实名认证 -->
+    <string name="id_verification_title">实名认证</string>
+    <string name="id_real_name_hint">请输入姓名</string>
+    <string name="id_card_no_hint">请输入身份证号</string>
     <string name="id_front_side">身份证正面</string>
     <string name="id_back_side">身份证反面</string>
-    <string name="upload_id_photo">上传身份证照片</string>
+    <string name="upload_id_photo">提交实名认证</string>
     <string name="id_status_pending">待审核</string>
     <string name="id_status_reviewing">审核中…</string>
-    <string name="id_status_approved">审核通过</string>
+    <string name="id_status_approved">已实名</string>
     <string name="id_tap_to_upload">点击上传</string>
+    <string name="id_front_selected">身份证正面已选择</string>
+    <string name="id_back_selected">身份证反面已选择</string>
+    <string name="id_already_verified">实名认证已通过，无需重新上传</string>
+    <string name="id_front_photo_selected">已选择正面照片</string>
+    <string name="id_back_photo_selected">已选择反面照片</string>
+    <string name="id_submitted_reviewing">已提交实名认证，请耐心等待</string>
+    <string name="id_name_required">请输入姓名</string>
+    <string name="id_card_required">请输入身份证号</string>
+    <string name="id_photo_required">请先上传身份证正反面照片</string>
+    <string name="id_verified_success">实名认证通过！</string>
+    <string name="appointment_need_real_name">未实名不可预约</string>
 
     <!-- 医生详情与排班 -->
     <string name="doctor_detail_title">医生详情</string>
@@ -196,7 +197,7 @@
     <string name="profile_title">个人中心</string>
     <string name="profile_appointment_record">预约记录</string>
     <string name="profile_medical_card">医保卡</string>
-    <string name="profile_id_verification">身份证核验</string>
+    <string name="profile_id_verification">实名认证</string>
     <string name="profile_feedback">满意度评价</string>
     <string name="profile_suggestion">意见反馈</string>
     <string name="profile_help">使用帮助</string>

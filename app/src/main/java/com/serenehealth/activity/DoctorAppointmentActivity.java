@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.serenehealth.adapter.AdminAppointmentAdapter;
+import com.serenehealth.bean.AdminUser;
+import com.serenehealth.bean.Department;
+import com.serenehealth.bean.Doctor;
 import com.serenehealth.bean.DoctorAppointmentDTO;
 import com.serenehealth.databinding.ActivityDoctorAppointmentBinding;
 import com.serenehealth.db.DBHelper;
@@ -35,6 +38,7 @@ public class DoctorAppointmentActivity extends AppCompatActivity {
         }
 
         initData(doctorId);
+        loadDoctorHeader(doctorId);
         setListeners();
     }
 
@@ -49,12 +53,33 @@ public class DoctorAppointmentActivity extends AppCompatActivity {
         } else {
             binding.rvAppointmentList.setVisibility(View.VISIBLE);
             binding.layoutEmpty.setVisibility(View.GONE);
-            adapter = new AdminAppointmentAdapter(appointments);
+            adapter = new AdminAppointmentAdapter(appointments, dbHelper);
             binding.rvAppointmentList.setAdapter(adapter);
         }
     }
 
     private void setListeners() {
         binding.btnBack.setOnClickListener(v -> finish());
+    }
+
+    private void loadDoctorHeader(long doctorId) {
+        Doctor doctor = dbHelper.getDoctorDao().queryDoctorById(doctorId);
+        AdminUser account = dbHelper.getAdminUserDao().queryByDoctorId(doctorId);
+        if (doctor == null) {
+            binding.tvDoctorName.setText("医生账号");
+            binding.tvDoctorDepartment.setText("未找到医生信息");
+            binding.tvDoctorAccount.setText("DOCTOR");
+            return;
+        }
+
+        Department department = dbHelper.getDepartmentDao()
+                .queryDepartmentById(doctor.getDepartmentId());
+        String departmentName = department != null ? department.getDeptName() : "";
+        String title = doctor.getTitle() != null ? doctor.getTitle() : "";
+        String username = account != null ? account.getUsername() : "";
+
+        binding.tvDoctorName.setText(doctor.getDoctorName());
+        binding.tvDoctorDepartment.setText(departmentName + "  " + title);
+        binding.tvDoctorAccount.setText(username.isEmpty() ? "DOCTOR" : username);
     }
 }
