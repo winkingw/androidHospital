@@ -243,6 +243,7 @@ public class ManageScheduleActivity extends AppCompatActivity {
     }
 
     private void cancelExistingAndRegenerate(long doctorId) {
+        String clinicRoom = resolveDefaultClinicRoom(doctorId);
         // Delete existing schedules for the next 7 days (physically remove rows
         // so the UNIQUE(doctor_id, schedule_date, period) constraint won't block
         // the subsequent insert).
@@ -256,10 +257,14 @@ public class ManageScheduleActivity extends AppCompatActivity {
                 dbHelper.getDoctorScheduleDao().deleteSchedule(s.getId());
             }
         }
-        generateSchedules(doctorId);
+        generateSchedules(doctorId, clinicRoom);
     }
 
     private void generateSchedules(long doctorId) {
+        generateSchedules(doctorId, resolveDefaultClinicRoom(doctorId));
+    }
+
+    private void generateSchedules(long doctorId, String clinicRoom) {
         int count = 0;
         for (int day = 1; day <= 7; day++) {
             Calendar cal = Calendar.getInstance();
@@ -273,6 +278,7 @@ public class ManageScheduleActivity extends AppCompatActivity {
             morning.setPeriod("MORNING");
             morning.setStartTime("08:00:00");
             morning.setEndTime("12:00:00");
+            morning.setClinicRoom(clinicRoom);
             morning.setScheduleStatus(1);
             long morningId = dbHelper.getDoctorScheduleDao().insertSchedule(morning);
             if (morningId != -1) {
@@ -287,6 +293,7 @@ public class ManageScheduleActivity extends AppCompatActivity {
             afternoon.setPeriod("AFTERNOON");
             afternoon.setStartTime("13:00:00");
             afternoon.setEndTime("17:00:00");
+            afternoon.setClinicRoom(clinicRoom);
             afternoon.setScheduleStatus(1);
             long afternoonId = dbHelper.getDoctorScheduleDao().insertSchedule(afternoon);
             if (afternoonId != -1) {
@@ -298,6 +305,14 @@ public class ManageScheduleActivity extends AppCompatActivity {
         Toast.makeText(this, "已生成 " + count + " 条排班记录", Toast.LENGTH_SHORT).show();
         // Refresh the schedule list
         loadSchedules(doctorId);
+    }
+
+    private String resolveDefaultClinicRoom(long doctorId) {
+        String clinicRoom = dbHelper.getDoctorScheduleDao().queryLatestClinicRoom(doctorId);
+        if (clinicRoom != null && !clinicRoom.trim().isEmpty()) {
+            return clinicRoom;
+        }
+        return "B栋" + ((doctorId % 5) + 1) + "楼 诊室" + (doctorId % 10 + 1);
     }
 
     // ==================== Schedule Slots Dialog ====================
@@ -422,7 +437,7 @@ public class ManageScheduleActivity extends AppCompatActivity {
 
     private void showCancelScheduleDialog(DoctorSchedule schedule) {
         if (schedule.getScheduleStatus() == 0) {
-            Toast.makeText(this, "该排班已停诊", Toast.LENGTH_SHORT).show();
+            showRestoreScheduleDialog(schedule);
             return;
         }
 
@@ -434,6 +449,21 @@ public class ManageScheduleActivity extends AppCompatActivity {
                     dbHelper.getDoctorScheduleDao().cancelSchedule(schedule.getId());
                     Toast.makeText(this, "已停诊", Toast.LENGTH_SHORT).show();
                     // Refresh the list
+                    Doctor doctor = doctorList.get(binding.spDoctor.getSelectedItemPosition() - 1);
+                    loadSchedules(doctor.getId());
+                })
+                .setNegativeButton("取消", null)
+                .show();
+    }
+
+    private void showRestoreScheduleDialog(DoctorSchedule schedule) {
+        String periodText = "MORNING".equals(schedule.getPeriod()) ? "上午" : "下午";
+        new AlertDialog.Builder(this)
+                .setTitle("恢复出诊")
+                .setMessage("确定要恢复 " + schedule.getScheduleDate() + " " + periodText + " 的排班吗？")
+                .setPositiveButton("确认恢复", (dialog, which) -> {
+                    dbHelper.getDoctorScheduleDao().restoreSchedule(schedule.getId());
+                    Toast.makeText(this, "已恢复出诊", Toast.LENGTH_SHORT).show();
                     Doctor doctor = doctorList.get(binding.spDoctor.getSelectedItemPosition() - 1);
                     loadSchedules(doctor.getId());
                 })

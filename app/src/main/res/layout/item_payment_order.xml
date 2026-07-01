@@ -48,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
+            android:lineSpacingExtra="@dimen/line_spacing_small"
             android:textColor="@color/on_surface_variant"
             android:textSize="@dimen/text_size_body" />
 

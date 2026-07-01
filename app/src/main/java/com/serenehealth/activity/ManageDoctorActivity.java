@@ -132,7 +132,11 @@ public class ManageDoctorActivity extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT * FROM t_doctor ORDER BY sort_no ASC", null);
+            cursor = db.rawQuery(
+                    "SELECT * FROM t_doctor "
+                            + "GROUP BY department_id, doctor_name, title, gender "
+                            + "ORDER BY sort_no ASC, id ASC",
+                    null);
             while (cursor.moveToNext()) {
                 list.add(cursorToDoctor(cursor));
             }

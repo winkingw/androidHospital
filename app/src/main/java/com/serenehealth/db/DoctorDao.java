@@ -26,7 +26,11 @@ public class DoctorDao {
         List<Doctor> list = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT * FROM t_doctor WHERE department_id = ? ORDER BY sort_no ASC",
+            cursor = db.rawQuery(
+                    "SELECT * FROM t_doctor "
+                            + "WHERE department_id = ? AND status = 1 "
+                            + "GROUP BY department_id, doctor_name, title, gender "
+                            + "ORDER BY sort_no ASC, id ASC",
                     new String[]{String.valueOf(deptId)});
             while (cursor.moveToNext()) {
                 list.add(cursorToDoctor(cursor));
@@ -65,7 +69,11 @@ public class DoctorDao {
         List<Doctor> list = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT * FROM t_doctor WHERE doctor_name LIKE ? AND status = 1",
+            cursor = db.rawQuery(
+                    "SELECT * FROM t_doctor "
+                            + "WHERE doctor_name LIKE ? AND status = 1 "
+                            + "GROUP BY department_id, doctor_name, title, gender "
+                            + "ORDER BY sort_no ASC, id ASC",
                     new String[]{"%" + keyword + "%"});
             while (cursor.moveToNext()) {
                 list.add(cursorToDoctor(cursor));

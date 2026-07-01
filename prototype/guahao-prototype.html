@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>预约挂号 - 原型预览</title>
+<style>
+  :root {
+    --primary: #00478D;
+    --primary-container: #005EB8;
+    --on-primary: #FFFFFF;
+    --surface: #FAF8FF;
+    --surface-container-lowest: #FFFFFF;
+    --surface-container: #EAEDFF;
+    --on-surface: #131B2E;
+    --on-surface-variant: #424752;
+    --outline-variant: #C2C6D4;
+    --outline: #727783;
+    --error: #BA1A1A;
+    --available: #2E7D32;
+    --card-radius: 16px;
+    --chip-radius: 999px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.06);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    background: #E8ECF2; display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; padding: 20px;
+  }
+  .phone {
+    width: 390px; height: 844px; background: var(--surface);
+    border-radius: 32px; overflow: hidden; position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .screen { display: none; height: 100%; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  .topbar {
+    background: #FFF; padding: 14px 16px; display: flex;
+    align-items: center; gap: 12px; border-bottom: 1px solid var(--outline-variant);
+    min-height: 56px; flex-shrink: 0;
+  }
+  .topbar .back { width: 28px; height: 28px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; color: var(--on-surface); }
+  .topbar .title { font-size: 18px; font-weight: 700; color: var(--on-surface); }
+  .scroll { flex: 1; overflow-y: auto; padding: 12px 16px; }
+  .search-bar { background: #FFF; padding: 10px 16px; border-bottom: 1px solid var(--outline-variant); }
+  .search-input { width: 100%; padding: 10px 14px; border: 1px solid var(--outline-variant); border-radius: 8px; font-size: 14px; background: var(--surface); outline: none; }
+  .search-input:focus { border-color: var(--primary-container); }
+
+  .filter-tabs { display: flex; gap: 8px; padding: 12px 16px; background: #FFF; border-bottom: 1px solid var(--outline-variant); }
+  .filter-tab { padding: 6px 16px; border-radius: var(--chip-radius); font-size: 13px; cursor: pointer; border: 1px solid var(--outline-variant); background: var(--surface-container-lowest); color: var(--on-surface-variant); transition: all 0.15s; }
+  .filter-tab.active { background: var(--primary-container); color: #FFF; border-color: var(--primary-container); }
+
+  /* Dept card */
+  .dept-card { background: #FFF; border-radius: var(--card-radius); padding: 16px; margin-bottom: 10px; box-shadow: var(--shadow); border: 1px solid var(--outline-variant); cursor: pointer; transition: all 0.15s; display: flex; justify-content: space-between; align-items: center; }
+  .dept-card:hover { border-color: var(--primary-container); }
+  .dept-card .dept-name { font-size: 17px; font-weight: 700; color: var(--on-surface); margin-bottom: 4px; }
+  .dept-card .dept-desc { font-size: 13px; color: var(--on-surface-variant); }
+  .dept-card .arrow { font-size: 16px; color: var(--outline); flex-shrink: 0; margin-left: 8px; }
+
+  /* Doctor card */
+  .doctor-card { background: #FFF; border-radius: var(--card-radius); padding: 16px; margin-bottom: 10px; box-shadow: var(--shadow); border: 1px solid var(--outline-variant); }
+  .doctor-card .row-top { display: flex; gap: 12px; }
+  .doctor-card .avatar { width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0; background: #E3E8F0; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--primary-container); }
+  .doctor-card .info { flex: 1; }
+  .doctor-card .name-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .doctor-card .name { font-size: 17px; font-weight: 700; color: var(--on-surface); }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: var(--chip-radius); font-weight: 600; }
+  .badge-primary { background: rgba(0,94,184,0.1); color: var(--primary-container); }
+  .badge-outline { background: #F5F5F5; color: var(--on-surface-variant); border: 1px solid var(--outline-variant); }
+  .doctor-card .dept-text { font-size: 13px; color: var(--on-surface-variant); margin-bottom: 4px; }
+  .doctor-card .skill { font-size: 13px; color: var(--on-surface); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .doctor-card .skill b { color: var(--on-surface-variant); font-weight: 500; }
+  .doctor-card .row-bottom { display: flex; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--outline-variant); justify-content: flex-end; }
+  .btn-sm { padding: 8px 20px; border-radius: var(--chip-radius); font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; }
+  .btn-sm.available { background: var(--primary-container); color: #FFF; }
+  .btn-sm.full { background: #F5F5F5; color: #999; cursor: default; }
+  .btn-sm.available:hover { opacity: 0.85; }
+
+  /* Doctor info card */
+  .info-card { background: #FFF; border-radius: var(--card-radius); padding: 20px; margin-bottom: 10px; box-shadow: var(--shadow); display: flex; gap: 16px; align-items: flex-start; }
+  .info-card .avatar-lg { width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0; background: #E3E8F0; display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--primary-container); }
+  .info-card .detail { flex: 1; }
+  .info-card .detail .name-lg { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .info-card .detail .meta { font-size: 13px; color: var(--on-surface-variant); margin-bottom: 6px; }
+
+  .tab-bar { display: flex; background: #FFF; border-bottom: 1px solid var(--outline-variant); flex-shrink: 0; }
+  .tab-item { flex: 1; text-align: center; padding: 14px 0; font-size: 15px; font-weight: 600; color: var(--on-surface-variant); cursor: pointer; position: relative; transition: color 0.15s; }
+  .tab-item.active { color: var(--primary-container); }
+  .tab-item.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 32px; height: 3px; border-radius: 2px; background: var(--primary-container); }
+
+  .intro-block { background: #FFF; border-radius: var(--card-radius); padding: 16px; box-shadow: var(--shadow); }
+  .intro-block h4 { font-size: 15px; margin-bottom: 8px; color: var(--on-surface); }
+  .intro-block p { font-size: 14px; color: var(--on-surface-variant); line-height: 1.7; }
+
+  /* Date chips */
+  .date-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0; }
+  .date-chip { min-width: 62px; text-align: center; padding: 10px 10px; border-radius: 12px; cursor: pointer; font-size: 12px; line-height: 1.5; transition: all 0.15s; border: 1px solid var(--outline-variant); background: #FFF; flex-shrink: 0; }
+  .date-chip .day { font-size: 15px; font-weight: 700; }
+  .date-chip .week { font-size: 11px; color: var(--on-surface-variant); }
+  .date-chip .st { font-size: 10px; margin-top: 2px; }
+  .date-chip .st.has { color: var(--available); }
+  .date-chip .st.none { color: #999; }
+  .date-chip.active { background: var(--primary-container); color: #FFF; border-color: var(--primary-container); }
+  .date-chip.active .week, .date-chip.active .st { color: rgba(255,255,255,0.8); }
+
+  /* Period header */
+  .period-header { font-size: 15px; font-weight: 700; color: var(--primary-container); margin: 14px 0 8px 0; padding-left: 4px; }
+
+  /* Slot grid */
+  .slot-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .slot-chip { width: calc(33.33% - 6px); background: #FFF; border-radius: 10px; padding: 10px 8px; text-align: center; cursor: pointer; border: 1.5px solid var(--outline-variant); transition: all 0.15s; }
+  .slot-chip .slot-time { font-size: 13px; font-weight: 600; color: var(--on-surface); margin-bottom: 3px; }
+  .slot-chip .slot-info { font-size: 11px; color: var(--available); }
+  .slot-chip.available:hover { border-color: var(--primary-container); box-shadow: var(--shadow); }
+  .slot-chip.available { border-color: rgba(0,94,184,0.4); }
+  .slot-chip.full { background: #F9F9F9; color: #BBB; cursor: default; border-color: var(--outline-variant); }
+  .slot-chip.full .slot-time { color: #BBB; }
+  .slot-chip.full .slot-info { color: #BBB; }
+
+  /* Confirm */
+  .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--outline-variant); }
+  .info-row .label { font-size: 14px; color: var(--on-surface-variant); }
+  .info-row .value { font-size: 14px; color: var(--on-surface); font-weight: 500; text-align: right; }
+  .price { font-size: 22px; font-weight: 700; color: var(--primary-container); }
+  .btn-confirm { width: 100%; padding: 14px; background: var(--primary-container); color: #FFF; border: none; border-radius: var(--card-radius); font-size: 17px; font-weight: 700; cursor: pointer; margin-top: 8px; }
+  .btn-confirm:hover { opacity: 0.9; }
+  .btn-confirm:disabled { background: #999; cursor: not-allowed; }
+
+  .success-center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; }
+  .success-icon { width: 72px; height: 72px; border-radius: 50%; background: #E8F5E9; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+  .success-title { font-size: 22px; font-weight: 700; color: var(--on-surface); }
+  .success-no { font-size: 14px; color: var(--on-surface-variant); background: #F5F5F5; padding: 6px 16px; border-radius: var(--chip-radius); }
+  .success-fee { font-size: 28px; font-weight: 700; color: var(--primary-container); }
+  .success-hint { font-size: 13px; color: var(--on-surface-variant); text-align: center; }
+
+  .nav { display: flex; justify-content: center; gap: 10px; padding: 10px 16px; flex-wrap: wrap; background: #FFF; border-top: 1px solid var(--outline-variant); flex-shrink: 0; }
+  .nav button { padding: 6px 14px; border: 1px solid var(--primary-container); background: #FFF; color: var(--primary-container); border-radius: var(--chip-radius); font-size: 12px; cursor: pointer; font-weight: 600; }
+  .nav button:hover { background: var(--primary-container); color: #FFF; }
+  .nav-label { font-size: 11px; color: var(--on-surface-variant); width: 100%; text-align: center; }
+  .step-flow { display: flex; align-items: center; gap: 6px; padding: 6px 16px; background: #F8F9FB; border-bottom: 1px solid var(--outline-variant); flex-shrink: 0; overflow-x: auto; }
+  .step-item { font-size: 11px; color: var(--on-surface-variant); white-space: nowrap; }
+  .step-item.active { color: var(--primary-container); font-weight: 700; }
+  .step-arrow { font-size: 10px; color: var(--outline); }
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+
+  <!-- ======================== SCREEN 1: 科室列表 ======================== -->
+  <div class="screen active" id="scrDept">
+    <div class="topbar">
+      <span class="back" onclick="switchScreen('scrDept')">‹</span>
+      <span class="title">选择科室</span>
+    </div>
+    <div class="search-bar">
+      <input class="search-input" type="text" placeholder="搜索科室名称..." oninput="filterDepartments(this.value)">
+    </div>
+    <div class="scroll" id="deptList"></div>
+    <div class="step-flow">
+      <span class="step-item active">■ 选择科室</span><span class="step-arrow">→</span>
+      <span class="step-item">选择医生</span><span class="step-arrow">→</span>
+      <span class="step-item">确认时段</span><span class="step-arrow">→</span>
+      <span class="step-item">预约确认</span>
+    </div>
+    <div class="nav">
+      <button onclick="switchScreen('scrDoctor')">跳过科室 ›</button>
+    </div>
+  </div>
+
+  <!-- ======================== SCREEN 2: 医生列表 ======================== -->
+  <div class="screen" id="scrDoctor">
+    <div class="topbar">
+      <span class="back" onclick="switchScreen('scrDept')">‹</span>
+      <span class="title" id="doctorListTitle">选择医生</span>
+    </div>
+    <div class="search-bar">
+      <input class="search-input" type="text" placeholder="搜索医生姓名..." oninput="filterDoctors(this.value)">
+    </div>
+    <div class="filter-tabs">
+      <div class="filter-tab active" onclick="filterTitle('all', this)">全部</div>
+      <div class="filter-tab" onclick="filterTitle('主任医师', this)">主任医师</div>
+      <div class="filter-tab" onclick="filterTitle('副主任医师', this)">副主任医师</div>
+      <div class="filter-tab" onclick="filterTitle('主治医师', this)">主治医师</div>
+    </div>
+    <div class="scroll" id="doctorList"></div>
+    <div class="step-flow">
+      <span class="step-item">选择科室</span><span class="step-arrow">→</span>
+      <span class="step-item active">■ 选择医生</span><span class="step-arrow">→</span>
+      <span class="step-item">确认时段</span><span class="step-arrow">→</span>
+      <span class="step-item">预约确认</span>
+    </div>
+    <div class="nav">
+      <button onclick="switchScreen('scrDept')">‹ 科室列表</button>
+      <button onclick="goToDetail('张明远','主任医师','心血管内科','冠心病、高血压、心力衰竭、心律失常等心血管常见病及疑难危重症的诊治。',0)">进入医生详情 ›</button>
+    </div>
+  </div>
+
+  <!-- ======================== SCREEN 3: 医生详情+排班 ======================== -->
+  <div class="screen" id="scrDetail">
+    <div class="topbar">
+      <span class="back" onclick="switchScreen('scrDoctor')">‹</span>
+      <span class="title">医生详情</span>
+    </div>
+    <div class="info-card" style="margin:12px 16px;flex-shrink:0;">
+      <div class="avatar-lg">👨‍⚕️</div>
+      <div class="detail">
+        <div class="name-lg" id="detailName">张明远 <span class="badge badge-primary" style="display:inline-block;vertical-align:middle;margin-left:8px;">主任医师</span></div>
+        <div class="meta" id="detailDept">心血管内科</div>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <div class="tab-item active" onclick="switchTab('intro', this)">医生简介</div>
+      <div class="tab-item" onclick="switchTab('schedule', this)">出诊信息</div>
+    </div>
+    <div class="scroll" id="tabContent">
+      <div id="tabIntro">
+        <div class="intro-block" style="margin:12px 0;">
+          <h4>擅长领域</h4>
+          <p>冠心病、高血压、心力衰竭、心律失常等心血管常见病及疑难危重症的诊治。擅长冠状动脉介入治疗（PCI）、心脏起搏器植入、射频消融等心血管介入手术。</p>
+        </div>
+      </div>
+      <div id="tabSchedule" style="display:none;">
+        <div class="date-scroll" id="dateChips"></div>
+        <div id="slotContainer"></div>
+      </div>
+    </div>
+    <div class="step-flow">
+      <span class="step-item">选择科室</span><span class="step-arrow">→</span>
+      <span class="step-item">选择医生</span><span class="step-arrow">→</span>
+      <span class="step-item active">■ 确认时段</span><span class="step-arrow">→</span>
+      <span class="step-item">预约确认</span>
+    </div>
+    <div class="nav">
+      <button onclick="switchScreen('scrDoctor')">‹ 医生列表</button>
+      <button onclick="switchScreen('scrConfirm')">查看确认页 ›</button>
+    </div>
+  </div>
+
+  <!-- ======================== SCREEN 4: 预约确认 ======================== -->
+  <div class="screen" id="scrConfirm">
+    <div class="topbar">
+      <span class="back" onclick="switchScreen('scrDetail')">‹</span>
+      <span class="title">预约确认</span>
+    </div>
+    <div class="scroll">
+      <div class="info-card">
+        <div class="detail" style="width:100%;">
+          <div class="name-lg" style="margin-bottom:8px;">预约信息</div>
+          <div class="info-row"><span class="label">就诊科室</span><span class="value" id="cfmDept">心血管内科</span></div>
+          <div class="info-row"><span class="label">就诊医生</span><span class="value" id="cfmDoctor">张明远 主任医师</span></div>
+          <div class="info-row"><span class="label">就诊日期</span><span class="value" id="cfmDate">2026年06月26日 周四</span></div>
+          <div class="info-row"><span class="label">就诊时段</span><span class="value" id="cfmPeriod">下午 14:40-15:00</span></div>
+          <div class="info-row"><span class="label">诊室位置</span><span class="value" id="cfmRoom">门诊3楼 301诊室</span></div>
+          <div class="info-row" style="border-bottom:none;">
+            <span class="label">挂号费</span><span class="price" id="cfmFee">¥20.00</span>
+          </div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="detail" style="width:100%;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:16px;font-weight:700;">就诊人</span>
+            <span style="font-size:12px;color:var(--primary-container);cursor:pointer;">切换 ›</span>
+          </div>
+          <div style="margin-top:8px;">
+            <span style="font-size:17px;font-weight:600;">张三</span>
+            <span class="badge badge-primary" style="margin-left:8px;">男</span>
+          </div>
+          <div style="font-size:13px;color:var(--on-surface-variant);margin-top:4px;">身份证 210****8912</div>
+          <div style="font-size:13px;color:var(--on-surface-variant);margin-top:2px;">手机 138****5678</div>
+        </div>
+      </div>
+      <button class="btn-confirm" onclick="switchScreen('scrSuccess')">确认预约</button>
+    </div>
+    <div class="step-flow">
+      <span class="step-item">选择科室</span><span class="step-arrow">→</span>
+      <span class="step-item">选择医生</span><span class="step-arrow">→</span>
+      <span class="step-item">确认时段</span><span class="step-arrow">→</span>
+      <span class="step-item active">■ 预约确认</span>
+    </div>
+    <div class="nav">
+      <button onclick="switchScreen('scrDetail')">‹ 上一页</button>
+      <button onclick="switchScreen('scrSuccess')">模拟提交 ›</button>
+    </div>
+  </div>
+
+  <!-- ======================== SCREEN 5: 预约成功 ======================== -->
+  <div class="screen" id="scrSuccess">
+    <div class="topbar">
+      <span class="title">预约结果</span>
+    </div>
+    <div class="success-center">
+      <div class="success-icon">✓</div>
+      <div class="success-title">预约成功</div>
+      <div class="success-no">预约编号：APP20260625001</div>
+      <div style="font-size:14px;color:var(--on-surface-variant);">待支付金额</div>
+      <div class="success-fee">¥20.00</div>
+      <div class="success-hint">请于就诊当日按时到达医院<br>超时未支付将自动取消预约</div>
+      <button class="btn-confirm" style="width:auto;padding:12px 48px;margin-top:20px;" onclick="switchScreen('scrDept')">返回首页</button>
+    </div>
+    <div class="nav">
+      <span class="nav-label">全部流程结束</span>
+      <button onclick="switchScreen('scrDept')">回到开始</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// === Data ===
+const departments = [
+  { name:'心血管内科', desc:'冠心病、高血压、心力衰竭、心律失常等心血管疾病' },
+  { name:'神经内科', desc:'脑血管病、癫痫、帕金森病、头痛眩晕等神经系统疾病' },
+  { name:'消化内科', desc:'胃炎、胃溃疡、肝炎、胰腺炎、肠炎等消化系统疾病' },
+  { name:'呼吸内科', desc:'肺炎、哮喘、慢阻肺、肺癌等呼吸系统疾病' },
+  { name:'骨科', desc:'骨折、关节炎、脊柱病变、运动损伤等骨骼肌肉疾病' },
+  { name:'内分泌科', desc:'糖尿病、甲状腺疾病、痛风、骨质疏松等代谢疾病' },
+  { name:'皮肤科', desc:'湿疹、银屑病、痤疮、过敏等皮肤疾病' },
+  { name:'眼科', desc:'近视、白内障、青光眼、眼底病变等眼科疾病' },
+  { name:'耳鼻喉科', desc:'鼻炎、中耳炎、咽喉炎、听力障碍等五官科疾病' },
+  { name:'妇产科', desc:'妇科炎症、月经不调、产前检查、产后康复等' },
+  { name:'儿科', desc:'儿童常见病、生长发育、疫苗接种、新生儿护理等' },
+  { name:'口腔科', desc:'龋齿、牙周炎、口腔溃疡、牙齿矫正等口腔疾病' },
+];
+
+const doctors = [
+  { name:'张明远', title:'主任医师', dept:'心血管内科', skill:'冠心病、高血压、心力衰竭、心律失常等心血管常见病及疑难危重症的诊治，擅长冠状动脉介入治疗。', hasSlot:true, avatar:0 },
+  { name:'李慧芳', title:'主任医师', dept:'心血管内科', skill:'女性心血管疾病、妊娠期心脏病、先天性心脏病介入治疗，对复杂病例有丰富经验。', hasSlot:true, avatar:1 },
+  { name:'王志强', title:'副主任医师', dept:'心血管内科', skill:'冠心病介入治疗（PCI）、急性心肌梗死急诊介入、血管内超声（IVUS）指导下精准介入。', hasSlot:true, avatar:0 },
+  { name:'陈丽华', title:'副主任医师', dept:'心血管内科', skill:'心律失常射频消融、心脏起搏器植入、心脏再同步化治疗（CRT）。', hasSlot:false, avatar:1 },
+  { name:'刘建国', title:'主治医师', dept:'心血管内科', skill:'高血压病个体化治疗、继发性高血压筛查、难治性高血压综合管理。', hasSlot:true, avatar:0 },
+  { name:'赵晓雯', title:'主治医师', dept:'心血管内科', skill:'心力衰竭规范化治疗、心脏康复、心脏超声诊断，对扩张型心肌病有深入研究。', hasSlot:false, avatar:1 },
+];
+
+const avatarEmoji = ['👨‍⚕️','👩‍⚕️'];
+
+const days = [
+  {date:'06-25',week:'周三',has:true},
+  {date:'06-26',week:'周四',has:true},
+  {date:'06-27',week:'周五',has:true},
+  {date:'06-28',week:'周六',has:false},
+  {date:'06-29',week:'周日',has:false},
+  {date:'06-30',week:'周一',has:true},
+  {date:'07-01',week:'周二',has:true},
+];
+
+// 20-min slots: [time, remain, fee]
+const mockSlots = {
+  morning: { label:'上午', timeRange:'08:00-12:00', room:'门诊3楼 301诊室', slots:[
+    ['08:00-08:20',1,20], ['08:20-08:40',1,20], ['08:40-09:00',0,20], ['09:00-09:20',1,20], ['09:20-09:40',1,20], ['09:40-10:00',0,20],
+    ['10:00-10:20',1,20], ['10:20-10:40',0,20], ['10:40-11:00',1,20], ['11:00-11:20',0,20], ['11:20-11:40',1,20], ['11:40-12:00',0,20]
+  ]},
+  afternoon: { label:'下午', timeRange:'13:00-17:00', room:'门诊3楼 301诊室', slots:[
+    ['13:00-13:20',0,20], ['13:20-13:40',0,20], ['13:40-14:00',0,20], ['14:00-14:20',0,20], ['14:20-14:40',0,20], ['14:40-15:00',1,20],
+    ['15:00-15:20',0,20], ['15:20-15:40',0,20], ['15:40-16:00',0,20], ['16:00-16:20',0,20], ['16:20-16:40',0,20], ['16:40-17:00',0,20]
+  ]},
+  evening: { label:'晚上', timeRange:'18:00-20:00', room:'急诊楼 102诊室', slots:[
+    ['18:00-18:20',1,30], ['18:20-18:40',1,30], ['18:40-19:00',1,30], ['19:00-19:20',0,30], ['19:20-19:40',1,30], ['19:40-20:00',1,30]
+  ]}
+};
+
+// === Department List ===
+let deptSearch = '';
+function renderDepartments() {
+  const list = document.getElementById('deptList');
+  const filtered = departments.filter(d => !deptSearch || d.name.includes(deptSearch));
+  list.innerHTML = filtered.length === 0
+    ? '<div style="text-align:center;padding:60px 0;color:var(--on-surface-variant);">暂无匹配科室</div>'
+    : filtered.map(d => `
+    <div class="dept-card" onclick="goToDoctorList('${d.name}')">
+      <div>
+        <div class="dept-name">${d.name}</div>
+        <div class="dept-desc">${d.desc}</div>
+      </div>
+      <span class="arrow">›</span>
+    </div>
+  `).join('');
+}
+function filterDepartments(val) { deptSearch = val; renderDepartments(); }
+
+// === Doctor List ===
+let docFilter = 'all', docSearch = '';
+function renderDoctors() {
+  const list = document.getElementById('doctorList');
+  let f = doctors;
+  if (docFilter !== 'all') f = f.filter(d => d.title === docFilter);
+  if (docSearch) f = f.filter(d => d.name.includes(docSearch));
+  list.innerHTML = f.length === 0
+    ? '<div style="text-align:center;padding:60px 0;color:var(--on-surface-variant);">暂无匹配医生</div>'
+    : f.map(d => `
+    <div class="doctor-card">
+      <div class="row-top">
+        <div class="avatar">${avatarEmoji[d.avatar]}</div>
+        <div class="info">
+          <div class="name-row">
+            <span class="name">${d.name}</span>
+            <span class="badge ${d.title==='主任医师'?'badge-primary':'badge-outline'}">${d.title}</span>
+          </div>
+          <div class="dept-text">${d.dept}</div>
+          <div class="skill"><b>擅长：</b>${d.skill}</div>
+        </div>
+      </div>
+      <div class="row-bottom">
+        <button class="btn-sm ${d.hasSlot ? 'available' : 'full'}" onclick="event.stopPropagation();goToDetail('${d.name}','${d.title}','${d.dept}','${d.skill.replace(/'/g,"\\'")}',${d.avatar})">
+          ${d.hasSlot ? '有号' : '约满'}
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+function filterTitle(t, el) { docFilter = t; document.querySelectorAll('#scrDoctor .filter-tab').forEach(x => x.classList.remove('active')); el.classList.add('active'); renderDoctors(); }
+function filterDoctors(val) { docSearch = val; renderDoctors(); }
+
+// === Navigation ===
+function switchScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'scrDetail') initScheduleTab();
+}
+
+function goToDoctorList(deptName) {
+  document.getElementById('doctorListTitle').textContent = deptName + ' — 医生列表';
+  switchScreen('scrDoctor');
+}
+
+function goToDetail(name, title, dept, skill, avatar) {
+  document.getElementById('detailName').innerHTML = name + ' <span class="badge badge-primary" style="display:inline-block;vertical-align:middle;margin-left:8px;">'+title+'</span>';
+  document.getElementById('detailDept').textContent = dept;
+  document.getElementById('tabIntro').querySelector('p').textContent = skill;
+  document.getElementById('cfmDept').textContent = dept;
+  document.getElementById('cfmDoctor').textContent = name + ' ' + title;
+  switchScreen('scrDetail');
+  switchTab('intro', document.querySelector('#scrDetail .tab-item'));
+}
+
+// === Tab ===
+function switchTab(tab, el) {
+  document.querySelectorAll('#scrDetail .tab-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tabIntro').style.display = tab === 'intro' ? 'block' : 'none';
+  document.getElementById('tabSchedule').style.display = tab === 'schedule' ? 'block' : 'none';
+  if (tab === 'schedule') initScheduleTab();
+}
+
+// === Schedule with 20-min slots ===
+let selectedDateIndex = 0;
+function initScheduleTab() {
+  document.getElementById('dateChips').innerHTML = days.map((d,i) => `
+    <div class="date-chip ${i===selectedDateIndex?'active':''}" onclick="selectDate(${i})">
+      <div class="day">${d.date}</div>
+      <div class="week">${d.week}</div>
+      <div class="st ${d.has?'has':'none'}">${d.has?'有号':'约满'}</div>
+    </div>
+  `).join('');
+  renderSlots();
+}
+
+function selectDate(i) {
+  selectedDateIndex = i;
+  document.querySelectorAll('#scrDetail .date-chip').forEach((el, idx) => el.classList.toggle('active', idx===i));
+  renderSlots();
+}
+
+function renderSlots() {
+  const container = document.getElementById('slotContainer');
+  const day = days[selectedDateIndex];
+  if (!day.has) {
+    container.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--on-surface-variant);">该日期已约满</div>';
+    return;
+  }
+
+  let html = '';
+  ['morning','afternoon','evening'].forEach(key => {
+    const p = mockSlots[key];
+    html += '<div class="period-header">'+p.label+'（'+p.timeRange+'）<span style="font-size:12px;font-weight:400;color:var(--on-surface-variant);margin-left:6px;">'+p.room+'</span></div>';
+    html += '<div class="slot-grid">';
+    p.slots.forEach(s => {
+      const [time, remain, fee] = s;
+      const av = remain > 0;
+      html += '<div class="slot-chip '+(av?'available':'full')+'" '+
+        (av ? 'onclick="goToConfirmSlot(\''+time+'\',\''+p.room+'\','+fee+',\''+p.label+'\',\''+p.timeRange+'\')"' : '')+'>'+
+        '<div class="slot-time">'+time+'</div>'+
+        '<div class="slot-info">'+(av ? '¥'+fee+' 余'+remain : '已约')+'</div>'+
+        '</div>';
+    });
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function goToConfirmSlot(slotTime, room, fee, label, timeRange) {
+  document.getElementById('cfmPeriod').textContent = label + ' ' + slotTime;
+  document.getElementById('cfmRoom').textContent = room;
+  document.getElementById('cfmFee').textContent = '¥'+fee.toFixed(2);
+  const d = days[selectedDateIndex];
+  document.getElementById('cfmDate').textContent = '2026年'+d.date.replace('-','月')+'日 '+d.week;
+  switchScreen('scrConfirm');
+}
+
+// === Init ===
+renderDepartments();
+renderDoctors();
+</script>
+</body>
+</html>

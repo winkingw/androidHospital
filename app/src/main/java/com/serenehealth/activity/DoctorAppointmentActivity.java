@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.serenehealth.R;
 import com.serenehealth.adapter.AdminAppointmentAdapter;
 import com.serenehealth.bean.AdminUser;
 import com.serenehealth.bean.Department;
@@ -22,6 +24,7 @@ public class DoctorAppointmentActivity extends AppCompatActivity {
     private ActivityDoctorAppointmentBinding binding;
     private DBHelper dbHelper;
     private AdminAppointmentAdapter adapter;
+    private long doctorId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +33,7 @@ public class DoctorAppointmentActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         dbHelper = DBHelper.getInstance(this);
 
-        long doctorId = SPUtil.getAdminDoctorId();
+        doctorId = SPUtil.getAdminDoctorId();
         if (doctorId <= 0) {
             Toast.makeText(this, "未关联医生账号", Toast.LENGTH_SHORT).show();
             finish();
@@ -53,13 +56,33 @@ public class DoctorAppointmentActivity extends AppCompatActivity {
         } else {
             binding.rvAppointmentList.setVisibility(View.VISIBLE);
             binding.layoutEmpty.setVisibility(View.GONE);
-            adapter = new AdminAppointmentAdapter(appointments, dbHelper);
+            adapter = new AdminAppointmentAdapter(appointments, dbHelper, this::showMarkVisitedDialog);
             binding.rvAppointmentList.setAdapter(adapter);
         }
     }
 
     private void setListeners() {
         binding.btnBack.setOnClickListener(v -> finish());
+    }
+
+    private void showMarkVisitedDialog(DoctorAppointmentDTO appointment, int position) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.doctor_appt_mark_visited_title)
+                .setMessage(R.string.doctor_appt_mark_visited_message)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    int rows = dbHelper.getAppointmentDao()
+                            .completeDoctorAppointment(appointment.getId(), doctorId);
+                    if (rows > 0) {
+                        adapter.markVisited(position);
+                        Toast.makeText(this, R.string.doctor_appt_mark_visited_success,
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, R.string.doctor_appt_mark_visited_fail,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
     }
 
     private void loadDoctorHeader(long doctorId) {

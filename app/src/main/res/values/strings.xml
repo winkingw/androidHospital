@@ -21,7 +21,7 @@
     <string name="symptom_fever">发热</string>
     <string name="symptom_cough">咳嗽</string>
     <string name="symptom_abdominal_pain">腹痛</string>
-    <string name="symptom_rash">皮疹</string>a
+    <string name="symptom_rash">皮疹</string>
     <string name="symptom_joint_pain">关节痛</string>
 
     <!-- 消息中心 -->
@@ -164,6 +164,7 @@
     <string name="doctor_detail_title">医生详情</string>
     <string name="appointment_stub_info" formatted="false">预约挂号 (doctor=%s, source_id=%d)</string>
     <string name="doctor_detail_select_date">选择日期</string>
+    <string name="doctor_detail_no_intro">暂无简介</string>
     <string name="doctor_detail_no_schedule">暂无排班</string>
     <string name="doctor_detail_clinic_room">诊室：%s</string>
     <string name="doctor_detail_available">可约</string>
@@ -308,5 +309,10 @@
     <string name="doctor_appt_patient">患者</string>
     <string name="doctor_appt_schedule_format" formatted="false">%s  %s  号源%s-%s</string>
     <string name="doctor_appt_dept_clinic_format" formatted="false">%s  |  %s</string>
+    <string name="doctor_appt_mark_visited">已就诊</string>
+    <string name="doctor_appt_mark_visited_title">确认就诊状态</string>
+    <string name="doctor_appt_mark_visited_message">确定将该患者预约标记为已就诊吗？</string>
+    <string name="doctor_appt_mark_visited_success">已标记为已就诊</string>
+    <string name="doctor_appt_mark_visited_fail">操作失败，请刷新后重试</string>
 
 </resources>

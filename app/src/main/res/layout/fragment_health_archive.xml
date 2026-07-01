@@ -178,13 +178,6 @@
                 android:textColor="@color/on_surface"
                 android:textSize="@dimen/text_size_title"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="查看详情"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/text_size_body" />
         </LinearLayout>
 
         <LinearLayout

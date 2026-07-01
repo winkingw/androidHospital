@@ -97,6 +97,9 @@ public class MockDataUtil {
                 {"12", "许涛",   "1", "主任医师",   "医学博士，擅长糖尿病综合管理、甲状腺穿刺"},
         };
         for (String[] row : data) {
+            if (doctorExists(db, Long.parseLong(row[0]), row[1], row[3])) {
+                continue;
+            }
             ContentValues values = new ContentValues();
             values.put("department_id", Long.parseLong(row[0]));
             values.put("doctor_name", row[1]);
@@ -105,6 +108,17 @@ public class MockDataUtil {
             values.put("introduction", row[4]);
             values.put("status", 1);
             db.insert("t_doctor", null, values);
+        }
+    }
+
+    private static boolean doctorExists(SQLiteDatabase db, long departmentId, String doctorName, String title) {
+        Cursor cursor = db.rawQuery(
+                "SELECT 1 FROM t_doctor WHERE department_id = ? AND doctor_name = ? AND title = ? LIMIT 1",
+                new String[]{String.valueOf(departmentId), doctorName, title});
+        try {
+            return cursor.moveToFirst();
+        } finally {
+            cursor.close();
         }
     }
 
@@ -398,6 +412,11 @@ public class MockDataUtil {
                 {"疼痛科正式开诊",         "banner_new_department",   "NONE", null,                                         "4", "1"},
         };
         for (String[] row : data) {
+            int sortNo = Integer.parseInt(row[4]);
+            int status = Integer.parseInt(row[5]);
+            if (bannerExists(db, row[0], row[1], row[2], row[3], sortNo, status)) {
+                continue;
+            }
             ContentValues values = new ContentValues();
             values.put("title", row[0]);
             values.put("image_url", row[1]);
@@ -405,13 +424,37 @@ public class MockDataUtil {
             if (row[3] != null) {
                 values.put("jump_value", row[3]);
             }
-            values.put("sort_no", Integer.parseInt(row[4]));
-            values.put("status", Integer.parseInt(row[5]));
+            values.put("sort_no", sortNo);
+            values.put("status", status);
             db.insert("t_banner", null, values);
         }
     }
 
     // ==================== 12. 评价 ====================
+
+    private static boolean bannerExists(SQLiteDatabase db, String title, String imageUrl,
+                                        String jumpType, String jumpValue, int sortNo, int status) {
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(
+                    "SELECT 1 FROM t_banner WHERE title = ? AND image_url = ? "
+                            + "AND jump_type = ? AND COALESCE(jump_value, '') = ? "
+                            + "AND sort_no = ? AND status = ? LIMIT 1",
+                    new String[]{
+                            title,
+                            imageUrl,
+                            jumpType,
+                            jumpValue == null ? "" : jumpValue,
+                            String.valueOf(sortNo),
+                            String.valueOf(status)
+                    });
+            return cursor.moveToFirst();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
 
     private static void insertFeedbacks(DBHelper dbHelper) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -517,12 +560,30 @@ public class MockDataUtil {
                 {"月经不调", "7",  "月经问题建议妇产科"},
         };
         for (int i = 0; i < data.length; i++) {
+            long departmentId = Long.parseLong(data[i][1]);
+            if (symptomRuleExists(db, data[i][0], departmentId)) {
+                continue;
+            }
             ContentValues values = new ContentValues();
             values.put("symptom_keyword", data[i][0]);
-            values.put("department_id", Long.parseLong(data[i][1]));
+            values.put("department_id", departmentId);
             values.put("recommend_reason", data[i][2]);
             values.put("sort_no", i + 1);
             db.insert("t_symptom_department_rule", null, values);
+        }
+    }
+
+    private static boolean symptomRuleExists(SQLiteDatabase db, String symptomKeyword, long departmentId) {
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(
+                    "SELECT 1 FROM t_symptom_department_rule WHERE symptom_keyword = ? AND department_id = ? LIMIT 1",
+                    new String[]{symptomKeyword, String.valueOf(departmentId)});
+            return cursor.moveToFirst();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 

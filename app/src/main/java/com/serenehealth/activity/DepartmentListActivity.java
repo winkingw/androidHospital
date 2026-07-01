@@ -32,6 +32,7 @@ public class DepartmentListActivity extends AppCompatActivity {
     private DepartmentAdapter adapter;
     private final Handler searchHandler = new Handler(Looper.getMainLooper());
     private static final long SEARCH_DELAY_MS = 300;
+    private TextWatcher searchTextWatcher;
 
     // ==================== 3. 生命周期 ====================
     @Override
@@ -47,6 +48,9 @@ public class DepartmentListActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (binding != null && searchTextWatcher != null) {
+            binding.etSearch.removeTextChangedListener(searchTextWatcher);
+        }
         super.onDestroy();
         searchHandler.removeCallbacksAndMessages(null);
     }
@@ -83,7 +87,7 @@ public class DepartmentListActivity extends AppCompatActivity {
         });
 
         // 搜索框文字变化监听（防抖）
-        binding.etSearch.addTextChangedListener(new TextWatcher() {
+        searchTextWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -102,7 +106,8 @@ public class DepartmentListActivity extends AppCompatActivity {
                     }
                 }, SEARCH_DELAY_MS);
             }
-        });
+        };
+        binding.etSearch.addTextChangedListener(searchTextWatcher);
     }
 
     // ==================== 6. 业务方法 ====================

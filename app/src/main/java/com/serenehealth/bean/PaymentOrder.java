@@ -12,6 +12,14 @@ public class PaymentOrder {
     private String payTime;
     private String createTime;
     private String updateTime;
+    private String appointmentNo;
+    private String departmentName;
+    private String doctorName;
+    private String scheduleDate;
+    private String period;
+    private String clinicRoom;
+    private String slotStartTime;
+    private String slotEndTime;
 
     public PaymentOrder() {
     }
@@ -102,5 +110,69 @@ public class PaymentOrder {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getAppointmentNo() {
+        return appointmentNo;
+    }
+
+    public void setAppointmentNo(String appointmentNo) {
+        this.appointmentNo = appointmentNo;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+
+    public String getScheduleDate() {
+        return scheduleDate;
+    }
+
+    public void setScheduleDate(String scheduleDate) {
+        this.scheduleDate = scheduleDate;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public String getClinicRoom() {
+        return clinicRoom;
+    }
+
+    public void setClinicRoom(String clinicRoom) {
+        this.clinicRoom = clinicRoom;
+    }
+
+    public String getSlotStartTime() {
+        return slotStartTime;
+    }
+
+    public void setSlotStartTime(String slotStartTime) {
+        this.slotStartTime = slotStartTime;
+    }
+
+    public String getSlotEndTime() {
+        return slotEndTime;
+    }
+
+    public void setSlotEndTime(String slotEndTime) {
+        this.slotEndTime = slotEndTime;
     }
 }
