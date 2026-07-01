@@ -44,6 +44,7 @@ public class ManageBannerActivity extends AppCompatActivity {
 
         dbHelper = DBHelper.getInstance(this);
         bannerDao = dbHelper.getBannerDao();
+        bannerDao.deleteDuplicateBanners();
 
         initRecyclerView();
         loadBanners();

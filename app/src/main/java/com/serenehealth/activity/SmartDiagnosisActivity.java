@@ -25,7 +25,9 @@ import com.serenehealth.db.DBHelper;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SmartDiagnosisActivity extends AppCompatActivity {
 
@@ -131,17 +133,23 @@ public class SmartDiagnosisActivity extends AppCompatActivity {
      */
     private List<SmartDiagnosisResult> queryResults(String keyword) {
         List<SmartDiagnosisResult> results = new ArrayList<>();
+        Set<Long> addedDepartmentIds = new HashSet<>();
         List<SymptomDepartmentRule> rules = dbHelper.getSymptomDepartmentRuleDao()
                 .queryBySymptom(keyword);
 
         for (SymptomDepartmentRule rule : rules) {
+            long departmentId = rule.getDepartmentId();
+            if (addedDepartmentIds.contains(departmentId)) {
+                continue;
+            }
             Department department = dbHelper.getDepartmentDao()
-                    .queryDepartmentById(rule.getDepartmentId());
+                    .queryDepartmentById(departmentId);
             if (department != null) {
                 SmartDiagnosisResult result = new SmartDiagnosisResult();
                 result.rule = rule;
                 result.department = department;
                 results.add(result);
+                addedDepartmentIds.add(departmentId);
             }
         }
         return results;

@@ -255,7 +255,7 @@ public class DoctorDetailActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(introduction)) {
             binding.tvIntroContent.setText(introduction);
         } else {
-            binding.tvIntroContent.setText(R.string.doctor_detail_no_schedule);
+            binding.tvIntroContent.setText(R.string.doctor_detail_no_intro);
         }
     }
 
@@ -276,7 +276,7 @@ public class DoctorDetailActivity extends AppCompatActivity {
             public void run() {
                 // 查询排班
                 final List<DoctorSchedule> schedules = dbHelper.getDoctorScheduleDao()
-                        .querySchedulesByDoctor(doctor.getId(), queryDate);
+                        .queryActiveSchedulesByDoctor(doctor.getId(), queryDate);
 
                 // 查询每个排班的号源
                 final Map<Long, List<RegisterSource>> sourceMap = new HashMap<>();
@@ -324,35 +324,52 @@ public class DoctorDetailActivity extends AppCompatActivity {
         if (doctor == null) {
             return;
         }
-        if (!ensureCanBookAppointment()) {
-            return;
-        }
-        Intent intent = new Intent(this, AppointmentActivity.class);
-        intent.putExtra("source_id", source.getId());
-        intent.putExtra("doctor_id", doctor.getId());
-        intent.putExtra("doctor_name", doctor.getDoctorName());
-        intent.putExtra("department_name", departmentName);
-        intent.putExtra("schedule_date", schedule.getScheduleDate());
-        intent.putExtra("period", schedule.getPeriod());
-        intent.putExtra("clinic_room", schedule.getClinicRoom());
-        intent.putExtra("slot_time", source.getSlotStartTime() + "-" + source.getSlotEndTime());
-        intent.putExtra("register_fee", source.getRegisterFee());
-        startActivity(intent);
+        ensureCanBookAppointment(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(DoctorDetailActivity.this, AppointmentActivity.class);
+                intent.putExtra("source_id", source.getId());
+                intent.putExtra("doctor_id", doctor.getId());
+                intent.putExtra("doctor_name", doctor.getDoctorName());
+                intent.putExtra("department_name", departmentName);
+                intent.putExtra("schedule_date", schedule.getScheduleDate());
+                intent.putExtra("period", schedule.getPeriod());
+                intent.putExtra("clinic_room", schedule.getClinicRoom());
+                intent.putExtra("slot_time", source.getSlotStartTime() + "-" + source.getSlotEndTime());
+                intent.putExtra("register_fee", source.getRegisterFee());
+                startActivity(intent);
+            }
+        });
     }
 
-    private boolean ensureCanBookAppointment() {
+    private boolean ensureCanBookAppointment(final Runnable onVerified) {
         if (!SPUtil.isLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
             return false;
         }
-        long currentUserId = SPUtil.getCurrentUserId();
-        User user = dbHelper.getUserDao().queryUserById(currentUserId);
-        if (user != null && user.isRealNameVerified()) {
-            return true;
-        }
-        Intent intent = new Intent(this, IDVerificationActivity.class);
-        intent.putExtra("show_not_verified_dialog", true);
-        startActivity(intent);
+        final long currentUserId = SPUtil.getCurrentUserId();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                User user = dbHelper.getUserDao().queryUserById(currentUserId);
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!isFinishing()) {
+                            if (user != null && user.isRealNameVerified()) {
+                                if (onVerified != null) {
+                                    onVerified.run();
+                                }
+                            } else {
+                                Intent intent = new Intent(DoctorDetailActivity.this, IDVerificationActivity.class);
+                                intent.putExtra("show_not_verified_dialog", true);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
+            }
+        }).start();
         return false;
     }
 

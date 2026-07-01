@@ -21,10 +21,17 @@ import java.util.List;
 public class AdminAppointmentAdapter extends RecyclerView.Adapter<AdminAppointmentAdapter.ViewHolder> {
     private final List<DoctorAppointmentDTO> appointmentList;
     private final DBHelper dbHelper;
+    private final OnAppointmentActionListener actionListener;
 
     public AdminAppointmentAdapter(List<DoctorAppointmentDTO> appointmentList, DBHelper dbHelper) {
+        this(appointmentList, dbHelper, null);
+    }
+
+    public AdminAppointmentAdapter(List<DoctorAppointmentDTO> appointmentList, DBHelper dbHelper,
+                                   OnAppointmentActionListener actionListener) {
         this.appointmentList = appointmentList;
         this.dbHelper = dbHelper;
+        this.actionListener = actionListener;
     }
 
     @NonNull
@@ -64,6 +71,7 @@ public class AdminAppointmentAdapter extends RecyclerView.Adapter<AdminAppointme
         holder.binding.tvAppointmentNo.setText(
                 context.getString(R.string.appointment_no_prefix) + appt.getAppointmentNo());
 
+        bindActions(holder, appt);
         bindFeedback(holder, appt);
     }
 
@@ -104,6 +112,31 @@ public class AdminAppointmentAdapter extends RecyclerView.Adapter<AdminAppointme
         }
     }
 
+    private void bindActions(@NonNull ViewHolder holder, DoctorAppointmentDTO appt) {
+        boolean canMarkVisited = actionListener != null && "BOOKED".equals(appt.getAppointmentStatus());
+        holder.binding.btnMarkVisited.setVisibility(canMarkVisited ? View.VISIBLE : View.GONE);
+        if (!canMarkVisited) {
+            holder.binding.btnMarkVisited.setOnClickListener(null);
+            return;
+        }
+
+        holder.binding.btnMarkVisited.setOnClickListener(v -> {
+            int position = holder.getBindingAdapterPosition();
+            if (position == RecyclerView.NO_POSITION) {
+                return;
+            }
+            actionListener.onMarkVisited(appointmentList.get(position), position);
+        });
+    }
+
+    public void markVisited(int position) {
+        if (position < 0 || position >= appointmentList.size()) {
+            return;
+        }
+        appointmentList.get(position).setAppointmentStatus("VISITED");
+        notifyItemChanged(position);
+    }
+
     private void bindFeedback(@NonNull ViewHolder holder, DoctorAppointmentDTO appt) {
         Feedback feedback = dbHelper.getFeedbackDao().queryByAppointmentId(appt.getId());
         if (feedback == null) {
@@ -136,5 +169,9 @@ public class AdminAppointmentAdapter extends RecyclerView.Adapter<AdminAppointme
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    public interface OnAppointmentActionListener {
+        void onMarkVisited(DoctorAppointmentDTO appointment, int position);
     }
 }

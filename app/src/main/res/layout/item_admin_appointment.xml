@@ -121,6 +121,20 @@
             android:textColor="@color/on_surface_variant"
             android:textSize="@dimen/text_size_caption" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_mark_visited"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:text="@string/doctor_appt_mark_visited"
+            android:textAllCaps="false"
+            android:textColor="@color/on_primary"
+            app:backgroundTint="@color/status_visited"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_home_appointment"
+            app:iconGravity="textStart"
+            app:iconTint="@color/on_primary" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

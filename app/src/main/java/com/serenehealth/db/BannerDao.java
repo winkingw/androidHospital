@@ -13,6 +13,9 @@ public class BannerDao {
 
     private SQLiteDatabase db;
     private DBHelper dbHelper;
+    private static final String BANNER_DUPLICATE_GROUP =
+            "COALESCE(title, ''), image_url, COALESCE(jump_type, ''), COALESCE(jump_value, ''), "
+                    + "sort_no, status, COALESCE(start_time, ''), COALESCE(end_time, '')";
 
     public BannerDao(DBHelper dbHelper) {
         this.dbHelper = dbHelper;
@@ -26,10 +29,12 @@ public class BannerDao {
         List<Banner> list = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT * FROM t_banner WHERE status = 1 "
+            cursor = db.rawQuery("SELECT * FROM t_banner WHERE id IN ("
+                            + "SELECT MIN(id) FROM t_banner WHERE status = 1 "
                             + "AND (start_time IS NULL OR start_time <= datetime('now','localtime')) "
                             + "AND (end_time IS NULL OR end_time >= datetime('now','localtime')) "
-                            + "ORDER BY sort_no ASC", null);
+                            + "GROUP BY " + BANNER_DUPLICATE_GROUP + ") "
+                            + "ORDER BY sort_no ASC, id ASC", null);
             while (cursor.moveToNext()) {
                 list.add(cursorToBanner(cursor));
             }
@@ -48,7 +53,9 @@ public class BannerDao {
         List<Banner> list = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT * FROM t_banner ORDER BY sort_no ASC", null);
+            cursor = db.rawQuery("SELECT * FROM t_banner WHERE id IN ("
+                    + "SELECT MIN(id) FROM t_banner GROUP BY " + BANNER_DUPLICATE_GROUP + ") "
+                    + "ORDER BY sort_no ASC, id ASC", null);
             while (cursor.moveToNext()) {
                 list.add(cursorToBanner(cursor));
             }
@@ -58,6 +65,12 @@ public class BannerDao {
                 cursor.close();
             }
         }
+    }
+
+    public int deleteDuplicateBanners() {
+        return db.delete("t_banner",
+                "id NOT IN (SELECT MIN(id) FROM t_banner GROUP BY " + BANNER_DUPLICATE_GROUP + ")",
+                null);
     }
 
     /**

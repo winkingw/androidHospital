@@ -138,7 +138,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         tvStatus.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.text_size_tiny));
 
-        if (source.getRemainNum() > 0) {
+        boolean canBook = schedule.getScheduleStatus() == 1
+                && source.getSourceStatus() == 1
+                && source.getRemainNum() > 0;
+
+        if (canBook) {
             // 有余号：蓝色边框
             chip.setBackgroundResource(R.drawable.shape_slot_available);
             tvTime.setTextColor(context.getColor(R.color.on_surface));
@@ -159,10 +163,16 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 }
             });
         } else {
-            // 已约满：灰色背景
+            // 停诊、不可约或已约满：灰色背景且不可点击
             chip.setBackgroundResource(R.drawable.shape_slot_full);
             tvTime.setTextColor(context.getColor(R.color.on_surface_variant));
-            tvStatus.setText(context.getString(R.string.doctor_detail_full));
+            if (schedule.getScheduleStatus() != 1) {
+                tvStatus.setText("停诊");
+            } else if (source.getSourceStatus() != 1) {
+                tvStatus.setText("不可约");
+            } else {
+                tvStatus.setText(context.getString(R.string.doctor_detail_full));
+            }
             tvStatus.setTextColor(context.getColor(R.color.on_surface_variant));
             chip.setClickable(false);
             chip.setEnabled(false);

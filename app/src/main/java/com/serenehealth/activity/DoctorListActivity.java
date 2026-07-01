@@ -51,6 +51,7 @@ public class DoctorListActivity extends AppCompatActivity {
     private List<Doctor> allDoctors = new ArrayList<>();
     private final Handler searchHandler = new Handler(Looper.getMainLooper());
     private static final long SEARCH_DELAY_MS = 300;
+    private TextWatcher searchTextWatcher;
 
     // 筛选栏
     private int selectedFilterIndex = 0;
@@ -74,6 +75,9 @@ public class DoctorListActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (binding != null && searchTextWatcher != null) {
+            binding.etSearch.removeTextChangedListener(searchTextWatcher);
+        }
         super.onDestroy();
         searchHandler.removeCallbacksAndMessages(null);
     }
@@ -133,7 +137,7 @@ public class DoctorListActivity extends AppCompatActivity {
         });
 
         // 搜索框文字变化监听（防抖）
-        binding.etSearch.addTextChangedListener(new TextWatcher() {
+        searchTextWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -152,7 +156,8 @@ public class DoctorListActivity extends AppCompatActivity {
                     }
                 }, SEARCH_DELAY_MS);
             }
-        });
+        };
+        binding.etSearch.addTextChangedListener(searchTextWatcher);
 
         // 筛选栏点击
         for (int i = 0; i < filterTabs.length; i++) {
@@ -228,38 +233,72 @@ public class DoctorListActivity extends AppCompatActivity {
             public void run() {
                 final List<Doctor> list = doctorDao.queryDoctorsByDepartment(departmentId);
 
-                // 加载号源状态（未来7天）
+                // 加载号源状态（未来7天）- 使用批量查询优化
                 final Map<Long, Boolean> hasSlotMap = new HashMap<>();
                 if (list != null && !list.isEmpty()) {
-                    List<String> dates = new ArrayList<>();
+                    // 准备日期范围
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
                     Calendar cal = Calendar.getInstance();
-                    for (int i = 0; i < 7; i++) {
-                        dates.add(sdf.format(cal.getTime()));
-                        cal.add(Calendar.DAY_OF_MONTH, 1);
+                    String startDate = sdf.format(cal.getTime());
+                    cal.add(Calendar.DAY_OF_MONTH, 6);
+                    String endDate = sdf.format(cal.getTime());
+
+                    // 提取所有医生ID
+                    List<Long> doctorIds = new ArrayList<>();
+                    for (Doctor doctor : list) {
+                        doctorIds.add(doctor.getId());
                     }
 
+                    // 批量查询排班（1次查询替代 N*7 次）
+                    List<DoctorSchedule> allSchedules =
+                            scheduleDao.querySchedulesByDoctorIdsAndDateRange(doctorIds, startDate, endDate);
+
+                    // 按医生ID分组
+                    Map<Long, List<DoctorSchedule>> scheduleMap = new HashMap<>();
+                    List<Long> allScheduleIds = new ArrayList<>();
+                    if (allSchedules != null) {
+                        for (DoctorSchedule s : allSchedules) {
+                            long docId = s.getDoctorId();
+                            if (!scheduleMap.containsKey(docId)) {
+                                scheduleMap.put(docId, new ArrayList<DoctorSchedule>());
+                            }
+                            scheduleMap.get(docId).add(s);
+                            allScheduleIds.add(s.getId());
+                        }
+                    }
+
+                    // 批量查询号源（1次查询替代 M 次）
+                    List<RegisterSource> allSources = sourceDao.querySourcesByScheduleIds(allScheduleIds);
+
+                    // 按排班ID分组
+                    Map<Long, List<RegisterSource>> sourceMap = new HashMap<>();
+                    if (allSources != null) {
+                        for (RegisterSource src : allSources) {
+                            long schedId = src.getScheduleId();
+                            if (!sourceMap.containsKey(schedId)) {
+                                sourceMap.put(schedId, new ArrayList<RegisterSource>());
+                            }
+                            sourceMap.get(schedId).add(src);
+                        }
+                    }
+
+                    // 判断每个医生是否有余号
                     for (Doctor doctor : list) {
                         boolean hasSlot = false;
-                        for (String date : dates) {
-                            List<DoctorSchedule> schedules =
-                                    scheduleDao.querySchedulesByDoctor(doctor.getId(), date);
-                            if (schedules != null) {
-                                for (DoctorSchedule s : schedules) {
-                                    List<RegisterSource> sources =
-                                            sourceDao.querySourcesBySchedule(s.getId());
-                                    if (sources != null) {
-                                        for (RegisterSource src : sources) {
-                                            if (src.getRemainNum() > 0) {
-                                                hasSlot = true;
-                                                break;
-                                            }
+                        List<DoctorSchedule> schedules = scheduleMap.get(doctor.getId());
+                        if (schedules != null) {
+                            for (DoctorSchedule s : schedules) {
+                                List<RegisterSource> sources = sourceMap.get(s.getId());
+                                if (sources != null) {
+                                    for (RegisterSource src : sources) {
+                                        if (src.getRemainNum() > 0) {
+                                            hasSlot = true;
+                                            break;
                                         }
                                     }
-                                    if (hasSlot) break;
                                 }
+                                if (hasSlot) break;
                             }
-                            if (hasSlot) break;
                         }
                         hasSlotMap.put(doctor.getId(), hasSlot);
                     }

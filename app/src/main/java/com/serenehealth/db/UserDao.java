@@ -29,7 +29,7 @@ public class UserDao {
         }
         ContentValues values = new ContentValues();
         values.put("phone", phone);
-        values.put("password", password);
+        values.put("password", hashPassword(password));
         values.put("real_name", realName);
         return db.insert("t_user", null, values);
     }
@@ -40,9 +40,14 @@ public class UserDao {
     public User login(String phone, String password) {
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT * FROM t_user WHERE phone = ? AND password = ?",
-                    new String[]{phone, password});
+            String hashedPassword = hashPassword(password);
+            cursor = db.rawQuery("SELECT * FROM t_user WHERE phone = ? AND (password = ? OR password = ?)",
+                    new String[]{phone, hashedPassword, password});
             if (cursor.moveToFirst()) {
+                int passwordIndex = cursor.getColumnIndex("password");
+                if (hasValue(cursor, passwordIndex) && password.equals(cursor.getString(passwordIndex))) {
+                    upgradePlainTextPassword(cursor.getLong(cursor.getColumnIndexOrThrow("id")), hashedPassword);
+                }
                 return cursorToUser(cursor);
             }
             return null;
@@ -119,7 +124,7 @@ public class UserDao {
         Cursor cursor = null;
         try {
             cursor = db.rawQuery("SELECT id FROM t_user WHERE id = ? AND password = ?",
-                    new String[]{String.valueOf(userId), oldPwd});
+                    new String[]{String.valueOf(userId), hashPassword(oldPwd)});
             if (!cursor.moveToFirst()) {
                 return 0;
             }
@@ -129,7 +134,7 @@ public class UserDao {
             }
         }
         ContentValues values = new ContentValues();
-        values.put("password", newPwd);
+        values.put("password", hashPassword(newPwd));
         values.put("update_time", getCurrentDateTime());
         return db.update("t_user", values, "id = ?",
                 new String[]{String.valueOf(userId)});
@@ -152,6 +157,13 @@ public class UserDao {
                 cursor.close();
             }
         }
+    }
+
+    private void upgradePlainTextPassword(long userId, String hashedPassword) {
+        ContentValues values = new ContentValues();
+        values.put("password", hashedPassword);
+        values.put("update_time", getCurrentDateTime());
+        db.update("t_user", values, "id = ?", new String[]{String.valueOf(userId)});
     }
 
     private User cursorToUser(Cursor cursor) {
@@ -208,6 +220,26 @@ public class UserDao {
 
     private boolean hasValue(Cursor cursor, int columnIndex) {
         return columnIndex >= 0 && !cursor.isNull(columnIndex);
+    }
+
+    /**
+     * 对密码进行 SHA-256 哈希
+     */
+    private String hashPassword(String password) {
+        try {
+            java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes("UTF-8"));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return password;
+        }
     }
 
     private String getCurrentDateTime() {

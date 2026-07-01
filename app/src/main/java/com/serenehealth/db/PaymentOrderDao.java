@@ -68,7 +68,19 @@ public class PaymentOrderDao {
         List<PaymentOrder> list = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT * FROM t_payment_order WHERE user_id = ? ORDER BY create_time DESC",
+            cursor = db.rawQuery(
+                    "SELECT po.*, a.appointment_no, "
+                            + "rs.slot_start_time, rs.slot_end_time, "
+                            + "ds.schedule_date, ds.period, ds.clinic_room, "
+                            + "d.doctor_name, dep.dept_name AS department_name "
+                            + "FROM t_payment_order po "
+                            + "LEFT JOIN t_appointment a ON po.appointment_id = a.id "
+                            + "LEFT JOIN t_register_source rs ON a.source_id = rs.id "
+                            + "LEFT JOIN t_doctor_schedule ds ON rs.schedule_id = ds.id "
+                            + "LEFT JOIN t_doctor d ON ds.doctor_id = d.id "
+                            + "LEFT JOIN t_department dep ON d.department_id = dep.id "
+                            + "WHERE po.user_id = ? "
+                            + "ORDER BY po.create_time DESC",
                     new String[]{String.valueOf(userId)});
             while (cursor.moveToNext()) {
                 list.add(cursorToPaymentOrder(cursor));
@@ -204,7 +216,43 @@ public class PaymentOrderDao {
         if (!cursor.isNull(cursor.getColumnIndex("update_time"))) {
             order.setUpdateTime(cursor.getString(cursor.getColumnIndex("update_time")));
         }
+        int appointmentNoIndex = cursor.getColumnIndex("appointment_no");
+        if (hasValue(cursor, appointmentNoIndex)) {
+            order.setAppointmentNo(cursor.getString(appointmentNoIndex));
+        }
+        int departmentNameIndex = cursor.getColumnIndex("department_name");
+        if (hasValue(cursor, departmentNameIndex)) {
+            order.setDepartmentName(cursor.getString(departmentNameIndex));
+        }
+        int doctorNameIndex = cursor.getColumnIndex("doctor_name");
+        if (hasValue(cursor, doctorNameIndex)) {
+            order.setDoctorName(cursor.getString(doctorNameIndex));
+        }
+        int scheduleDateIndex = cursor.getColumnIndex("schedule_date");
+        if (hasValue(cursor, scheduleDateIndex)) {
+            order.setScheduleDate(cursor.getString(scheduleDateIndex));
+        }
+        int periodIndex = cursor.getColumnIndex("period");
+        if (hasValue(cursor, periodIndex)) {
+            order.setPeriod(cursor.getString(periodIndex));
+        }
+        int clinicRoomIndex = cursor.getColumnIndex("clinic_room");
+        if (hasValue(cursor, clinicRoomIndex)) {
+            order.setClinicRoom(cursor.getString(clinicRoomIndex));
+        }
+        int slotStartTimeIndex = cursor.getColumnIndex("slot_start_time");
+        if (hasValue(cursor, slotStartTimeIndex)) {
+            order.setSlotStartTime(cursor.getString(slotStartTimeIndex));
+        }
+        int slotEndTimeIndex = cursor.getColumnIndex("slot_end_time");
+        if (hasValue(cursor, slotEndTimeIndex)) {
+            order.setSlotEndTime(cursor.getString(slotEndTimeIndex));
+        }
         return order;
+    }
+
+    private boolean hasValue(Cursor cursor, int columnIndex) {
+        return columnIndex >= 0 && !cursor.isNull(columnIndex);
     }
 
     private String getCurrentDateTime() {

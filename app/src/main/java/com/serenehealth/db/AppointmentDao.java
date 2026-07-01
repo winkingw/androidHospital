@@ -37,7 +37,9 @@ public class AppointmentDao {
         try {
             RegisterSourceDao sourceDao = dbHelper.getRegisterSourceDao();
             RegisterSource source = sourceDao.querySourceById(appointment.getSourceId());
-            if (source != null && source.getRemainNum() > 0) {
+            if (source != null && source.getRemainNum() > 0
+                    && source.getSourceStatus() == 1
+                    && isSourceScheduleActive(source.getId())) {
                 boolean decreased = sourceDao.decreaseRemainNum(source.getId(), source.getVersion());
                 if (decreased) {
                     ContentValues appointValues = new ContentValues();
@@ -75,6 +77,23 @@ public class AppointmentDao {
             db.endTransaction();
         }
         return appointmentId;
+    }
+
+    private boolean isSourceScheduleActive(long sourceId) {
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(
+                    "SELECT 1 FROM t_register_source rs "
+                            + "JOIN t_doctor_schedule ds ON rs.schedule_id = ds.id "
+                            + "WHERE rs.id = ? AND rs.source_status = 1 AND ds.schedule_status = 1 "
+                            + "LIMIT 1",
+                    new String[]{String.valueOf(sourceId)});
+            return cursor.moveToFirst();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
     /**
@@ -200,6 +219,24 @@ public class AppointmentDao {
         values.put("update_time", getCurrentDateTime());
         return db.update("t_appointment", values, "id = ?",
                 new String[]{String.valueOf(appointmentId)});
+    }
+
+    /**
+     * 医生端完成预约：只能将当前医生名下的已预约订单改为已就诊。
+     */
+    public int completeDoctorAppointment(long appointmentId, long doctorId) {
+        ContentValues values = new ContentValues();
+        values.put("appointment_status", "VISITED");
+        values.put("update_time", getCurrentDateTime());
+        return db.update(
+                "t_appointment",
+                values,
+                "id = ? AND appointment_status = ? AND source_id IN ("
+                        + "SELECT rs.id FROM t_register_source rs "
+                        + "JOIN t_doctor_schedule ds ON rs.schedule_id = ds.id "
+                        + "WHERE ds.doctor_id = ?"
+                        + ")",
+                new String[]{String.valueOf(appointmentId), "BOOKED", String.valueOf(doctorId)});
     }
 
     /**

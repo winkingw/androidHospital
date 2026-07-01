@@ -47,6 +47,39 @@ public class RegisterSourceDao {
     }
 
     /**
+     * 批量查询多个排班下的所有号源
+     */
+    public List<RegisterSource> querySourcesByScheduleIds(List<Long> scheduleIds) {
+        List<RegisterSource> list = new ArrayList<>();
+        if (scheduleIds == null || scheduleIds.isEmpty()) {
+            return list;
+        }
+        StringBuilder placeholders = new StringBuilder();
+        for (int i = 0; i < scheduleIds.size(); i++) {
+            if (i > 0) placeholders.append(",");
+            placeholders.append("?");
+        }
+        Cursor cursor = null;
+        try {
+            String[] args = new String[scheduleIds.size()];
+            for (int i = 0; i < scheduleIds.size(); i++) {
+                args[i] = String.valueOf(scheduleIds.get(i));
+            }
+            cursor = db.rawQuery(
+                    "SELECT * FROM t_register_source WHERE schedule_id IN (" + placeholders + ") ORDER BY schedule_id, slot_start_time ASC",
+                    args);
+            while (cursor.moveToNext()) {
+                list.add(cursorToRegisterSource(cursor));
+            }
+            return list;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    /**
      * 根据ID查号源
      */
     public RegisterSource querySourceById(long sourceId) {
@@ -71,7 +104,8 @@ public class RegisterSourceDao {
     public boolean decreaseRemainNum(long sourceId, int currentVersion) {
         String now = getCurrentDateTime();
         db.execSQL("UPDATE t_register_source SET remain_num = remain_num - 1, version = version + 1, update_time = ? "
-                        + "WHERE id = ? AND version = ? AND remain_num > 0",
+                        + "WHERE id = ? AND version = ? AND remain_num > 0 AND source_status = 1 "
+                        + "AND schedule_id IN (SELECT id FROM t_doctor_schedule WHERE schedule_status = 1)",
                 new Object[]{now, sourceId, currentVersion});
         Cursor cursor = null;
         try {

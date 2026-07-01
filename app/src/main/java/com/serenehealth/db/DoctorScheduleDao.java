@@ -40,6 +40,85 @@ public class DoctorScheduleDao {
     }
 
     /**
+     * 查询某医生某日可出诊排班，用户端预约只展示正常排班。
+     */
+    public List<DoctorSchedule> queryActiveSchedulesByDoctor(long doctorId, String date) {
+        List<DoctorSchedule> list = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(
+                    "SELECT * FROM t_doctor_schedule "
+                            + "WHERE doctor_id = ? AND schedule_date = ? AND schedule_status = 1",
+                    new String[]{String.valueOf(doctorId), date});
+            while (cursor.moveToNext()) {
+                list.add(cursorToDoctorSchedule(cursor));
+            }
+            return list;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    /**
+     * 查询医生最近一次非空诊室，用于新生成排班时保持诊室一致。
+     */
+    public String queryLatestClinicRoom(long doctorId) {
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(
+                    "SELECT clinic_room FROM t_doctor_schedule "
+                            + "WHERE doctor_id = ? AND clinic_room IS NOT NULL AND TRIM(clinic_room) != '' "
+                            + "ORDER BY schedule_date DESC, update_time DESC, id DESC LIMIT 1",
+                    new String[]{String.valueOf(doctorId)});
+            if (cursor.moveToFirst()) {
+                return cursor.getString(0);
+            }
+            return null;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    /**
+     * 批量查询多位医生在日期范围内的排班
+     */
+    public List<DoctorSchedule> querySchedulesByDoctorIdsAndDateRange(List<Long> doctorIds, String startDate, String endDate) {
+        List<DoctorSchedule> list = new ArrayList<>();
+        if (doctorIds == null || doctorIds.isEmpty()) {
+            return list;
+        }
+        StringBuilder placeholders = new StringBuilder();
+        for (int i = 0; i < doctorIds.size(); i++) {
+            if (i > 0) placeholders.append(",");
+            placeholders.append("?");
+        }
+        Cursor cursor = null;
+        try {
+            String[] selectionArgs = new String[doctorIds.size() + 2];
+            for (int i = 0; i < doctorIds.size(); i++) {
+                selectionArgs[i] = String.valueOf(doctorIds.get(i));
+            }
+            selectionArgs[doctorIds.size()] = startDate;
+            selectionArgs[doctorIds.size() + 1] = endDate;
+            cursor = db.rawQuery(
+                    "SELECT * FROM t_doctor_schedule WHERE doctor_id IN (" + placeholders + ") AND schedule_date BETWEEN ? AND ?",
+                    selectionArgs);
+            while (cursor.moveToNext()) {
+                list.add(cursorToDoctorSchedule(cursor));
+            }
+            return list;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    /**
      * 查询某日期某科室所有医生的排班
      */
     public List<DoctorSchedule> querySchedulesByDeptAndDate(long deptId, String date) {
@@ -122,6 +201,17 @@ public class DoctorScheduleDao {
     public int cancelSchedule(long scheduleId) {
         ContentValues values = new ContentValues();
         values.put("schedule_status", 0);
+        values.put("update_time", getCurrentDateTime());
+        return db.update("t_doctor_schedule", values, "id = ?",
+                new String[]{String.valueOf(scheduleId)});
+    }
+
+    /**
+     * 恢复出诊
+     */
+    public int restoreSchedule(long scheduleId) {
+        ContentValues values = new ContentValues();
+        values.put("schedule_status", 1);
         values.put("update_time", getCurrentDateTime());
         return db.update("t_doctor_schedule", values, "id = ?",
                 new String[]{String.valueOf(scheduleId)});

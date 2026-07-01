@@ -65,12 +65,16 @@ public class AppointmentActivity extends AppCompatActivity {
         userDao = dbHelper.getUserDao();
         registerSourceDao = dbHelper.getRegisterSourceDao();
 
-        getIntentData();
-        if (!ensureRealNameVerified()) {
+        if (!getIntentData()) {
             return;
         }
-        initViews();
-        loadPatientInfo();
+        ensureRealNameVerified(new Runnable() {
+            @Override
+            public void run() {
+                initViews();
+                loadPatientInfo();
+            }
+        });
     }
 
     @Override
@@ -80,7 +84,7 @@ public class AppointmentActivity extends AppCompatActivity {
     }
 
     // ==================== 4. 获取 Intent 数据 ====================
-    private void getIntentData() {
+    private boolean getIntentData() {
         sourceId = getIntent().getLongExtra("source_id", -1);
         doctorId = getIntent().getLongExtra("doctor_id", -1);
         doctorName = getIntent().getStringExtra("doctor_name");
@@ -91,6 +95,14 @@ public class AppointmentActivity extends AppCompatActivity {
         slotTime = getIntent().getStringExtra("slot_time");
         registerFee = getIntent().getDoubleExtra("register_fee", 0);
         currentUserId = SPUtil.getCurrentUserId();
+
+        // 校验关键数据
+        if (sourceId == -1 || doctorId == -1 || registerFee <= 0) {
+            Toast.makeText(this, "预约数据异常，请重新选择", Toast.LENGTH_SHORT).show();
+            finish();
+            return false;
+        }
+        return true;
     }
 
     // ==================== 5. 初始化视图 ====================
@@ -213,13 +225,13 @@ public class AppointmentActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.appointment_fail_msg, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!ensureRealNameVerified()) {
-            return;
-        }
 
-        // 按钮变灰，防止重复提交
-        isProcessing = true;
-        binding.btnConfirm.setEnabled(false);
+        ensureRealNameVerified(new Runnable() {
+            @Override
+            public void run() {
+                // 按钮变灰，防止重复提交
+                isProcessing = true;
+                binding.btnConfirm.setEnabled(false);
 
         new Thread(new Runnable() {
             @Override
@@ -272,6 +284,8 @@ public class AppointmentActivity extends AppCompatActivity {
                 }
             }
         }).start();
+        }
+    });
     }
 
     /**
@@ -313,20 +327,34 @@ public class AppointmentActivity extends AppCompatActivity {
         return idCard.substring(0, 3) + "******" + idCard.substring(idCard.length() - 2);
     }
 
-    private boolean ensureRealNameVerified() {
+    private void ensureRealNameVerified(final Runnable onVerified) {
         if (currentUserId <= 0) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
-            return false;
+            return;
         }
-        User user = userDao.queryUserById(currentUserId);
-        if (user != null && user.isRealNameVerified()) {
-            return true;
-        }
-        Intent intent = new Intent(this, IDVerificationActivity.class);
-        intent.putExtra("show_not_verified_dialog", true);
-        startActivity(intent);
-        finish();
-        return false;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                User user = userDao.queryUserById(currentUserId);
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!isFinishing()) {
+                            if (user != null && user.isRealNameVerified()) {
+                                if (onVerified != null) {
+                                    onVerified.run();
+                                }
+                            } else {
+                                Intent intent = new Intent(AppointmentActivity.this, IDVerificationActivity.class);
+                                intent.putExtra("show_not_verified_dialog", true);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 }

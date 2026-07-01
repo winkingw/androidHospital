@@ -64,7 +64,7 @@ public class PaymentOrderAdapter extends RecyclerView.Adapter<PaymentOrderAdapte
         void bind(PaymentOrder order) {
             binding.tvOrderNo.setText(order.getOrderNo());
             binding.tvStatus.setText(mapStatus(order.getOrderStatus()));
-            binding.tvAppointment.setText("关联预约ID：" + order.getAppointmentId());
+            binding.tvAppointment.setText(resolveAppointmentInfo(order));
             binding.tvAmount.setText(String.format(Locale.getDefault(), "¥%.2f", order.getAmount()));
             binding.tvPayInfo.setText(resolvePayInfo(order));
 
@@ -83,11 +83,73 @@ public class PaymentOrderAdapter extends RecyclerView.Adapter<PaymentOrderAdapte
         }
     }
 
+    private String resolveAppointmentInfo(PaymentOrder order) {
+        StringBuilder builder = new StringBuilder();
+        if (hasText(order.getAppointmentNo())) {
+            builder.append("预约编号：").append(order.getAppointmentNo());
+        } else {
+            builder.append("关联预约ID：").append(order.getAppointmentId());
+        }
+
+        String deptDoctor = joinNonEmpty(order.getDepartmentName(), order.getDoctorName(), "  ");
+        if (hasText(deptDoctor)) {
+            builder.append("\n").append(deptDoctor);
+        }
+
+        String periodText = mapPeriod(order.getPeriod());
+        String slotTime = formatSlotTime(order.getSlotStartTime(), order.getSlotEndTime());
+        String dateTime = joinNonEmpty(order.getScheduleDate(), periodText, "  ");
+        dateTime = joinNonEmpty(dateTime, slotTime, "  ");
+        if (hasText(dateTime)) {
+            builder.append("\n").append(dateTime);
+        }
+
+        if (hasText(order.getClinicRoom())) {
+            builder.append("\n诊室位置：").append(order.getClinicRoom());
+        }
+        return builder.toString();
+    }
+
     private String resolvePayInfo(PaymentOrder order) {
         if (order.getPayTime() != null && !order.getPayTime().isEmpty()) {
             return "支付方式：" + order.getPayChannel() + "，支付时间：" + order.getPayTime();
         }
         return "支付方式：" + (order.getPayChannel() != null ? order.getPayChannel() : "MOCK_PAY");
+    }
+
+    private String mapPeriod(String period) {
+        if ("MORNING".equals(period)) {
+            return "上午";
+        }
+        if ("AFTERNOON".equals(period)) {
+            return "下午";
+        }
+        return period != null ? period : "";
+    }
+
+    private String formatSlotTime(String startTime, String endTime) {
+        if (!hasText(startTime) || !hasText(endTime)) {
+            return "";
+        }
+        return trimTime(startTime) + "-" + trimTime(endTime);
+    }
+
+    private String trimTime(String time) {
+        return time != null && time.length() >= 5 ? time.substring(0, 5) : time;
+    }
+
+    private String joinNonEmpty(String first, String second, String separator) {
+        if (hasText(first) && hasText(second)) {
+            return first + separator + second;
+        }
+        if (hasText(first)) {
+            return first;
+        }
+        return hasText(second) ? second : "";
+    }
+
+    private boolean hasText(String value) {
+        return value != null && !value.trim().isEmpty();
     }
 
     private String mapStatus(String status) {
